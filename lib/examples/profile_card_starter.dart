@@ -24,6 +24,7 @@ class ProfileCardStarter extends StatelessWidget {
       child: Center(
         child: Container(
           width: 320,
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
@@ -40,35 +41,153 @@ class ProfileCardStarter extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // TODO 1: Ảnh cover (gradient) + avatar tròn đè lên mép dưới.
+                // Gợi ý: Stack(clipBehavior: Clip.none) + Positioned.
                 Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    Container(color: Colors.blueGrey.shade100,width: double.infinity),
-                    const CircleAvatar(
-              radius: 32,
-              backgroundColor: Colors.indigo,
-              child: Icon(Icons.person, color: Colors.white, size: 32),
-            ),
                     Container(
+                      color: Colors.blueGrey.shade100,
                       width: double.infinity,
-                      color: Colors.deepPurple.withValues(alpha: 0.7),
-                      
-                      child: const Text(
-                        'Nền (căn giữa Stack)',
-                        style: TextStyle(color: Colors.white),
+                      height: 100,
+                    ),
+                    Positioned(
+                      bottom: -32,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(4), // độ dày viền trắng
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 32,
+                            backgroundColor: Colors.indigo,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                // TODO 1: Ảnh cover (gradient) + avatar tròn đè lên mép dưới.
-                // Gợi ý: Stack(clipBehavior: Clip.none) + Positioned.
-
+                const SizedBox(height: 40),
                 // TODO 2: Tên + chức danh (2 dòng Text).
+                const Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // hoặc .center tùy layout
+                  children: [
+                    Text(
+                      'Ngo Minh Tri',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: 4), // khoảng cách nhỏ giữa 2 dòng
+                    Text(
+                      'Flutter Developer',
+                      style: TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
+                ),
 
                 // TODO 3: 3 chỉ số (Bài viết / Followers / Following).
                 // Gợi ý: Row + mainAxisAlignment.spaceAround.
-
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      child: Column(
+                        children: [
+                          Text(
+                            '128',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Bài viết',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      child: Column(
+                        children: [
+                          Text(
+                            '1.2K',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Followers',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      child: Column(
+                        children: [
+                          Text(
+                            '356',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Following',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 // TODO 4: Nút "Theo dõi" full-width (SizedBox(width: double.infinity)).
-                Text('TODO: code UI của bạn vào đây'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Theo dõi'),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

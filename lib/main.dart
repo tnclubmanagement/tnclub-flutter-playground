@@ -19,6 +19,7 @@ import 'examples/product_grid_example.dart';
 import 'examples/product_grid_starter.dart';
 import 'examples/profile_card_example.dart';
 import 'examples/profile_card_starter.dart';
+import 'patterns/atomic_widgets_cheatsheet.dart';
 import 'patterns/constructors_pattern.dart';
 import 'patterns/extension_pattern.dart';
 import 'patterns/inherited_widget_pattern.dart';
@@ -322,6 +323,14 @@ class HomePage extends StatelessWidget {
       description: 'flutter_hooks, provider, riverpod, go_router, dio, freezed... (trang giới thiệu tĩnh)',
       path: '/patterns/libraries',
       builder: (_) => const LibrariesPage(),
+    ),
+    LayoutDemo(
+      title: '🧩 Atomic widgets cheat sheet',
+      description:
+          'BoxDecoration, BoxShape, BoxShadow, TextStyle, MainAxisAlignment, '
+          'Positioned, Clip, padding vs margin... (trang tổng hợp tĩnh)',
+      path: '/patterns/atomic-widgets',
+      builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
   ];
 
