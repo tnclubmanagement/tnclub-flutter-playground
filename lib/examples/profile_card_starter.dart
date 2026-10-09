@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
+// import 'package:flutter/widget_previews.dart';
 
-@Preview(name: 'Profile Card Starter')
-Widget previewProfileCardStarter() => const ProfileCardStarter();
+// @Preview(name: 'Profile Card Starter')
+// Widget previewProfileCardStarter() => const ProfileCardStarter();
 
 /// 🎯 CODE MỒI: Profile Card
 ///
@@ -47,9 +47,15 @@ class ProfileCardStarter extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Container(
-                      color: Colors.blueGrey.shade100,
                       width: double.infinity,
                       height: 100,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.centerRight,
+                          colors: [Colors.purple, Colors.blue],
+                        ),
+                      ),
                     ),
                     Positioned(
                       bottom: -32,
