@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
+
+@Preview(name: 'Chat Bubble Starter', size: Size(400, 600))
+Widget previewChatBubbleStarter() => const ChatBubbleStarter();
 
 /// 🎯 CODE MỒI: Chat Bubble List
 ///
@@ -19,6 +23,8 @@ class ChatBubbleStarter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const borderRadius = 16.0;
+    const innerBorderRadius = 4.0;
     return Container(
       color: Colors.grey.shade100,
       child: ListView.builder(
@@ -32,9 +38,22 @@ class ChatBubbleStarter extends StatelessWidget {
           // TODO 2: ConstrainedBox(maxWidth: 50% màn hình) bọc bong bóng.
           // TODO 3: Container bong bóng: màu theo m.isMe, BorderRadius.only(...)
           // với 1 góc nhỏ hơn (4) ở phía người gửi để tạo "mỏ".
-          return Padding(
+          return Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Text('${m.isMe ? "(mình)" : "(họ)"} ${m.text}'),
+            alignment: m.isMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: m.isMe ? Colors.purple : Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(borderRadius),
+                  topRight: const Radius.circular(borderRadius),
+                  bottomLeft: m.isMe ? const Radius.circular(borderRadius) : Radius.circular(innerBorderRadius),
+                  bottomRight: m.isMe ? Radius.circular(innerBorderRadius) : const Radius.circular(borderRadius),
+                ),
+              ),
+              child: Text('${m.isMe ? "(mình)" : "(họ)"} ${m.text}'),
+            ),
           );
         },
       ),
