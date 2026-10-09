@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
+
+@Preview(name: 'Product Grid Starter', size: Size(400, 600))
+Widget previewProductGridStarter() => const ProductGridStarter();
 
 /// 🎯 CODE MỒI: Product Grid
 ///
@@ -31,6 +35,9 @@ class ProductGridStarter extends StatelessWidget {
         // crossAxisCount: 2, mainAxisSpacing/crossAxisSpacing, childAspectRatio).
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.75,
         ),
         itemBuilder: (context, index) {
           final p = _products[index];
@@ -41,9 +48,53 @@ class ProductGridStarter extends StatelessWidget {
           // - Rating: Icon(Icons.star) + Text(p.rating).
           // - Giá p.price.
           return Container(
-            color: p.color.withValues(alpha: 0.15),
             alignment: Alignment.center,
-            child: const Text('TODO'),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    color: p.color,
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.shopping_bag, size: 48, color: Colors.white),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        p.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, size: 16, color: Colors.amber),
+                          const SizedBox(width: 4),
+                          Text('${p.rating}'),
+                        ],
+                      ),
+                      Text(p.price),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
