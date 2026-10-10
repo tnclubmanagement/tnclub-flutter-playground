@@ -15,15 +15,19 @@ void main() {
         const MaterialApp(home: WidgetsCheatsheet()),
       );
       await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull, reason: 'Exception at size $size (tab 0)');
+      final e0 = tester.takeException();
+      if (e0 != null) debugPrint('EXC @ $size tab0: $e0');
+      expect(e0, isNull, reason: 'Exception at size $size (tab 0)');
 
       final tabs = find.byType(Tab);
       final tabCount = tabs.evaluate().length;
       for (var i = 0; i < tabCount; i++) {
         await tester.tap(tabs.at(i));
         await tester.pumpAndSettle();
+        final e = tester.takeException();
+        if (e != null) debugPrint('EXC @ $size tab$i: $e');
         expect(
-          tester.takeException(),
+          e,
           isNull,
           reason: 'Exception at size $size (tab $i)',
         );

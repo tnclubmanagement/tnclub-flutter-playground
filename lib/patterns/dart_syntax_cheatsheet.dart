@@ -1026,20 +1026,17 @@ class _SyntaxCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Chip(
-                  label: Text(info.category, style: const TextStyle(fontSize: 12)),
-                  backgroundColor: Colors.deepPurple.withValues(alpha: 0.1),
-                ),
+                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description),
+            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
             const SizedBox(height: 12),
             SizedBox(
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,

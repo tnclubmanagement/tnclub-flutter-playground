@@ -423,6 +423,368 @@ class WidgetsCheatsheet extends StatelessWidget {
         ),
       ),
     ),
+    _WidgetInfo(
+      name: 'DropdownButton / DropdownMenu',
+      category: 'Input & tương tác',
+      constructor: "DropdownButton<String>(value: selected, items: [DropdownMenuItem(value: 'a', child: Text('A'))], onChanged: (v) {})",
+      usage: 'Chọn 1 giá trị trong danh sách xổ xuống - hay dùng cho lựa '
+          'chọn cố định ít mục (tỉnh/thành, loại tài khoản...). '
+          '`DropdownMenu` (Material 3, mới hơn) còn hỗ trợ gõ tìm kiếm.',
+      special: 'Widget "có điều khiển" như Checkbox - `value` PHẢI khớp '
+          '1 trong các `items`, nếu không sẽ lỗi assertion runtime.',
+      preview: (_) => SizedBox(
+        width: 70,
+        child: DropdownButton<String>(
+          isDense: true,
+          value: 'A',
+          items: const [
+            DropdownMenuItem(value: 'A', child: Text('A', style: TextStyle(fontSize: 12))),
+            DropdownMenuItem(value: 'B', child: Text('B', style: TextStyle(fontSize: 12))),
+          ],
+          onChanged: (_) {},
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Slider / RangeSlider',
+      category: 'Input & tương tác',
+      constructor: 'Slider(value: value, min: 0, max: 100, onChanged: (v) => setState(() => value = v))',
+      usage: 'Chọn 1 giá trị số (hoặc 1 khoảng với RangeSlider) bằng cách '
+          'kéo thanh trượt - hay dùng cho volume, giá tiền, độ tuổi...',
+      special: 'Cần bọc trong widget có chiều rộng xác định (Slider tự '
+          'giãn hết chiều ngang khả dụng, lỗi "infinite width" nếu đặt '
+          'trong Row không có Expanded).',
+      preview: (_) => SizedBox(
+        width: 70,
+        child: SliderTheme(
+          data: SliderThemeData(
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+            overlayShape: SliderComponentShape.noOverlay,
+            trackHeight: 2,
+          ),
+          child: Slider(value: 0.4, onChanged: (_) {}),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Form + TextFormField (validate)',
+      category: 'Input & tương tác',
+      constructor: "Form(key: formKey, child: TextFormField(validator: (v) => (v?.isEmpty ?? true) ? 'Bắt buộc' : null))",
+      usage: 'Gom nhiều TextFormField thành 1 "form" để validate CÙNG LÚC '
+          'khi bấm Submit, thay vì tự kiểm tra từng field riêng lẻ.',
+      special: 'Gọi `formKey.currentState!.validate()` để chạy hết '
+          'validator - trả `false` và tự hiện `errorText` nếu field nào '
+          'sai, không cần tự quản lý state lỗi.',
+      preview: (_) => SizedBox(
+        width: 90,
+        child: TextFormField(
+          decoration: const InputDecoration(
+            labelText: 'Tên',
+            errorText: 'Bắt buộc',
+            isDense: true,
+            border: OutlineInputBorder(),
+          ),
+          style: const TextStyle(fontSize: 12),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'RadioListTile / CheckboxListTile / SwitchListTile',
+      category: 'Input & tương tác',
+      constructor: "CheckboxListTile(title: Text('Đồng ý'), value: checked, onChanged: (v) {})",
+      usage: 'Kết hợp ListTile (title/subtitle/leading) với Checkbox/Radio/'
+          'Switch trong 1 widget - cả dòng (không chỉ riêng ô vuông) đều '
+          'bấm được để toggle, tiện cho danh sách lựa chọn dài.',
+      special: 'Mặc định `controlAffinity` để control ở bên TRÁI khác '
+          'Checkbox/Switch thường (ở đâu bạn đặt nó) - đổi qua '
+          '`ListTileControlAffinity.trailing` nếu cần control bên phải.',
+      preview: (_) => const SizedBox(
+        width: 100,
+        child: CheckboxListTile(
+          dense: true,
+          contentPadding: EdgeInsets.zero,
+          title: Text('Đồng ý', style: TextStyle(fontSize: 11)),
+          value: true,
+          onChanged: null,
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'SegmentedButton',
+      category: 'Input & tương tác',
+      constructor: "SegmentedButton<int>(segments: [ButtonSegment(value: 0, label: Text('A'))], selected: {0}, onSelectionChanged: (s) {})",
+      usage: '(Material 3) Nhóm nút chọn 1 (hoặc nhiều, `multiSelectionEnabled: true`) '
+          'trong 1 cụm liền nhau - thay thế hiện đại cho nhóm RadioButton '
+          'cũ khi chỉ có vài lựa chọn ngắn.',
+      special: '`selected` là 1 `Set` (dù chỉ chọn 1) - khác Radio dùng '
+          '`groupValue` đơn giá trị.',
+      preview: (_) => SegmentedButton<int>(
+        segments: const [
+          ButtonSegment(value: 0, label: Text('A', style: TextStyle(fontSize: 10))),
+          ButtonSegment(value: 1, label: Text('B', style: TextStyle(fontSize: 10))),
+        ],
+        selected: const {0},
+        onSelectionChanged: (_) {},
+        style: const ButtonStyle(
+          visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+          padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 4)),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'showDatePicker / showTimePicker',
+      category: 'Input & tương tác',
+      constructor: 'showDatePicker(context: context, firstDate: ..., lastDate: ...)',
+      usage: 'Mở dialog chọn ngày/giờ chuẩn Material (có sẵn lịch/mặt '
+          'đồng hồ) - KHÔNG phải widget mà là HÀM `Future`, gọi trong '
+          'callback (vd onPressed) và `await` kết quả người dùng chọn.',
+      special: 'Trả về `null` nếu người dùng bấm Hủy/đóng dialog - PHẢI '
+          'kiểm tra null trước khi dùng kết quả.',
+      preview: (_) => OutlinedButton.icon(
+        onPressed: () {},
+        icon: const Icon(Icons.calendar_today, size: 14),
+        label: const Text('Chọn ngày', style: TextStyle(fontSize: 10)),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Autocomplete',
+      category: 'Input & tương tác',
+      constructor: 'Autocomplete<String>(optionsBuilder: (v) => allOptions.where((o) => o.contains(v.text)), onSelected: (v) {})',
+      usage: 'Ô nhập liệu tự gợi ý (dropdown) các lựa chọn khớp với chữ '
+          'đang gõ - hay dùng cho tìm kiếm địa chỉ, tên sản phẩm, username...',
+      special: '`optionsBuilder` chạy lại MỖI LẦN người dùng gõ - nên lọc '
+          'nhanh (hoặc debounce nếu gọi API) để tránh giật/lag.',
+      preview: (_) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.search, size: 12, color: Colors.grey),
+            SizedBox(width: 4),
+            Text('Tìm...', style: TextStyle(fontSize: 11, color: Colors.grey)),
+          ],
+        ),
+      ),
+    ),
+    // ---- Input chuyên dụng (DIY / package) ----
+    _WidgetInfo(
+      name: 'Số điện thoại',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: "TextField(keyboardType: TextInputType.phone, inputFormatters: [FilteringTextInputFormatter.digitsOnly])",
+      usage: 'Ô nhập số điện thoại. `keyboardType: TextInputType.phone` chỉ '
+          'đổi bàn phím ảo hiện ra (mobile), KHÔNG tự chặn/định dạng số.',
+      special: 'Flutter KHÔNG có mask "(012) 345-6789" sẵn - phải tự viết '
+          '`TextInputFormatter` (override `formatEditUpdate`) hoặc dùng '
+          'package như `mask_text_input_formatter`.',
+      preview: (_) => SizedBox(
+        width: 100,
+        child: TextField(
+          keyboardType: TextInputType.phone,
+          style: const TextStyle(fontSize: 12),
+          decoration: const InputDecoration(
+            isDense: true,
+            prefixIcon: Icon(Icons.phone, size: 16),
+            border: OutlineInputBorder(),
+          ),
+          controller: TextEditingController(text: '090 123 4567'),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Thẻ tín dụng (Credit card)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: 'TextField(inputFormatters: [_CardNumberFormatter()], keyboardType: TextInputType.number)',
+      usage: 'Ô nhập số thẻ, cần tự nhóm 4 số 1 lần ("1234 5678 9012 3456") '
+          'và thường kèm icon nhận diện loại thẻ (Visa/Master) theo số đầu.',
+      special: 'KHÔNG có sẵn trong Flutter - phải viết `TextInputFormatter` '
+          'tuỳ chỉnh, hoặc dùng package chuyên dụng (`flutter_credit_card`).',
+      preview: (_) => SizedBox(
+        width: 110,
+        child: TextField(
+          keyboardType: TextInputType.number,
+          style: const TextStyle(fontSize: 12),
+          decoration: const InputDecoration(
+            isDense: true,
+            prefixIcon: Icon(Icons.credit_card, size: 16),
+            border: OutlineInputBorder(),
+          ),
+          controller: TextEditingController(text: '•••• •••• •••• 1234'),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'OTP (mã xác thực)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: 'Row(children: List.generate(6, (i) => SizedBox(width: 36, child: TextField(maxLength: 1, textAlign: TextAlign.center))))',
+      usage: 'Nhập mã OTP, mỗi ô 1 số, tự focus sang ô kế tiếp khi gõ xong '
+          '(và lùi lại khi xoá/bấm Backspace ở ô rỗng).',
+      special: 'KHÔNG có widget OTP sẵn - tự ghép nhiều `TextField` + '
+          '`FocusNode` để tự chuyển focus, hoặc dùng package (`pinput`, '
+          '`otp_text_field`) cho đỡ tự viết logic focus.',
+      preview: (_) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final d in ['1', '2', '3', '4'])
+            Container(
+              width: 20,
+              height: 24,
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade400),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(d, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            ),
+        ],
+      ),
+    ),
+    _WidgetInfo(
+      name: 'showDateRangePicker',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: 'showDateRangePicker(context: context, firstDate: ..., lastDate: ...)',
+      usage: 'Chọn 1 KHOẢNG ngày [từ - đến] (vd đặt phòng, lọc báo cáo '
+          'theo khoảng thời gian) - khác `showDatePicker` (chỉ 1 ngày).',
+      special: 'ĐÃ có sẵn trong Flutter (`material.dart`), không cần '
+          'package ngoài - trả về `DateTimeRange?` (null nếu người dùng '
+          'bấm Hủy).',
+      preview: (_) => OutlinedButton.icon(
+        onPressed: () {},
+        icon: const Icon(Icons.date_range, size: 14),
+        label: const Text('01/01 - 10/01', style: TextStyle(fontSize: 9)),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'ChoiceChip / FilterChip (chọn nhiều)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: "FilterChip(label: Text('Đỏ'), selected: selected.contains('Đỏ'), onSelected: (v) {})",
+      usage: 'Chọn 1 (ChoiceChip) hoặc NHIỀU (FilterChip) lựa chọn dạng '
+          '"viên thuốc" bấm toggle - hay dùng cho filter/tag sản phẩm, sở '
+          'thích, size áo...',
+      special: 'ĐÃ có sẵn (Material), không cần package. Khác Checkbox về '
+          'hình dạng - tự đổi màu nền + hiện icon check khi `selected`.',
+      preview: (_) => Wrap(
+        spacing: 4,
+        children: [
+          FilterChip(
+            label: const Text('Đỏ', style: TextStyle(fontSize: 10)),
+            selected: true,
+            onSelected: (_) {},
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+          ),
+          FilterChip(
+            label: const Text('Xanh', style: TextStyle(fontSize: 10)),
+            selected: false,
+            onSelected: (_) {},
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+          ),
+        ],
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Tag input (nhập nhiều tag rời)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: 'Wrap(children: [...tags.map((t) => InputChip(label: Text(t), onDeleted: () {})), SizedBox(width: 80, child: TextField(onSubmitted: ...))])',
+      usage: 'Nhập nhiều giá trị rời dạng chip (email người nhận, từ khoá '
+          'tìm kiếm...) - gõ xong Enter/dấu phẩy để "chốt" thành 1 chip, '
+          'bấm x để xoá.',
+      special: 'KHÔNG có widget dựng sẵn - tự ghép `Wrap` + `InputChip` + '
+          '`TextField` (lắng nghe `onSubmitted` để convert text -> chip), '
+          'hoặc dùng package (`flutter_tags_x`).',
+      preview: (_) => Wrap(
+        spacing: 4,
+        runSpacing: 4,
+        children: [
+          InputChip(
+            label: const Text('flutter', style: TextStyle(fontSize: 10)),
+            onDeleted: () {},
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+          ),
+          InputChip(
+            label: const Text('dart', style: TextStyle(fontSize: 10)),
+            onDeleted: () {},
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+          ),
+        ],
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Rich text editor (kiểu TinyMCE)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: "// Không có sẵn -> QuillEditor.basic(controller: quillController)",
+      usage: 'Soạn văn bản có định dạng từng đoạn (đậm/nghiêng/list/màu...) '
+          'như TinyMCE/Google Docs - khác `TextField` (chỉ nhập text THUẦN, '
+          'không style riêng từng đoạn).',
+      special: 'Flutter KHÔNG có WYSIWYG editor built-in - cần package '
+          'ngoài, phổ biến nhất là `flutter_quill` (hoặc `super_editor`).',
+      preview: (_) => Container(
+        width: 110,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.format_bold, size: 12),
+                Icon(Icons.format_italic, size: 12),
+                Icon(Icons.format_list_bulleted, size: 12),
+              ],
+            ),
+            const SizedBox(height: 3),
+            Container(width: 90, height: 3, color: Colors.grey.shade300),
+            const SizedBox(height: 2),
+            Container(width: 60, height: 3, color: Colors.grey.shade300),
+          ],
+        ),
+      ),
+    ),
+    _WidgetInfo(
+      name: 'Markdown (render, không phải nhập)',
+      category: 'Input chuyên dụng (DIY / package)',
+      constructor: "// Không có sẵn -> Markdown(data: '# Tiêu đề\\n**đậm**')",
+      usage: 'Hiển thị (render) văn bản viết theo cú pháp Markdown '
+          '(`# `, `**đậm**`, `- list`...) thành UI có định dạng - khác '
+          'rich text editor ở trên (cái đó để SOẠN, cái này chỉ để ĐỌC).',
+      special: 'Flutter core không tự parse Markdown - cần package chính '
+          'thức `flutter_markdown` (do team flutter.dev duy trì, không '
+          'phải 3rd-party lạ).',
+      preview: (_) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text('Tiêu đề', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: 'chữ '),
+                TextSpan(text: 'đậm', style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+        ],
+      ),
+    ),
     // ---- Cấu trúc trang ----
     _WidgetInfo(
       name: 'Scaffold',
@@ -546,6 +908,7 @@ class _WidgetTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final totalWidth = _colWidths.values
         .map((w) => (w as FixedColumnWidth).value)
         .reduce((a, b) => a + b);
@@ -556,28 +919,35 @@ class _WidgetTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         // Cuộn NGANG khi màn hình hẹp hơn tổng chiều rộng cột.
-        child: SizedBox(
+        child: Container(
           width: totalWidth,
+          decoration: BoxDecoration(
+            border: Border.all(color: colorScheme.outlineVariant),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          clipBehavior: Clip.antiAlias,
           child: Table(
             columnWidths: _colWidths,
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               TableRow(
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple.withValues(alpha: 0.08),
-                ),
+                decoration: BoxDecoration(color: colorScheme.primaryContainer),
                 children: [
-                  for (final h in _headers) _cell(h, isHeader: true),
+                  for (final h in _headers) _cell(context, h, isHeader: true),
                 ],
               ),
-              for (final r in rows)
+              for (var i = 0; i < rows.length; i++)
                 TableRow(
+                  decoration: BoxDecoration(
+                    color: i.isEven ? colorScheme.surface : colorScheme.surfaceContainerLow,
+                    border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+                  ),
                   children: [
-                    _previewCell(r.preview),
-                    _cell(r.name, bold: true),
-                    _cell(r.constructor, monospace: true),
-                    _cell(r.usage),
-                    _cell(r.special),
+                    _previewCell(context, rows[i].preview),
+                    _cell(context, rows[i].name, bold: true),
+                    _cell(context, rows[i].constructor, monospace: true),
+                    _cell(context, rows[i].usage, muted: true),
+                    _cell(context, rows[i].special, muted: true),
                   ],
                 ),
             ],
@@ -587,23 +957,51 @@ class _WidgetTable extends StatelessWidget {
     );
   }
 
-  Widget _cell(String text, {bool isHeader = false, bool bold = false, bool monospace = false}) {
+  Widget _cell(
+    BuildContext context,
+    String text, {
+    bool isHeader = false,
+    bool bold = false,
+    bool monospace = false,
+    bool muted = false,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    if (monospace) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 12.5,
+              color: colorScheme.onSurface,
+            ),
+          ),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Text(
         text,
         style: isHeader
-            ? const TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple)
+            ? TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onPrimaryContainer)
             : TextStyle(
-                fontFamily: monospace ? 'monospace' : null,
-                fontSize: monospace ? 12.5 : 14,
+                fontSize: 14,
                 fontWeight: bold ? FontWeight.w600 : null,
+                color: muted ? colorScheme.onSurfaceVariant : colorScheme.onSurface,
               ),
       ),
     );
   }
 
-  Widget _previewCell(WidgetBuilder preview) {
+  Widget _previewCell(BuildContext context, WidgetBuilder preview) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Center(
