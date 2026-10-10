@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
+
+@Preview(name: 'Dashboard Stats Starter', size: Size(400, 600))
+Widget previewDashboardStatsStarter() => const DashboardStatsStarter();
 
 /// 🎯 CODE MỒI: Dashboard Stats
 ///
@@ -40,7 +44,41 @@ class DashboardStatsStarter extends StatelessWidget {
           const SizedBox(height: 12),
           // TODO 1: Wrap(spacing, runSpacing) render các thẻ thống kê từ
           // _stats (icon trong box màu nhạt, value to đậm, label xám nhỏ).
-          Text('TODO: ${_stats.length} thẻ thống kê ở đây'),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: _stats.map((stat) => 
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Container(
+                  width: 120,
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: stat.color.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(stat.icon, color: stat.color, size: 24),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(stat.value, style: const TextStyle(fontSize: 16, color: Colors.black87, fontWeight: FontWeight.bold)),
+                      Text(stat.label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+                      const SizedBox(height: 8),
+                    ],
+                  )
+                )
+              )
+            ).toList(),
+          ),
           const SizedBox(height: 24),
           const Text(
             'Hoạt động gần đây',
@@ -49,7 +87,38 @@ class DashboardStatsStarter extends StatelessWidget {
           const SizedBox(height: 12),
           // TODO 2: SizedBox(height: 90) + ListView.separated ngang render
           // từng hoạt động trong _activities (CircleAvatar + Expanded(Text)).
-          Text('TODO: ${_activities.length} hoạt động gần đây ở đây'),
+          SizedBox(
+            height: 90,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: _activities.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                final activity = _activities[index];
+                return SizedBox(
+                  width: 220,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.yellow,
+                        child: Icon(Icons.notifications, color: Colors.black, size: 24),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          activity,
+                          style: const TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          // Text('TODO: ${_activities.length} hoạt động gần đây ở đây'),
         ],
       ),
     );

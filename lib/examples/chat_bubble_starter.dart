@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
+// import 'package:flutter/widget_previews.dart';
 
-@Preview(name: 'Chat Bubble Starter', size: Size(400, 600))
-Widget previewChatBubbleStarter() => const ChatBubbleStarter();
+// @Preview(name: 'Chat Bubble Starter', size: Size(400, 600))
+// Widget previewChatBubbleStarter() => const ChatBubbleStarter();
 
 /// 🎯 CODE MỒI: Chat Bubble List
 ///
