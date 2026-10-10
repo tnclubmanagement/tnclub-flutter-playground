@@ -21,10 +21,12 @@ import 'examples/profile_card_example.dart';
 import 'examples/profile_card_starter.dart';
 import 'patterns/atomic_widgets_cheatsheet.dart';
 import 'patterns/constructors_pattern.dart';
+import 'patterns/dart_syntax_cheatsheet.dart';
 import 'patterns/extension_pattern.dart';
 import 'patterns/inherited_widget_pattern.dart';
 import 'patterns/libraries_page.dart';
 import 'patterns/value_notifier_pattern.dart';
+import 'patterns/widgets_cheatsheet.dart';
 import 'widgets/demo_scaffold.dart';
 import 'widgets/example_scaffold.dart';
 
@@ -332,6 +334,22 @@ class HomePage extends StatelessWidget {
       path: '/patterns/atomic-widgets',
       builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
+    LayoutDemo(
+      title: '� Widget cheat sheet',
+      description:
+          'Bảng tra nhanh: constructor mẫu, dùng để làm gì, có padding/'
+          'background/scroll hay gì đặc biệt (trang tổng hợp tĩnh, lọc nhóm)',
+      path: '/patterns/widgets-cheatsheet',
+      builder: (_) => const WidgetsCheatsheet(),
+    ),
+    LayoutDemo(
+      title: '�📖 Dart syntax cheat sheet',
+      description:
+          'Null safety, cascade ".." , spread "...", async/await, pattern '
+          'matching, constructor... (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/patterns/dart-syntax-cheatsheet',
+      builder: (_) => const DartSyntaxCheatsheet(),
+    ),
   ];
 
   static Widget _buildColumnRowDemo(BuildContext context) =>
@@ -388,32 +406,56 @@ class HomePage extends StatelessWidget {
       // Text/widget cùng lúc (giống chọn text trên 1 trang web thường).
       // Đặt trong từng trang (dưới Navigator) để luôn có Overlay ancestor.
       body: SelectionArea(
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: [
-            const _SectionHeader('Demos'),
-            ...demos.map((demo) => _DemoTile(demo: demo)),
-            const SizedBox(height: 16),
-            const _SectionHeader('Examples'),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
-                'tự luyện trước khi xem đáp án.',
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Màn hình rộng (web/desktop): xếp các thẻ thành lưới nhiều cột,
+            // giới hạn chiều rộng nội dung để không bị kéo dài hết màn hình.
+            // Màn hình hẹp (mobile): quay lại list 1 cột full-width như cũ.
+            final isWide = constraints.maxWidth >= 700;
+            final content = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _SectionHeader('Demos'),
+                _DemoGrid(demos: demos, isWide: isWide),
+                const SizedBox(height: 16),
+                const _SectionHeader('Examples'),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Text(
+                    'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
+                    'tự luyện trước khi xem đáp án.',
+                  ),
+                ),
+                _DemoGrid(demos: examples, isWide: isWide),
+                const SizedBox(height: 16),
+                const _SectionHeader('Patterns'),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Text(
+                    'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
+                    'package phổ biến đáng tìm hiểu thêm.',
+                  ),
+                ),
+                _DemoGrid(demos: patterns, isWide: isWide),
+              ],
+            );
+
+            if (!isWide) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(8),
+                child: content,
+              );
+            }
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: content,
+                ),
               ),
-            ),
-            ...examples.map((demo) => _DemoTile(demo: demo)),
-            const SizedBox(height: 16),
-            const _SectionHeader('Patterns'),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
-                'package phổ biến đáng tìm hiểu thêm.',
-              ),
-            ),
-            ...patterns.map((demo) => _DemoTile(demo: demo)),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -437,6 +479,39 @@ class _SectionHeader extends StatelessWidget {
           color: Colors.deepPurple,
         ),
       ),
+    );
+  }
+}
+
+/// Xếp các [_DemoTile] thành lưới nhiều cột (Wrap) khi [isWide], mỗi thẻ có
+/// chiều rộng cố định nên số cột tự co giãn theo chiều rộng cửa sổ. Khi hẹp
+/// (mobile) quay lại list 1 cột full-width như trước.
+class _DemoGrid extends StatelessWidget {
+  final List<LayoutDemo> demos;
+  final bool isWide;
+
+  const _DemoGrid({required this.demos, required this.isWide});
+
+  static const double _cardWidth = 360;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isWide) {
+      return Column(
+        children: demos.map((demo) => _DemoTile(demo: demo)).toList(),
+      );
+    }
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: demos
+          .map(
+            (demo) => SizedBox(
+              width: _cardWidth,
+              child: _DemoTile(demo: demo),
+            ),
+          )
+          .toList(),
     );
   }
 }
