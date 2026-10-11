@@ -663,6 +663,11 @@ class _HomePageState extends State<HomePage> {
   final _searchController = TextEditingController();
   String _query = '';
   final Set<String> _selectedTags = {};
+  // Các section trong sidebar đang "mở" (fold/collapse) - mặc định mở hết.
+  // NavigationDrawer (Material 3) không tự hỗ trợ fold từng nhóm như
+  // ExpansionTile, nên tự quản lý: bấm tiêu đề section để ẩn/hiện các
+  // NavigationDrawerDestination con của nó (xem _NavSidebar._addSection).
+  final Set<String> _expandedSections = {'Demos', 'Examples', 'Patterns', 'Cheat Sheet'};
 
   @override
   void dispose() {
@@ -703,6 +708,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _toggleSection(String title) {
+    setState(() {
+      if (!_expandedSections.remove(title)) _expandedSections.add(title);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredDemos = _filter(HomePage.demos);
@@ -716,6 +727,8 @@ class _HomePageState extends State<HomePage> {
       allTags: _allTags,
       selectedTags: _selectedTags,
       onTagToggle: _toggleTag,
+      expandedSections: _expandedSections,
+      onSectionToggle: _toggleSection,
       demos: filteredDemos,
       examples: filteredExamples,
       patterns: filteredPatterns,
@@ -756,7 +769,7 @@ class _HomePageState extends State<HomePage> {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    sidebar,
+                    SizedBox(width: 300, child: sidebar),
                     Expanded(child: mainContent),
                   ],
                 );
@@ -930,6 +943,8 @@ class _NavSidebar extends StatelessWidget {
   final List<String> allTags;
   final Set<String> selectedTags;
   final ValueChanged<String> onTagToggle;
+  final Set<String> expandedSections;
+  final ValueChanged<String> onSectionToggle;
   final List<LayoutDemo> demos;
   final List<LayoutDemo> examples;
   final List<LayoutDemo> patterns;
@@ -941,41 +956,39 @@ class _NavSidebar extends StatelessWidget {
     required this.allTags,
     required this.selectedTags,
     required this.onTagToggle,
+    required this.expandedSections,
+    required this.onSectionToggle,
     required this.demos,
     required this.examples,
     required this.patterns,
     required this.cheatSheets,
   });
 
-  /// Danh sách PHẲNG đúng theo thứ tự các [NavigationDrawerDestination] sẽ
-  /// xuất hiện trong [build] - dùng để map `index` nhận được từ
-  /// `onDestinationSelected` về lại đúng [LayoutDemo] cần điều hướng tới.
-  List<LayoutDemo> get _flatOrder => [
-        ...demos,
-        ...examples,
-        ...patterns,
-        ...cheatSheets,
-      ];
-
   Widget _sectionLabel(BuildContext context, String title, IconData icon, int count) {
     final cs = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: cs.primary),
-          const SizedBox(width: 6),
-          Text(
-            title.toUpperCase(),
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.primary),
-          ),
-          const SizedBox(width: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-            decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
-            child: Text('$count', style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
-          ),
-        ],
+    final expanded = expandedSections.contains(title);
+    return InkWell(
+      onTap: () => onSectionToggle(title),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 12, 4),
+        child: Row(
+          children: [
+            Icon(icon, size: 16, color: cs.primary),
+            const SizedBox(width: 6),
+            Text(
+              title.toUpperCase(),
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.primary),
+            ),
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+              decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
+              child: Text('$count', style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
+            ),
+            const Spacer(),
+            Icon(expanded ? Icons.expand_less : Icons.expand_more, size: 18, color: cs.outline),
+          ],
+        ),
       ),
     );
   }
@@ -993,9 +1006,16 @@ class _NavSidebar extends StatelessWidget {
   /// Gộp 1 section vào [destinations] - tự chèn label section (+ label
   /// từng group con nếu [groupByField]) rồi mới tới các
   /// [NavigationDrawerDestination]. Section rỗng (do bị lọc hết) tự ẩn.
+  ///
+  /// QUAN TRỌNG: [flatOrder] phải được cập nhật ĐÚNG SONG SONG với
+  /// [destinations] - `NavigationDrawer.onDestinationSelected` trả về index
+  /// tính theo thứ tự CÁC NavigationDrawerDestination THỰC SỰ xuất hiện
+  /// (bỏ qua section đang fold/collapse), nên nếu [flatOrder] lại chứa cả
+  /// item của section đang ẩn thì index sẽ lệch, bấm sai trang.
   void _addSection(
     BuildContext context,
     List<Widget> destinations,
+    List<LayoutDemo> flatOrder,
     String title,
     IconData icon,
     List<LayoutDemo> items, {
@@ -1003,9 +1023,13 @@ class _NavSidebar extends StatelessWidget {
   }) {
     if (items.isEmpty) return;
     destinations.add(_sectionLabel(context, title, icon, items.length));
+    if (!expandedSections.contains(title)) return; // fold: ẩn hết item con
 
     if (!groupByField) {
-      destinations.addAll(items.map(_destinationFor));
+      for (final d in items) {
+        flatOrder.add(d);
+        destinations.add(_destinationFor(d));
+      }
       return;
     }
     final groupOrder = <String>[];
@@ -1019,7 +1043,10 @@ class _NavSidebar extends StatelessWidget {
     }
     for (final g in groupOrder) {
       destinations.add(_groupLabel(context, g));
-      destinations.addAll(byGroup[g]!.map(_destinationFor));
+      for (final d in byGroup[g]!) {
+        flatOrder.add(d);
+        destinations.add(_destinationFor(d));
+      }
     }
   }
 
@@ -1041,12 +1068,14 @@ class _NavSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final destinations = <Widget>[];
-    _addSection(context, destinations, 'Demos', Icons.widgets_outlined, demos);
-    _addSection(context, destinations, 'Examples', Icons.assignment_outlined, examples);
-    _addSection(context, destinations, 'Patterns', Icons.extension_outlined, patterns);
+    final flatOrder = <LayoutDemo>[];
+    _addSection(context, destinations, flatOrder, 'Demos', Icons.widgets_outlined, demos);
+    _addSection(context, destinations, flatOrder, 'Examples', Icons.assignment_outlined, examples);
+    _addSection(context, destinations, flatOrder, 'Patterns', Icons.extension_outlined, patterns);
     _addSection(
       context,
       destinations,
+      flatOrder,
       'Cheat Sheet',
       Icons.menu_book_outlined,
       cheatSheets,
@@ -1057,7 +1086,7 @@ class _NavSidebar extends StatelessWidget {
       // -1: không có mục nào "đang chọn" cố định - mỗi lần bấm sẽ MỞ 1
       // trang MỚI (push) chứ không phải chuyển tab trong cùng 1 màn hình.
       selectedIndex: -1,
-      onDestinationSelected: (index) => Navigator.of(context).pushNamed(_flatOrder[index].path),
+      onDestinationSelected: (index) => Navigator.of(context).pushNamed(flatOrder[index].path),
       indicatorColor: cs.primaryContainer,
       header: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
