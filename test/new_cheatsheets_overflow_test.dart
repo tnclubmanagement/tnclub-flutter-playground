@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_layout_playground/patterns/dart_tooling_cheatsheet.dart';
+import 'package:flutter_layout_playground/patterns/dev_environment_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/error_handling_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/i18n_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/local_storage_cheatsheet.dart';
@@ -9,9 +11,10 @@ import 'package:flutter_layout_playground/patterns/state_management_cheatsheet.d
 import 'package:flutter_layout_playground/patterns/testing_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/theme_cheatsheet.dart';
 
-/// Test CHUNG cho 8 cheat sheet mới (dùng [CheatsheetScaffold]) - 1 file
-/// loop qua tất cả thay vì 8 file riêng gần như giống nhau, để dễ maintain
-/// hơn (đúng tinh thần "dùng chung template" đã áp dụng cho các trang này).
+/// Test CHUNG cho các cheat sheet dùng [CheatsheetScaffold] - 1 file loop
+/// qua tất cả thay vì 1 file riêng gần như giống nhau cho mỗi trang, để dễ
+/// maintain hơn (đúng tinh thần "dùng chung template" đã áp dụng cho các
+/// trang này).
 void main() {
   final pages = <String, WidgetBuilder>{
     'StateManagementCheatsheet': (_) => const StateManagementCheatsheet(),
@@ -22,6 +25,8 @@ void main() {
     'ThemeCheatsheet': (_) => const ThemeCheatsheet(),
     'I18nCheatsheet': (_) => const I18nCheatsheet(),
     'ErrorHandlingCheatsheet': (_) => const ErrorHandlingCheatsheet(),
+    'DevEnvironmentCheatsheet': (_) => const DevEnvironmentCheatsheet(),
+    'DartToolingCheatsheet': (_) => const DartToolingCheatsheet(),
   };
 
   for (final entry in pages.entries) {

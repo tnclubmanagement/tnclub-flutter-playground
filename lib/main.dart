@@ -25,6 +25,8 @@ import 'patterns/atomic_widgets_cheatsheet.dart';
 import 'patterns/auth_cheatsheet.dart';
 import 'patterns/constructors_pattern.dart';
 import 'patterns/dart_syntax_cheatsheet.dart';
+import 'patterns/dart_tooling_cheatsheet.dart';
+import 'patterns/dev_environment_cheatsheet.dart';
 import 'patterns/error_handling_cheatsheet.dart';
 import 'patterns/extension_pattern.dart';
 import 'patterns/file_preview_cheatsheet.dart';
@@ -145,6 +147,9 @@ class LayoutDemo {
   // Chỉ dùng cho mục Cheat Sheet - gom các trang liên quan vào 1 nhóm nhỏ
   // (hiện tiêu đề phụ trên trang chủ) vì danh sách cheat sheet đã khá dài.
   final String? group;
+  // Dùng cho search/filter ở sidebar trang chủ - mỗi trang gắn 1-3 tag
+  // ngắn, KHÔNG phân biệt hoa/thường khi so khớp (xem _matchesQuery).
+  final List<String> tags;
 
   const LayoutDemo({
     required this.title,
@@ -152,6 +157,7 @@ class LayoutDemo {
     required this.path,
     required this.builder,
     this.group,
+    this.tags = const [],
   });
 }
 
@@ -163,6 +169,7 @@ class HomePage extends StatelessWidget {
       title: 'Row & Column',
       description: 'Sắp xếp widget theo trục ngang/dọc, mainAxisAlignment, crossAxisAlignment',
       path: '/row-column',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'Row & Column',
         assetPath: 'lib/demos/column_row_demo.dart',
@@ -173,6 +180,7 @@ class HomePage extends StatelessWidget {
       title: 'Expanded & Flexible',
       description: 'Chia không gian còn lại giữa các children trong Row/Column',
       path: '/expanded-flexible',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'Expanded & Flexible',
         assetPath: 'lib/demos/expanded_flexible_demo.dart',
@@ -183,6 +191,7 @@ class HomePage extends StatelessWidget {
       title: 'Stack & Positioned',
       description: 'Chồng widget lên nhau, định vị bằng Positioned/Align',
       path: '/stack',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'Stack & Positioned',
         assetPath: 'lib/demos/stack_demo.dart',
@@ -193,6 +202,7 @@ class HomePage extends StatelessWidget {
       title: 'Container & Constraints',
       description: 'Padding, margin, BoxConstraints và cách constraints truyền xuống children',
       path: '/container-constraints',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'Container & Constraints',
         assetPath: 'lib/demos/container_constraints_demo.dart',
@@ -203,6 +213,7 @@ class HomePage extends StatelessWidget {
       title: 'ListView',
       description: 'Danh sách cuộn được: builder, separated, horizontal',
       path: '/listview',
+      tags: const ['layout', 'scroll', 'list'],
       builder: (_) => const DemoScaffold(
         title: 'ListView',
         assetPath: 'lib/demos/listview_demo.dart',
@@ -213,6 +224,7 @@ class HomePage extends StatelessWidget {
       title: 'GridView',
       description: 'Lưới item với GridView.count và GridView.builder',
       path: '/gridview',
+      tags: const ['layout', 'scroll', 'list'],
       builder: (_) => const DemoScaffold(
         title: 'GridView',
         assetPath: 'lib/demos/gridview_demo.dart',
@@ -223,6 +235,7 @@ class HomePage extends StatelessWidget {
       title: 'Wrap',
       description: 'Tự động xuống dòng khi hết chỗ, khác với Row',
       path: '/wrap',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'Wrap',
         assetPath: 'lib/demos/wrap_demo.dart',
@@ -235,6 +248,7 @@ class HomePage extends StatelessWidget {
           'Các cách tạo EdgeInsets: all, symmetric, only, fromLTRB, zero, '
           'EdgeInsetsDirectional',
       path: '/edgeinsets',
+      tags: const ['layout', 'widget'],
       builder: (_) => const DemoScaffold(
         title: 'EdgeInsets',
         assetPath: 'lib/demos/edgeinsets_demo.dart',
@@ -250,6 +264,7 @@ class HomePage extends StatelessWidget {
       title: 'Profile Card',
       description: 'Stack (avatar đè lên cover) + Column/Row + Wrap cho stats',
       path: '/examples/profile-card',
+      tags: const ['layout', 'widget'],
       builder: (_) => ExampleScaffold(
         title: 'Example: Profile Card',
         task:
@@ -270,6 +285,7 @@ class HomePage extends StatelessWidget {
       title: 'Login Form',
       description: 'Column các field + Row (Checkbox/Spacer) + Expanded(Divider)',
       path: '/examples/login-form',
+      tags: const ['form', 'layout'],
       builder: (_) => ExampleScaffold(
         title: 'Example: Login Form',
         task:
@@ -290,6 +306,7 @@ class HomePage extends StatelessWidget {
       title: 'Product Grid',
       description: 'GridView.builder + Expanded trong Column cho ảnh sản phẩm',
       path: '/examples/product-grid',
+      tags: const ['layout', 'list', 'scroll'],
       builder: (_) => ExampleScaffold(
         title: 'Example: Product Grid',
         task:
@@ -309,6 +326,7 @@ class HomePage extends StatelessWidget {
       title: 'Chat Bubble List',
       description: 'ListView.builder + Row(mainAxisAlignment) + ConstrainedBox',
       path: '/examples/chat-bubble',
+      tags: const ['layout', 'list', 'scroll'],
       builder: (_) => ExampleScaffold(
         title: 'Example: Chat Bubble List',
         task:
@@ -329,6 +347,7 @@ class HomePage extends StatelessWidget {
       title: 'Dashboard Stats',
       description: 'Wrap cho thẻ thống kê + ListView ngang cho hoạt động gần đây',
       path: '/examples/dashboard-stats',
+      tags: const ['layout', 'list', 'scroll'],
       builder: (_) => ExampleScaffold(
         title: 'Example: Dashboard Stats',
         task:
@@ -355,6 +374,7 @@ class HomePage extends StatelessWidget {
       title: 'ValueNotifier + ValueListenableBuilder',
       description: 'Quản lý state mà không cần setState() rebuild cả widget',
       path: '/patterns/value-notifier',
+      tags: const ['state', 'pattern'],
       builder: (_) => const DemoScaffold(
         title: 'Pattern: ValueNotifier',
         assetPath: 'lib/patterns/value_notifier_pattern.dart',
@@ -365,6 +385,7 @@ class HomePage extends StatelessWidget {
       title: 'InheritedWidget',
       description: 'Chia sẻ dữ liệu xuống widget con sâu nhiều lớp, không cần truyền qua constructor',
       path: '/patterns/inherited-widget',
+      tags: const ['state', 'pattern'],
       builder: (_) => const DemoScaffold(
         title: 'Pattern: InheritedWidget',
         assetPath: 'lib/patterns/inherited_widget_pattern.dart',
@@ -375,6 +396,7 @@ class HomePage extends StatelessWidget {
       title: 'Named & Factory constructor',
       description: 'Nhiều cách tạo object theo ngữ cảnh, factory tự chọn implementation',
       path: '/patterns/constructors',
+      tags: const ['dart', 'pattern'],
       builder: (_) => const DemoScaffold(
         title: 'Pattern: Constructors',
         assetPath: 'lib/patterns/constructors_pattern.dart',
@@ -385,6 +407,7 @@ class HomePage extends StatelessWidget {
       title: 'Extension method',
       description: 'Gắn thêm method/getter vào type có sẵn (num, BuildContext...) để code gọn hơn',
       path: '/patterns/extension',
+      tags: const ['dart', 'pattern'],
       builder: (_) => const DemoScaffold(
         title: 'Pattern: Extension method',
         assetPath: 'lib/patterns/extension_pattern.dart',
@@ -395,6 +418,7 @@ class HomePage extends StatelessWidget {
       title: '📚 Thư viện thường dùng',
       description: 'flutter_hooks, provider, riverpod, go_router, dio, freezed... (trang giới thiệu tĩnh)',
       path: '/patterns/libraries',
+      tags: const ['tooling', 'pattern'],
       builder: (_) => const LibrariesPage(),
     ),
   ];
@@ -412,6 +436,7 @@ class HomePage extends StatelessWidget {
           'BoxDecoration, BoxShape, BoxShadow, TextStyle, MainAxisAlignment, '
           'Positioned, Clip, padding vs margin... (trang tổng hợp tĩnh)',
       path: '/cheatsheet/atomic-widgets',
+      tags: const ['widget', 'layout'],
       builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -421,6 +446,7 @@ class HomePage extends StatelessWidget {
           'Bảng tra nhanh: constructor mẫu, dùng để làm gì, có padding/'
           'background/scroll hay gì đặc biệt (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/widgets',
+      tags: const ['widget', 'layout'],
       builder: (_) => const WidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -430,6 +456,7 @@ class HomePage extends StatelessWidget {
           'Null safety, cascade ".." , spread "...", async/await, pattern '
           'matching, constructor... (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/dart-syntax',
+      tags: const ['dart'],
       builder: (_) => const DartSyntaxCheatsheet(),
     ),
     LayoutDemo(
@@ -440,6 +467,7 @@ class HomePage extends StatelessWidget {
           'animation rõ ràng (AnimationController, Tween, Hero...) '
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/animation',
+      tags: const ['animation', 'widget'],
       builder: (_) => const AnimationCheatsheet(),
     ),
     // ---- Kiến trúc & State ----
@@ -450,6 +478,7 @@ class HomePage extends StatelessWidget {
           'ChangeNotifier chia sẻ state (không cần package), so sánh với '
           'provider/riverpod/bloc (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/state-management',
+      tags: const ['state'],
       builder: (_) => const StateManagementCheatsheet(),
     ),
     LayoutDemo(
@@ -459,6 +488,7 @@ class HomePage extends StatelessWidget {
           'Navigator.push/pop, trả dữ liệu khi pop, named routes (chính '
           'app này đang dùng), go_router (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/navigation',
+      tags: const ['navigation'],
       builder: (_) => const NavigationCheatsheet(),
     ),
     LayoutDemo(
@@ -468,6 +498,7 @@ class HomePage extends StatelessWidget {
           'shared_preferences, khi nào cần database thật (sqlite/drift/'
           'hive) (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/local-storage',
+      tags: const ['storage'],
       builder: (_) => const LocalStorageCheatsheet(),
     ),
     // ---- Networking & Auth ----
@@ -479,6 +510,7 @@ class HomePage extends StatelessWidget {
           'error/success, debounce, Repository pattern (trang tổng hợp '
           'tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/api-service',
+      tags: const ['network', 'async'],
       builder: (_) => const ApiServiceCheatsheet(),
     ),
     LayoutDemo(
@@ -489,6 +521,7 @@ class HomePage extends StatelessWidget {
           'tự động, logout "sạch", độ mạnh mật khẩu (trang tổng hợp tĩnh, '
           'lọc theo nhóm)',
       path: '/cheatsheet/auth',
+      tags: const ['auth', 'security', 'storage'],
       builder: (_) => const AuthCheatsheet(),
     ),
     LayoutDemo(
@@ -498,6 +531,7 @@ class HomePage extends StatelessWidget {
           'Zoom/pan ảnh (InteractiveViewer), xử lý ảnh lỗi/đang tải, xem '
           'PDF, chọn ảnh/file từ máy (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/file-preview',
+      tags: const ['image', 'widget'],
       builder: (_) => const FilePreviewCheatsheet(),
     ),
     // ---- Chất lượng & Vận hành ----
@@ -508,6 +542,7 @@ class HomePage extends StatelessWidget {
           'testWidgets/pumpWidget, find + tap, bắt lỗi overflow trong '
           'test, pump() vs pumpAndSettle() (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/testing',
+      tags: const ['testing'],
       builder: (_) => const TestingCheatsheet(),
     ),
     LayoutDemo(
@@ -517,6 +552,7 @@ class HomePage extends StatelessWidget {
           'const widget tránh rebuild, ListView.builder lazy load, '
           'RepaintBoundary, DevTools (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/performance',
+      tags: const ['performance'],
       builder: (_) => const PerformanceCheatsheet(),
     ),
     LayoutDemo(
@@ -526,6 +562,7 @@ class HomePage extends StatelessWidget {
           'ColorScheme.fromSeed, Theme.of(context), tự chuyển Light/Dark '
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/theme',
+      tags: const ['theme'],
       builder: (_) => const ThemeCheatsheet(),
     ),
     LayoutDemo(
@@ -535,6 +572,7 @@ class HomePage extends StatelessWidget {
           'supportedLocales, AppLocalizations.of(context), format ngày/số '
           'theo vùng (package:intl) (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/i18n',
+      tags: const ['i18n'],
       builder: (_) => const I18nCheatsheet(),
     ),
     LayoutDemo(
@@ -544,7 +582,30 @@ class HomePage extends StatelessWidget {
           'try/catch, FlutterError.onError, runZonedGuarded, Sentry/'
           'Crashlytics (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/error-handling',
+      tags: const ['error-handling', 'async'],
       builder: (_) => const ErrorHandlingCheatsheet(),
+    ),
+    // ---- Môi trường & Công cụ ----
+    LayoutDemo(
+      group: 'Môi trường & Công cụ',
+      title: '🛠️ Dev Environment & FVM cheat sheet',
+      description:
+          'Cài IDE, extension hữu ích, flutter doctor, vì sao cần FVM để '
+          'quản lý version Flutter theo project (trang tổng hợp tĩnh, '
+          'lọc theo nhóm)',
+      path: '/cheatsheet/dev-environment',
+      tags: const ['setup', 'tooling'],
+      builder: (_) => const DevEnvironmentCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Môi trường & Công cụ',
+      title: '⌨️ Dart Tooling cheat sheet',
+      description:
+          'dart pub add/get, dart format, dart analyze, dart fix, dart '
+          'compile (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/dart-tooling',
+      tags: const ['dart', 'tooling'],
+      builder: (_) => const DartToolingCheatsheet(),
     ),
   ];
 
