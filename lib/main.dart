@@ -19,12 +19,24 @@ import 'examples/product_grid_example.dart';
 import 'examples/product_grid_starter.dart';
 import 'examples/profile_card_example.dart';
 import 'examples/profile_card_starter.dart';
+import 'patterns/animation_cheatsheet.dart';
+import 'patterns/api_service_cheatsheet.dart';
 import 'patterns/atomic_widgets_cheatsheet.dart';
+import 'patterns/auth_cheatsheet.dart';
 import 'patterns/constructors_pattern.dart';
 import 'patterns/dart_syntax_cheatsheet.dart';
+import 'patterns/error_handling_cheatsheet.dart';
 import 'patterns/extension_pattern.dart';
+import 'patterns/file_preview_cheatsheet.dart';
+import 'patterns/i18n_cheatsheet.dart';
 import 'patterns/inherited_widget_pattern.dart';
 import 'patterns/libraries_page.dart';
+import 'patterns/local_storage_cheatsheet.dart';
+import 'patterns/navigation_cheatsheet.dart';
+import 'patterns/performance_cheatsheet.dart';
+import 'patterns/state_management_cheatsheet.dart';
+import 'patterns/testing_cheatsheet.dart';
+import 'patterns/theme_cheatsheet.dart';
 import 'patterns/value_notifier_pattern.dart';
 import 'patterns/widgets_cheatsheet.dart';
 import 'widgets/demo_scaffold.dart';
@@ -48,6 +60,7 @@ class MyApp extends StatelessWidget {
       ...HomePage.demos,
       ...HomePage.examples,
       ...HomePage.patterns,
+      ...HomePage.cheatSheets,
     ]) {
       if (demo.path == settings.name) {
         return MaterialPageRoute(settings: settings, builder: demo.builder);
@@ -107,6 +120,19 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       onGenerateRoute: _onGenerateRoute,
+      // Giới hạn chiều rộng TOÀN BỘ app (mọi trang/Scaffold) tại 1 CHỖ DUY
+      // NHẤT ở đây - thay vì phải tự thêm ConstrainedBox vào từng trang.
+      // `child` ở đây là cả Navigator (toàn bộ nội dung trang hiện tại).
+      builder: (context, child) {
+        return Container(
+          color: colorScheme.surfaceContainerLowest,
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: child,
+          ),
+        );
+      },
     );
   }
 }
@@ -116,12 +142,16 @@ class LayoutDemo {
   final String description;
   final String path;
   final WidgetBuilder builder;
+  // Chỉ dùng cho mục Cheat Sheet - gom các trang liên quan vào 1 nhóm nhỏ
+  // (hiện tiêu đề phụ trên trang chủ) vì danh sách cheat sheet đã khá dài.
+  final String? group;
 
   const LayoutDemo({
     required this.title,
     required this.description,
     required this.path,
     required this.builder,
+    this.group,
   });
 }
 
@@ -367,29 +397,154 @@ class HomePage extends StatelessWidget {
       path: '/patterns/libraries',
       builder: (_) => const LibrariesPage(),
     ),
+  ];
+
+  // Các "Cheat Sheet": trang tra cứu nhanh tĩnh (không phải demo chạy thật),
+  // tổng hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại khi quên.
+  // Gom theo `group` vì danh sách đã khá dài - xem _DemoGrid/_SectionHeader
+  // ở HomePage.build để biết cách hiện tiêu đề phụ theo nhóm.
+  static final List<LayoutDemo> cheatSheets = [
+    // ---- Nền tảng (Layout & Dart) ----
     LayoutDemo(
+      group: 'Nền tảng (Layout & Dart)',
       title: '🧩 Atomic widgets cheat sheet',
       description:
           'BoxDecoration, BoxShape, BoxShadow, TextStyle, MainAxisAlignment, '
           'Positioned, Clip, padding vs margin... (trang tổng hợp tĩnh)',
-      path: '/patterns/atomic-widgets',
+      path: '/cheatsheet/atomic-widgets',
       builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
     LayoutDemo(
-      title: '� Widget cheat sheet',
+      group: 'Nền tảng (Layout & Dart)',
+      title: '📊 Widget cheat sheet',
       description:
           'Bảng tra nhanh: constructor mẫu, dùng để làm gì, có padding/'
           'background/scroll hay gì đặc biệt (trang tổng hợp tĩnh, lọc nhóm)',
-      path: '/patterns/widgets-cheatsheet',
+      path: '/cheatsheet/widgets',
       builder: (_) => const WidgetsCheatsheet(),
     ),
     LayoutDemo(
-      title: '�📖 Dart syntax cheat sheet',
+      group: 'Nền tảng (Layout & Dart)',
+      title: '📖 Dart syntax cheat sheet',
       description:
           'Null safety, cascade ".." , spread "...", async/await, pattern '
           'matching, constructor... (trang tổng hợp tĩnh, lọc theo nhóm)',
-      path: '/patterns/dart-syntax-cheatsheet',
+      path: '/cheatsheet/dart-syntax',
       builder: (_) => const DartSyntaxCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Nền tảng (Layout & Dart)',
+      title: '🎬 Animation cheat sheet',
+      description:
+          'Animation ngầm (AnimatedContainer, AnimatedSwitcher...) và '
+          'animation rõ ràng (AnimationController, Tween, Hero...) '
+          '(trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/animation',
+      builder: (_) => const AnimationCheatsheet(),
+    ),
+    // ---- Kiến trúc & State ----
+    LayoutDemo(
+      group: 'Kiến trúc & State',
+      title: '🧠 State Management cheat sheet',
+      description:
+          'ChangeNotifier chia sẻ state (không cần package), so sánh với '
+          'provider/riverpod/bloc (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/state-management',
+      builder: (_) => const StateManagementCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Kiến trúc & State',
+      title: '🧭 Navigation & Routing cheat sheet',
+      description:
+          'Navigator.push/pop, trả dữ liệu khi pop, named routes (chính '
+          'app này đang dùng), go_router (trang tổng hợp tĩnh, lọc nhóm)',
+      path: '/cheatsheet/navigation',
+      builder: (_) => const NavigationCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Kiến trúc & State',
+      title: '💾 Local Storage cheat sheet',
+      description:
+          'shared_preferences, khi nào cần database thật (sqlite/drift/'
+          'hive) (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/local-storage',
+      builder: (_) => const LocalStorageCheatsheet(),
+    ),
+    // ---- Networking & Auth ----
+    LayoutDemo(
+      group: 'Networking & Auth',
+      title: '🌐 API & Service cheat sheet',
+      description:
+          'Gọi HTTP (http/dio), parse JSON -> model, FutureBuilder loading/'
+          'error/success, debounce, Repository pattern (trang tổng hợp '
+          'tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/api-service',
+      builder: (_) => const ApiServiceCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Networking & Auth',
+      title: '🔐 Login & Credential cheat sheet',
+      description:
+          'Lưu token an toàn, auth guard tự chuyển hướng, token refresh '
+          'tự động, logout "sạch", độ mạnh mật khẩu (trang tổng hợp tĩnh, '
+          'lọc theo nhóm)',
+      path: '/cheatsheet/auth',
+      builder: (_) => const AuthCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Networking & Auth',
+      title: '🖼️ File preview cheat sheet',
+      description:
+          'Zoom/pan ảnh (InteractiveViewer), xử lý ảnh lỗi/đang tải, xem '
+          'PDF, chọn ảnh/file từ máy (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/file-preview',
+      builder: (_) => const FilePreviewCheatsheet(),
+    ),
+    // ---- Chất lượng & Vận hành ----
+    LayoutDemo(
+      group: 'Chất lượng & Vận hành',
+      title: '🧪 Testing cheat sheet',
+      description:
+          'testWidgets/pumpWidget, find + tap, bắt lỗi overflow trong '
+          'test, pump() vs pumpAndSettle() (trang tổng hợp tĩnh, lọc nhóm)',
+      path: '/cheatsheet/testing',
+      builder: (_) => const TestingCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Chất lượng & Vận hành',
+      title: '⚡ Performance cheat sheet',
+      description:
+          'const widget tránh rebuild, ListView.builder lazy load, '
+          'RepaintBoundary, DevTools (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/performance',
+      builder: (_) => const PerformanceCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Chất lượng & Vận hành',
+      title: '🎨 Theme & Dark Mode cheat sheet',
+      description:
+          'ColorScheme.fromSeed, Theme.of(context), tự chuyển Light/Dark '
+          '(trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/theme',
+      builder: (_) => const ThemeCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Chất lượng & Vận hành',
+      title: '🌍 i18n (đa ngôn ngữ) cheat sheet',
+      description:
+          'supportedLocales, AppLocalizations.of(context), format ngày/số '
+          'theo vùng (package:intl) (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/i18n',
+      builder: (_) => const I18nCheatsheet(),
+    ),
+    LayoutDemo(
+      group: 'Chất lượng & Vận hành',
+      title: '🚨 Error handling & Crash reporting cheat sheet',
+      description:
+          'try/catch, FlutterError.onError, runZonedGuarded, Sentry/'
+          'Crashlytics (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/error-handling',
+      builder: (_) => const ErrorHandlingCheatsheet(),
     ),
   ];
 
@@ -478,6 +633,17 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 _DemoGrid(demos: patterns, isWide: isWide),
+                const SizedBox(height: 16),
+                const _SectionHeader('Cheat Sheet'),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Text(
+                    'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
+                    'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
+                    'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
+                  ),
+                ),
+                _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide),
               ],
             );
 
@@ -487,14 +653,11 @@ class HomePage extends StatelessWidget {
                 child: content,
               );
             }
+            // Không cần tự giới hạn maxWidth ở đây nữa - MaterialApp.builder
+            // (xem MyApp) đã cap toàn bộ app tại 1400px rồi.
             return SingleChildScrollView(
               padding: const EdgeInsets.all(24),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  child: content,
-                ),
-              ),
+              child: content,
             );
           },
         ),
@@ -533,6 +696,65 @@ class _SectionHeader extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Gom các [LayoutDemo] trong mục Cheat Sheet theo `group` (giữ đúng thứ
+/// tự xuất hiện lần đầu của mỗi group trong list), mỗi group có 1 tiêu đề
+/// phụ nhỏ (xem [_SubSectionHeader]) rồi mới tới lưới thẻ của riêng nó.
+/// Item không có `group` (null) được xếp chung vào 1 nhóm "Khác" ở cuối.
+class _CheatSheetGroups extends StatelessWidget {
+  final List<LayoutDemo> cheatSheets;
+  final bool isWide;
+
+  const _CheatSheetGroups({required this.cheatSheets, required this.isWide});
+
+  @override
+  Widget build(BuildContext context) {
+    final groupOrder = <String>[];
+    final byGroup = <String, List<LayoutDemo>>{};
+    for (final demo in cheatSheets) {
+      final group = demo.group ?? 'Khác';
+      if (!byGroup.containsKey(group)) {
+        groupOrder.add(group);
+        byGroup[group] = [];
+      }
+      byGroup[group]!.add(demo);
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final group in groupOrder) ...[
+          _SubSectionHeader(group),
+          const SizedBox(height: 8),
+          _DemoGrid(demos: byGroup[group]!, isWide: isWide),
+          const SizedBox(height: 16),
+        ],
+      ],
+    );
+  }
+}
+
+class _SubSectionHeader extends StatelessWidget {
+  final String title;
+
+  const _SubSectionHeader(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+          color: colorScheme.primary,
+        ),
       ),
     );
   }
