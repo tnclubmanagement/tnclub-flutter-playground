@@ -46,7 +46,11 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('i18n'));
+    // "i18n" giờ cũng hiện như tag chip màu trên từng card (không chỉ
+    // FilterChip ở sidebar) - chỉ nhắm đúng FilterChip để bấm.
+    await tester.tap(
+      find.descendant(of: find.byType(FilterChip), matching: find.text('i18n')),
+    );
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);

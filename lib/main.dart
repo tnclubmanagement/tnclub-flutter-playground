@@ -733,9 +733,10 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           appBar: AppBar(title: const Text('Flutter Layout Playground')),
           // Màn hình hẹp: sidebar gấp vào Drawer (bấm icon ☰ ở AppBar để
-          // mở). Màn hình rộng: sidebar hiện cố định bên trái (xem Row
-          // dưới), Drawer không dùng tới.
-          drawer: isWide ? null : Drawer(child: SafeArea(child: sidebar)),
+          // mở). Màn hình rộng: CÙNG widget sidebar hiện cố định bên trái
+          // (xem Row dưới) - NavigationDrawer (Material 3) vốn đã tự vẽ
+          // elevation/shadow riêng, không cần Drawer bọc ngoài nữa.
+          drawer: isWide ? null : sidebar,
           // SelectionArea cho phép kéo chuột quét chọn text xuyên qua nhiều
           // Text/widget cùng lúc (giống chọn text trên 1 trang web thường).
           // Đặt trong từng trang (dưới Navigator) để luôn có Overlay ancestor.
@@ -755,14 +756,7 @@ class _HomePageState extends State<HomePage> {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 300,
-                      child: Material(
-                        color: Theme.of(context).colorScheme.surfaceContainerLow,
-                        child: sidebar,
-                      ),
-                    ),
-                    const VerticalDivider(width: 1),
+                    sidebar,
                     Expanded(child: mainContent),
                   ],
                 );
@@ -920,9 +914,16 @@ class _MainContent extends StatelessWidget {
   }
 }
 
-/// Sidebar điều hướng: ô tìm kiếm + chip tag lọc + cây mục lục (Demos/
-/// Examples/Patterns/Cheat Sheet) theo kết quả ĐÃ LỌC - dùng chung cho cả
-/// bản hiện cố định (desktop) và bản trong Drawer (mobile).
+/// Sidebar điều hướng: ô tìm kiếm + chip tag lọc + mục lục (Demos/Examples/
+/// Patterns/Cheat Sheet) theo kết quả ĐÃ LỌC - dùng chung cho cả bản hiện
+/// cố định (desktop) và bản trong Drawer (mobile).
+///
+/// Dùng [NavigationDrawer] CHÍNH THỨC của Material 3 (không tự dựng
+/// ExpansionTile/ListTile) - đây là component điều hướng dạng danh sách
+/// chuẩn Google, có indicator chọn/hover/ripple xịn sẵn, thay vì tự vẽ lại
+/// từ đầu. Section/group label là các `Widget` thường chèn giữa các
+/// [NavigationDrawerDestination] - [NavigationDrawer] tự biết bỏ qua
+/// chúng khi tính index (chỉ đếm các `NavigationDrawerDestination`).
 class _NavSidebar extends StatelessWidget {
   final TextEditingController searchController;
   final ValueChanged<String> onSearchChanged;
@@ -946,68 +947,67 @@ class _NavSidebar extends StatelessWidget {
     required this.cheatSheets,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-          child: TextField(
-            controller: searchController,
-            onChanged: onSearchChanged,
-            decoration: const InputDecoration(
-              hintText: 'Tìm trang...',
-              prefixIcon: Icon(Icons.search, size: 18),
-              isDense: true,
-              border: OutlineInputBorder(),
-            ),
+  /// Danh sách PHẲNG đúng theo thứ tự các [NavigationDrawerDestination] sẽ
+  /// xuất hiện trong [build] - dùng để map `index` nhận được từ
+  /// `onDestinationSelected` về lại đúng [LayoutDemo] cần điều hướng tới.
+  List<LayoutDemo> get _flatOrder => [
+        ...demos,
+        ...examples,
+        ...patterns,
+        ...cheatSheets,
+      ];
+
+  Widget _sectionLabel(BuildContext context, String title, IconData icon, int count) {
+    final cs = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: cs.primary),
+          const SizedBox(width: 6),
+          Text(
+            title.toUpperCase(),
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.primary),
           ),
-        ),
-        if (allTags.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-            child: Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: allTags
-                  .map(
-                    (tag) => FilterChip(
-                      label: Text(tag, style: const TextStyle(fontSize: 10)),
-                      selected: selectedTags.contains(tag),
-                      onSelected: (_) => onTagToggle(tag),
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                    ),
-                  )
-                  .toList(),
-            ),
+          const SizedBox(width: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+            decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
+            child: Text('$count', style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
           ),
-        const Divider(height: 1),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.only(bottom: 16),
-            children: [
-              _NavSection(title: 'Demos', items: demos),
-              _NavSection(title: 'Examples', items: examples),
-              _NavSection(title: 'Patterns', items: patterns),
-              _NavSection(title: 'Cheat Sheet', items: cheatSheets, groupByField: true),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
-}
 
-class _NavSection extends StatelessWidget {
-  final String title;
-  final List<LayoutDemo> items;
-  final bool groupByField;
+  Widget _groupLabel(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(28, 6, 16, 2),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.outline),
+      ),
+    );
+  }
 
-  const _NavSection({required this.title, required this.items, this.groupByField = false});
+  /// Gộp 1 section vào [destinations] - tự chèn label section (+ label
+  /// từng group con nếu [groupByField]) rồi mới tới các
+  /// [NavigationDrawerDestination]. Section rỗng (do bị lọc hết) tự ẩn.
+  void _addSection(
+    BuildContext context,
+    List<Widget> destinations,
+    String title,
+    IconData icon,
+    List<LayoutDemo> items, {
+    bool groupByField = false,
+  }) {
+    if (items.isEmpty) return;
+    destinations.add(_sectionLabel(context, title, icon, items.length));
 
-  List<Widget> _buildGrouped(BuildContext context) {
+    if (!groupByField) {
+      destinations.addAll(items.map(_destinationFor));
+      return;
+    }
     final groupOrder = <String>[];
     final byGroup = <String, List<LayoutDemo>>{};
     for (final d in items) {
@@ -1017,47 +1017,129 @@ class _NavSection extends StatelessWidget {
         return [];
       }).add(d);
     }
-    final widgets = <Widget>[];
     for (final g in groupOrder) {
-      widgets.add(
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
-          child: Text(
-            g,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.primary),
-          ),
-        ),
-      );
-      widgets.addAll(byGroup[g]!.map((d) => _NavLeaf(demo: d)));
+      destinations.add(_groupLabel(context, g));
+      destinations.addAll(byGroup[g]!.map(_destinationFor));
     }
-    return widgets;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (items.isEmpty) return const SizedBox.shrink();
-    return ExpansionTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-      initiallyExpanded: true,
-      tilePadding: const EdgeInsets.symmetric(horizontal: 12),
-      childrenPadding: EdgeInsets.zero,
-      children: groupByField ? _buildGrouped(context) : items.map((d) => _NavLeaf(demo: d)).toList(),
+  NavigationDrawerDestination _destinationFor(LayoutDemo demo) {
+    return NavigationDrawerDestination(
+      icon: const Icon(Icons.circle_outlined, size: 14),
+      // NavigationDrawerDestination xếp icon+label trong 1 Row KHÔNG có
+      // Expanded/Flexible nội bộ - label dài (tiêu đề đầy đủ kèm emoji) sẽ
+      // làm Row tràn. Ép width cố định để Text tự ellipsis đúng cách thay
+      // vì tràn ra ngoài.
+      label: SizedBox(
+        width: 200,
+        child: Text(demo.title, overflow: TextOverflow.ellipsis, maxLines: 1),
+      ),
     );
   }
-}
-
-class _NavLeaf extends StatelessWidget {
-  final LayoutDemo demo;
-
-  const _NavLeaf({required this.demo});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      contentPadding: const EdgeInsets.only(left: 24, right: 12),
-      title: Text(demo.title, style: const TextStyle(fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
-      onTap: () => Navigator.of(context).pushNamed(demo.path),
+    final cs = Theme.of(context).colorScheme;
+    final destinations = <Widget>[];
+    _addSection(context, destinations, 'Demos', Icons.widgets_outlined, demos);
+    _addSection(context, destinations, 'Examples', Icons.assignment_outlined, examples);
+    _addSection(context, destinations, 'Patterns', Icons.extension_outlined, patterns);
+    _addSection(
+      context,
+      destinations,
+      'Cheat Sheet',
+      Icons.menu_book_outlined,
+      cheatSheets,
+      groupByField: true,
+    );
+
+    return NavigationDrawer(
+      // -1: không có mục nào "đang chọn" cố định - mỗi lần bấm sẽ MỞ 1
+      // trang MỚI (push) chứ không phải chuyển tab trong cùng 1 màn hình.
+      selectedIndex: -1,
+      onDestinationSelected: (index) => Navigator.of(context).pushNamed(_flatOrder[index].path),
+      indicatorColor: cs.primaryContainer,
+      header: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.explore_outlined, size: 18, color: cs.primary),
+                const SizedBox(width: 6),
+                Text(
+                  'MỤC LỤC',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, color: cs.primary),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            AnimatedBuilder(
+              animation: searchController,
+              builder: (context, _) {
+                return TextField(
+                  controller: searchController,
+                  onChanged: onSearchChanged,
+                  style: const TextStyle(fontSize: 13),
+                  decoration: InputDecoration(
+                    hintText: 'Tìm trang...',
+                    prefixIcon: const Icon(Icons.search, size: 18),
+                    suffixIcon: searchController.text.isEmpty
+                        ? null
+                        : IconButton(
+                            icon: const Icon(Icons.close, size: 16),
+                            onPressed: () {
+                              searchController.clear();
+                              onSearchChanged('');
+                            },
+                          ),
+                    isDense: true,
+                    filled: true,
+                    fillColor: cs.surfaceContainerHighest,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide(color: cs.primary, width: 1.5),
+                    ),
+                  ),
+                );
+              },
+            ),
+            if (allTags.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: allTags
+                    .map(
+                      (tag) => FilterChip(
+                        label: Text(tag, style: const TextStyle(fontSize: 10)),
+                        selected: selectedTags.contains(tag),
+                        onSelected: (_) => onTagToggle(tag),
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        showCheckmark: false,
+                        selectedColor: cs.primary,
+                        labelStyle: TextStyle(
+                          color: selectedTags.contains(tag) ? cs.onPrimary : null,
+                          fontSize: 10,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
+            const SizedBox(height: 4),
+            Divider(height: 1, color: cs.outlineVariant),
+          ],
+        ),
+      ),
+      children: destinations,
     );
   }
 }
@@ -1189,56 +1271,105 @@ class _DemoGrid extends StatelessWidget {
   }
 }
 
-class _DemoTile extends StatelessWidget {
+class _DemoTile extends StatefulWidget {
   final LayoutDemo demo;
 
   const _DemoTile({required this.demo});
 
   @override
+  State<_DemoTile> createState() => _DemoTileState();
+}
+
+class _DemoTileState extends State<_DemoTile> {
+  bool _hovering = false;
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => Navigator.of(context).pushNamed(demo.path),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(Icons.widgets_outlined, color: colorScheme.onPrimaryContainer, size: 20),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      demo.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface,
-                      ),
+    final demo = widget.demo;
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      cursor: SystemMouseCursors.click,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: _hovering
+              ? [BoxShadow(color: colorScheme.primary.withValues(alpha: 0.18), blurRadius: 14, offset: const Offset(0, 4))]
+              : [],
+        ),
+        child: Card(
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: _hovering ? colorScheme.primary.withValues(alpha: 0.4) : colorScheme.outlineVariant),
+          ),
+          child: InkWell(
+            onTap: () => Navigator.of(context).pushNamed(demo.path),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      demo.description,
-                      style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
+                    child: Icon(Icons.widgets_outlined, color: colorScheme.onPrimaryContainer, size: 20),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          demo.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          demo.description,
+                          style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
+                        ),
+                        if (demo.tags.isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 6,
+                            runSpacing: 6,
+                            children: demo.tags
+                                .map(
+                                  (tag) => Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: colorScheme.secondaryContainer,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      tag,
+                                      style: TextStyle(fontSize: 10, color: colorScheme.onSecondaryContainer, fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Icon(Icons.chevron_right, color: colorScheme.outline),
+                ],
               ),
-              Icon(Icons.chevron_right, color: colorScheme.outline),
-            ],
+            ),
           ),
         ),
       ),
