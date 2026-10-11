@@ -161,7 +161,7 @@ class LayoutDemo {
   });
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static final List<LayoutDemo> demos = [
@@ -656,73 +656,408 @@ class HomePage extends StatelessWidget {
       const ExtensionPattern();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Layout Playground')),
-      // SelectionArea cho phép kéo chuột quét chọn text xuyên qua nhiều
-      // Text/widget cùng lúc (giống chọn text trên 1 trang web thường).
-      // Đặt trong từng trang (dưới Navigator) để luôn có Overlay ancestor.
-      body: SelectionArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            // Màn hình rộng (web/desktop): xếp các thẻ thành lưới nhiều cột,
-            // giới hạn chiều rộng nội dung để không bị kéo dài hết màn hình.
-            // Màn hình hẹp (mobile): quay lại list 1 cột full-width như cũ.
-            final isWide = constraints.maxWidth >= 700;
-            final content = Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _SectionHeader('Demos'),
-                _DemoGrid(demos: demos, isWide: isWide),
-                const SizedBox(height: 16),
-                const _SectionHeader('Examples'),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Text(
-                    'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
-                    'tự luyện trước khi xem đáp án.',
-                  ),
-                ),
-                _DemoGrid(demos: examples, isWide: isWide),
-                const SizedBox(height: 16),
-                const _SectionHeader('Patterns'),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Text(
-                    'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
-                    'package phổ biến đáng tìm hiểu thêm.',
-                  ),
-                ),
-                _DemoGrid(demos: patterns, isWide: isWide),
-                const SizedBox(height: 16),
-                const _SectionHeader('Cheat Sheet'),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Text(
-                    'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
-                    'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
-                    'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
-                  ),
-                ),
-                _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide),
-              ],
-            );
+  State<HomePage> createState() => _HomePageState();
+}
 
-            if (!isWide) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(8),
-                child: content,
-              );
-            }
-            // Không cần tự giới hạn maxWidth ở đây nữa - MaterialApp.builder
-            // (xem MyApp) đã cap toàn bộ app tại 1400px rồi.
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: content,
-            );
-          },
+class _HomePageState extends State<HomePage> {
+  final _searchController = TextEditingController();
+  String _query = '';
+  final Set<String> _selectedTags = {};
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  bool _matches(LayoutDemo demo) {
+    final q = _query.trim().toLowerCase();
+    final matchesQuery = q.isEmpty ||
+        demo.title.toLowerCase().contains(q) ||
+        demo.description.toLowerCase().contains(q) ||
+        demo.tags.any((t) => t.toLowerCase().contains(q));
+    final matchesTags =
+        _selectedTags.isEmpty || demo.tags.any(_selectedTags.contains);
+    return matchesQuery && matchesTags;
+  }
+
+  List<LayoutDemo> _filter(List<LayoutDemo> list) =>
+      list.where(_matches).toList();
+
+  List<String> get _allTags {
+    final tags = <String>{};
+    for (final d in [
+      ...HomePage.demos,
+      ...HomePage.examples,
+      ...HomePage.patterns,
+      ...HomePage.cheatSheets,
+    ]) {
+      tags.addAll(d.tags);
+    }
+    return tags.toList()..sort();
+  }
+
+  void _toggleTag(String tag) {
+    setState(() {
+      if (!_selectedTags.remove(tag)) _selectedTags.add(tag);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredDemos = _filter(HomePage.demos);
+    final filteredExamples = _filter(HomePage.examples);
+    final filteredPatterns = _filter(HomePage.patterns);
+    final filteredCheatSheets = _filter(HomePage.cheatSheets);
+
+    final sidebar = _NavSidebar(
+      searchController: _searchController,
+      onSearchChanged: (v) => setState(() => _query = v),
+      allTags: _allTags,
+      selectedTags: _selectedTags,
+      onTagToggle: _toggleTag,
+      demos: filteredDemos,
+      examples: filteredExamples,
+      patterns: filteredPatterns,
+      cheatSheets: filteredCheatSheets,
+    );
+
+    // Dùng LayoutBuilder (không phải MediaQuery) để quyết định hiện sidebar
+    // cố định hay gấp vào Drawer - nhất quán với cách mọi trang khác trong
+    // app này tự co layout theo `constraints.maxWidth`, và quan trọng hơn:
+    // MediaQuery.sizeOf KHÔNG phản ánh đúng kích thước giả lập trong test
+    // (`tester.binding.setSurfaceSize`) nên nếu dùng sẽ không test được.
+    return LayoutBuilder(
+      builder: (context, outerConstraints) {
+        final isWide = outerConstraints.maxWidth >= 900;
+        return Scaffold(
+          appBar: AppBar(title: const Text('Flutter Layout Playground')),
+          // Màn hình hẹp: sidebar gấp vào Drawer (bấm icon ☰ ở AppBar để
+          // mở). Màn hình rộng: sidebar hiện cố định bên trái (xem Row
+          // dưới), Drawer không dùng tới.
+          drawer: isWide ? null : Drawer(child: SafeArea(child: sidebar)),
+          // SelectionArea cho phép kéo chuột quét chọn text xuyên qua nhiều
+          // Text/widget cùng lúc (giống chọn text trên 1 trang web thường).
+          // Đặt trong từng trang (dưới Navigator) để luôn có Overlay ancestor.
+          body: SelectionArea(
+            child: Builder(
+              builder: (context) {
+                final mainContent = _MainContent(
+                  isWide: isWide,
+                  demos: filteredDemos,
+                  examples: filteredExamples,
+                  patterns: filteredPatterns,
+                  cheatSheets: filteredCheatSheets,
+                );
+
+                if (!isWide) return mainContent;
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: Material(
+                        color: Theme.of(context).colorScheme.surfaceContainerLow,
+                        child: sidebar,
+                      ),
+                    ),
+                    const VerticalDivider(width: 1),
+                    Expanded(child: mainContent),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Khối "Giới thiệu" ở đầu vùng nội dung chính: app này là gì, dùng để làm
+/// gì, và gợi ý thứ tự học - để người mới mở app không bị "rơi" thẳng vào
+/// 1 danh sách dài không biết bắt đầu từ đâu.
+class _IntroSection extends StatelessWidget {
+  const _IntroSection();
+
+  Widget _step(ColorScheme cs, String text) => Padding(
+        padding: const EdgeInsets.only(bottom: 3),
+        child: Text(text, style: TextStyle(fontSize: 13, color: cs.onPrimaryContainer)),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [cs.primaryContainer, cs.secondaryContainer],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.circular(16),
       ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '👋 Flutter Layout Playground',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: cs.onPrimaryContainer),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Nơi luyện layout/UI Flutter qua demo chạy thật kèm source code, '
+            'bài tập Examples có đáp án, các Pattern tổ chức code hay gặp, và '
+            'một bộ Cheat Sheet tra cứu nhanh (widget, Dart syntax, animation, '
+            'API, auth, testing, performance, môi trường & FVM...).',
+            style: TextStyle(color: cs.onPrimaryContainer),
+          ),
+          const SizedBox(height: 12),
+          Text('Gợi ý thứ tự học:', style: TextStyle(fontWeight: FontWeight.bold, color: cs.onPrimaryContainer)),
+          const SizedBox(height: 4),
+          _step(cs, '1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)'),
+          _step(cs, '2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án'),
+          _step(cs, '3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần'),
+          const SizedBox(height: 8),
+          Text(
+            '💡 Dùng ô tìm kiếm/tag ở sidebar bên trái (hoặc mở menu ☰ nếu màn '
+            'hình hẹp) để lọc nhanh theo chủ đề.',
+            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: cs.onPrimaryContainer),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Toàn bộ vùng nội dung chính bên phải sidebar (hoặc TOÀN màn hình khi
+/// hẹp, sidebar gấp vào Drawer): khối giới thiệu + các section đã lọc theo
+/// search/tag hiện tại. Section nào lọc ra rỗng thì tự ẩn, không hiện tiêu
+/// đề "trống trơn".
+class _MainContent extends StatelessWidget {
+  final bool isWide;
+  final List<LayoutDemo> demos;
+  final List<LayoutDemo> examples;
+  final List<LayoutDemo> patterns;
+  final List<LayoutDemo> cheatSheets;
+
+  const _MainContent({
+    required this.isWide,
+    required this.demos,
+    required this.examples,
+    required this.patterns,
+    required this.cheatSheets,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final hasAnyResult =
+        demos.isNotEmpty || examples.isNotEmpty || patterns.isNotEmpty || cheatSheets.isNotEmpty;
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _IntroSection(),
+        const SizedBox(height: 20),
+        if (!hasAnyResult)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'Không tìm thấy trang phù hợp - thử bỏ bớt từ khoá/tag đang lọc.',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+            ),
+          ),
+        if (demos.isNotEmpty) ...[
+          const _SectionHeader('Demos'),
+          _DemoGrid(demos: demos, isWide: isWide),
+          const SizedBox(height: 16),
+        ],
+        if (examples.isNotEmpty) ...[
+          const _SectionHeader('Examples'),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Text(
+              'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
+              'tự luyện trước khi xem đáp án.',
+            ),
+          ),
+          _DemoGrid(demos: examples, isWide: isWide),
+          const SizedBox(height: 16),
+        ],
+        if (patterns.isNotEmpty) ...[
+          const _SectionHeader('Patterns'),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Text(
+              'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
+              'package phổ biến đáng tìm hiểu thêm.',
+            ),
+          ),
+          _DemoGrid(demos: patterns, isWide: isWide),
+          const SizedBox(height: 16),
+        ],
+        if (cheatSheets.isNotEmpty) ...[
+          const _SectionHeader('Cheat Sheet'),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Text(
+              'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
+              'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
+              'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
+            ),
+          ),
+          _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide),
+        ],
+      ],
+    );
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(isWide ? 24 : 8),
+      child: content,
+    );
+  }
+}
+
+/// Sidebar điều hướng: ô tìm kiếm + chip tag lọc + cây mục lục (Demos/
+/// Examples/Patterns/Cheat Sheet) theo kết quả ĐÃ LỌC - dùng chung cho cả
+/// bản hiện cố định (desktop) và bản trong Drawer (mobile).
+class _NavSidebar extends StatelessWidget {
+  final TextEditingController searchController;
+  final ValueChanged<String> onSearchChanged;
+  final List<String> allTags;
+  final Set<String> selectedTags;
+  final ValueChanged<String> onTagToggle;
+  final List<LayoutDemo> demos;
+  final List<LayoutDemo> examples;
+  final List<LayoutDemo> patterns;
+  final List<LayoutDemo> cheatSheets;
+
+  const _NavSidebar({
+    required this.searchController,
+    required this.onSearchChanged,
+    required this.allTags,
+    required this.selectedTags,
+    required this.onTagToggle,
+    required this.demos,
+    required this.examples,
+    required this.patterns,
+    required this.cheatSheets,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+          child: TextField(
+            controller: searchController,
+            onChanged: onSearchChanged,
+            decoration: const InputDecoration(
+              hintText: 'Tìm trang...',
+              prefixIcon: Icon(Icons.search, size: 18),
+              isDense: true,
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        if (allTags.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: allTags
+                  .map(
+                    (tag) => FilterChip(
+                      label: Text(tag, style: const TextStyle(fontSize: 10)),
+                      selected: selectedTags.contains(tag),
+                      onSelected: (_) => onTagToggle(tag),
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        const Divider(height: 1),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.only(bottom: 16),
+            children: [
+              _NavSection(title: 'Demos', items: demos),
+              _NavSection(title: 'Examples', items: examples),
+              _NavSection(title: 'Patterns', items: patterns),
+              _NavSection(title: 'Cheat Sheet', items: cheatSheets, groupByField: true),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _NavSection extends StatelessWidget {
+  final String title;
+  final List<LayoutDemo> items;
+  final bool groupByField;
+
+  const _NavSection({required this.title, required this.items, this.groupByField = false});
+
+  List<Widget> _buildGrouped(BuildContext context) {
+    final groupOrder = <String>[];
+    final byGroup = <String, List<LayoutDemo>>{};
+    for (final d in items) {
+      final g = d.group ?? 'Khác';
+      byGroup.putIfAbsent(g, () {
+        groupOrder.add(g);
+        return [];
+      }).add(d);
+    }
+    final widgets = <Widget>[];
+    for (final g in groupOrder) {
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
+          child: Text(
+            g,
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      );
+      widgets.addAll(byGroup[g]!.map((d) => _NavLeaf(demo: d)));
+    }
+    return widgets;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    return ExpansionTile(
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+      initiallyExpanded: true,
+      tilePadding: const EdgeInsets.symmetric(horizontal: 12),
+      childrenPadding: EdgeInsets.zero,
+      children: groupByField ? _buildGrouped(context) : items.map((d) => _NavLeaf(demo: d)).toList(),
+    );
+  }
+}
+
+class _NavLeaf extends StatelessWidget {
+  final LayoutDemo demo;
+
+  const _NavLeaf({required this.demo});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.only(left: 24, right: 12),
+      title: Text(demo.title, style: const TextStyle(fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
+      onTap: () => Navigator.of(context).pushNamed(demo.path),
     );
   }
 }
