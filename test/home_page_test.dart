@@ -3,6 +3,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_layout_playground/main.dart';
 
 void main() {
+  tearDown(() => themeModeNotifier.value = ThemeMode.light);
+
+  testWidgets('Dark mode toggle in AppBar actually switches ThemeMode', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 900));
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    expect(themeModeNotifier.value, ThemeMode.light);
+    expect(find.byIcon(Icons.dark_mode_outlined), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.dark_mode_outlined));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(themeModeNotifier.value, ThemeMode.dark);
+    expect(find.byIcon(Icons.light_mode_outlined), findsOneWidget);
+    // Theme.of thực sự đổi brightness (không chỉ icon đổi hình).
+    final context = tester.element(find.byType(Scaffold).first);
+    expect(Theme.of(context).brightness, Brightness.dark);
+  });
+
   testWidgets('HomePage renders without overflow on wide and narrow sizes', (
     tester,
   ) async {

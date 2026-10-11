@@ -44,6 +44,23 @@ import 'patterns/widgets_cheatsheet.dart';
 import 'widgets/demo_scaffold.dart';
 import 'widgets/example_scaffold.dart';
 
+/// Chế độ sáng/tối hiện tại - để TOÀN CỤC (đổi ở đâu cũng áp dụng ngay cho
+/// cả app, xem [ThemeCheatsheet] cho pattern giải thích chi tiết). Dùng
+/// `ValueNotifier` + `ValueListenableBuilder` thay vì setState thủ công -
+/// đúng pattern đã dạy ở mục Pattern/ValueNotifier của app này.
+final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(ThemeMode.light);
+
+/// Mỗi nhóm lớn trên trang chủ (Demos/Examples/Patterns/Cheat Sheet) có 1
+/// màu "thương hiệu" RIÊNG (không suy ra từ seed color chung) - dùng cho
+/// icon section, badge icon từng thẻ, và viền/bóng khi hover - để mỗi khu
+/// vực có cá tính thị giác rõ ràng thay vì mọi thứ cùng 1 tông tím nhạt.
+const Map<String, Color> kSectionAccent = {
+  'Demos': Color(0xFF2563EB), // xanh dương
+  'Examples': Color(0xFFEA580C), // cam
+  'Patterns': Color(0xFF9333EA), // tím
+  'Cheat Sheet': Color(0xFF0D9488), // xanh ngọc (teal)
+};
+
 void main() {
   // Bỏ dấu '#' trong URL web (ví dụ /edgeinsets thay vì /#/edgeinsets) để URL
   // gọn và dễ chia sẻ/deep-link hơn.
@@ -71,68 +88,81 @@ class MyApp extends StatelessWidget {
     return MaterialPageRoute(settings: settings, builder: (_) => const HomePage());
   }
 
-  @override
-  Widget build(BuildContext context) {
+  static ThemeData _buildTheme(Brightness brightness) {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFF5B4FE9), // indigo/violet hiện đại hơn deepPurple mặc định
-      brightness: Brightness.light,
+      // Seed sống động hơn bản tím nhạt cũ (0xFF5B4FE9) - cùng gốc
+      // indigo/violet nhưng bão hoà cao hơn, đỡ "nhạt nhoà".
+      seedColor: const Color(0xFF4F3DF5),
+      brightness: brightness,
     );
-    return MaterialApp(
-      title: 'Flutter Layout Playground',
-      theme: ThemeData(
-        colorScheme: colorScheme,
-        useMaterial3: true,
-        scaffoldBackgroundColor: colorScheme.surfaceContainerLowest,
-        appBarTheme: AppBarTheme(
-          backgroundColor: colorScheme.surface,
-          foregroundColor: colorScheme.onSurface,
-          surfaceTintColor: colorScheme.surfaceTint,
-          elevation: 0,
-          scrolledUnderElevation: 2,
-          centerTitle: false,
-        ),
-        cardTheme: CardThemeData(
-          elevation: 0,
-          color: colorScheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: BorderSide(color: colorScheme.outlineVariant),
-          ),
-        ),
-        chipTheme: ChipThemeData(
-          backgroundColor: colorScheme.secondaryContainer,
-          labelStyle: TextStyle(
-            color: colorScheme.onSecondaryContainer,
-            fontWeight: FontWeight.w600,
-          ),
-          side: BorderSide.none,
-        ),
-        dividerTheme: DividerThemeData(color: colorScheme.outlineVariant),
-        tabBarTheme: TabBarThemeData(
-          labelColor: colorScheme.primary,
-          unselectedLabelColor: colorScheme.onSurfaceVariant,
-          indicatorColor: colorScheme.primary,
-          dividerColor: colorScheme.outlineVariant,
-        ),
-        textTheme: const TextTheme().apply(
-          bodyColor: colorScheme.onSurface,
-          displayColor: colorScheme.onSurface,
+    return ThemeData(
+      colorScheme: colorScheme,
+      useMaterial3: true,
+      scaffoldBackgroundColor: colorScheme.surfaceContainerLowest,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+        surfaceTintColor: colorScheme.surfaceTint,
+        elevation: 0,
+        scrolledUnderElevation: 2,
+        centerTitle: false,
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        color: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(color: colorScheme.outlineVariant),
         ),
       ),
-      initialRoute: '/',
-      onGenerateRoute: _onGenerateRoute,
-      // Giới hạn chiều rộng TOÀN BỘ app (mọi trang/Scaffold) tại 1 CHỖ DUY
-      // NHẤT ở đây - thay vì phải tự thêm ConstrainedBox vào từng trang.
-      // `child` ở đây là cả Navigator (toàn bộ nội dung trang hiện tại).
-      builder: (context, child) {
-        return Container(
-          color: colorScheme.surfaceContainerLowest,
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1400),
-            child: child,
-          ),
+      chipTheme: ChipThemeData(
+        backgroundColor: colorScheme.secondaryContainer,
+        labelStyle: TextStyle(
+          color: colorScheme.onSecondaryContainer,
+          fontWeight: FontWeight.w600,
+        ),
+        side: BorderSide.none,
+      ),
+      dividerTheme: DividerThemeData(color: colorScheme.outlineVariant),
+      tabBarTheme: TabBarThemeData(
+        labelColor: colorScheme.primary,
+        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        indicatorColor: colorScheme.primary,
+        dividerColor: colorScheme.outlineVariant,
+      ),
+      textTheme: const TextTheme().apply(
+        bodyColor: colorScheme.onSurface,
+        displayColor: colorScheme.onSurface,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeModeNotifier,
+      builder: (context, mode, _) {
+        return MaterialApp(
+          title: 'Flutter Layout Playground',
+          theme: _buildTheme(Brightness.light),
+          darkTheme: _buildTheme(Brightness.dark),
+          themeMode: mode,
+          initialRoute: '/',
+          onGenerateRoute: _onGenerateRoute,
+          // Giới hạn chiều rộng TOÀN BỘ app (mọi trang/Scaffold) tại 1 CHỖ
+          // DUY NHẤT ở đây - thay vì phải tự thêm ConstrainedBox vào từng
+          // trang. `child` ở đây là cả Navigator (nội dung trang hiện tại).
+          builder: (context, child) {
+            return Container(
+              color: Theme.of(context).colorScheme.surfaceContainerLowest,
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1400),
+                child: child,
+              ),
+            );
+          },
         );
       },
     );
@@ -744,7 +774,27 @@ class _HomePageState extends State<HomePage> {
       builder: (context, outerConstraints) {
         final isWide = outerConstraints.maxWidth >= 900;
         return Scaffold(
-          appBar: AppBar(title: const Text('Flutter Layout Playground')),
+          appBar: AppBar(
+            title: const Text('Flutter Layout Playground'),
+            actions: [
+              // Toggle Dark Mode THẬT (không chỉ demo trong cheat sheet) -
+              // đổi themeModeNotifier.value sẽ áp dụng NGAY cho toàn app,
+              // kể cả các trang đã push trước đó (Theme là InheritedWidget
+              // toàn cục qua MaterialApp, không chỉ riêng HomePage).
+              ValueListenableBuilder<ThemeMode>(
+                valueListenable: themeModeNotifier,
+                builder: (context, mode, _) {
+                  final isDark = mode == ThemeMode.dark;
+                  return IconButton(
+                    tooltip: isDark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode',
+                    icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+                    onPressed: () => themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark,
+                  );
+                },
+              ),
+              const SizedBox(width: 4),
+            ],
+          ),
           // Màn hình hẹp: sidebar gấp vào Drawer (bấm icon ☰ ở AppBar để
           // mở). Màn hình rộng: CÙNG widget sidebar hiện cố định bên trái
           // (xem Row dưới) - NavigationDrawer (Material 3) vốn đã tự vẽ
@@ -788,51 +838,72 @@ class _HomePageState extends State<HomePage> {
 class _IntroSection extends StatelessWidget {
   const _IntroSection();
 
-  Widget _step(ColorScheme cs, String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 3),
-        child: Text(text, style: TextStyle(fontSize: 13, color: cs.onPrimaryContainer)),
+  Widget _step(String text, Color dotColor) => Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 5),
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
+            ),
+            const SizedBox(width: 8),
+            Expanded(child: Text(text, style: const TextStyle(fontSize: 13, color: Colors.white))),
+          ],
+        ),
       );
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
+        // Gradient SỐNG ĐỘNG dùng chính 3 màu accent của Demos/Patterns/
+        // Cheat Sheet - không phụ thuộc vào primaryContainer "nhạt nhoà"
+        // của theme, nên luôn rực rỡ y hệt ở cả light và dark mode.
         gradient: LinearGradient(
-          colors: [cs.primaryContainer, cs.secondaryContainer],
+          colors: [
+            kSectionAccent['Demos']!,
+            kSectionAccent['Patterns']!,
+            kSectionAccent['Cheat Sheet']!,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(color: kSectionAccent['Patterns']!.withValues(alpha: 0.35), blurRadius: 20, offset: const Offset(0, 8)),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '👋 Flutter Layout Playground',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: cs.onPrimaryContainer),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             'Nơi luyện layout/UI Flutter qua demo chạy thật kèm source code, '
             'bài tập Examples có đáp án, các Pattern tổ chức code hay gặp, và '
             'một bộ Cheat Sheet tra cứu nhanh (widget, Dart syntax, animation, '
             'API, auth, testing, performance, môi trường & FVM...).',
-            style: TextStyle(color: cs.onPrimaryContainer),
+            style: TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 12),
-          Text('Gợi ý thứ tự học:', style: TextStyle(fontWeight: FontWeight.bold, color: cs.onPrimaryContainer)),
+          const Text('Gợi ý thứ tự học:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 4),
-          _step(cs, '1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)'),
-          _step(cs, '2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án'),
-          _step(cs, '3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần'),
+          _step('1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)', kSectionAccent['Demos']!),
+          _step('2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án', kSectionAccent['Examples']!),
+          _step('3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần', kSectionAccent['Cheat Sheet']!),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             '💡 Dùng ô tìm kiếm/tag ở sidebar bên trái (hoặc mở menu ☰ nếu màn '
             'hình hẹp) để lọc nhanh theo chủ đề.',
-            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: cs.onPrimaryContainer),
+            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.white),
           ),
         ],
       ),
@@ -878,7 +949,7 @@ class _MainContent extends StatelessWidget {
           ),
         if (demos.isNotEmpty) ...[
           const _SectionHeader('Demos'),
-          _DemoGrid(demos: demos, isWide: isWide),
+          _DemoGrid(demos: demos, isWide: isWide, accent: kSectionAccent['Demos']!),
           const SizedBox(height: 16),
         ],
         if (examples.isNotEmpty) ...[
@@ -890,7 +961,7 @@ class _MainContent extends StatelessWidget {
               'tự luyện trước khi xem đáp án.',
             ),
           ),
-          _DemoGrid(demos: examples, isWide: isWide),
+          _DemoGrid(demos: examples, isWide: isWide, accent: kSectionAccent['Examples']!),
           const SizedBox(height: 16),
         ],
         if (patterns.isNotEmpty) ...[
@@ -902,7 +973,7 @@ class _MainContent extends StatelessWidget {
               'package phổ biến đáng tìm hiểu thêm.',
             ),
           ),
-          _DemoGrid(demos: patterns, isWide: isWide),
+          _DemoGrid(demos: patterns, isWide: isWide, accent: kSectionAccent['Patterns']!),
           const SizedBox(height: 16),
         ],
         if (cheatSheets.isNotEmpty) ...[
@@ -915,7 +986,7 @@ class _MainContent extends StatelessWidget {
               'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
             ),
           ),
-          _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide),
+          _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide, accent: kSectionAccent['Cheat Sheet']!),
         ],
       ],
     );
@@ -967,17 +1038,18 @@ class _NavSidebar extends StatelessWidget {
   Widget _sectionLabel(BuildContext context, String title, IconData icon, int count) {
     final cs = Theme.of(context).colorScheme;
     final expanded = expandedSections.contains(title);
+    final accent = kSectionAccent[title] ?? cs.primary;
     return InkWell(
       onTap: () => onSectionToggle(title),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 12, 4),
         child: Row(
           children: [
-            Icon(icon, size: 16, color: cs.primary),
+            Icon(icon, size: 16, color: accent),
             const SizedBox(width: 6),
             Text(
               title.toUpperCase(),
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.primary),
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: accent),
             ),
             const SizedBox(width: 6),
             Container(
@@ -1181,6 +1253,10 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    // Mỗi section có màu "thương hiệu" riêng (xem kSectionAccent) - không
+    // phải lúc nào cũng dùng chung colorScheme.primary như trước, để từng
+    // khu vực có cá tính thị giác rõ ràng hơn.
+    final accent = kSectionAccent[title] ?? colorScheme.primary;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
       child: Row(
@@ -1189,7 +1265,7 @@ class _SectionHeader extends StatelessWidget {
             width: 4,
             height: 18,
             decoration: BoxDecoration(
-              color: colorScheme.primary,
+              color: accent,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -1215,8 +1291,9 @@ class _SectionHeader extends StatelessWidget {
 class _CheatSheetGroups extends StatelessWidget {
   final List<LayoutDemo> cheatSheets;
   final bool isWide;
+  final Color accent;
 
-  const _CheatSheetGroups({required this.cheatSheets, required this.isWide});
+  const _CheatSheetGroups({required this.cheatSheets, required this.isWide, required this.accent});
 
   @override
   Widget build(BuildContext context) {
@@ -1237,7 +1314,7 @@ class _CheatSheetGroups extends StatelessWidget {
         for (final group in groupOrder) ...[
           _SubSectionHeader(group),
           const SizedBox(height: 8),
-          _DemoGrid(demos: byGroup[group]!, isWide: isWide),
+          _DemoGrid(demos: byGroup[group]!, isWide: isWide, accent: accent),
           const SizedBox(height: 16),
         ],
       ],
@@ -1273,8 +1350,9 @@ class _SubSectionHeader extends StatelessWidget {
 class _DemoGrid extends StatelessWidget {
   final List<LayoutDemo> demos;
   final bool isWide;
+  final Color accent;
 
-  const _DemoGrid({required this.demos, required this.isWide});
+  const _DemoGrid({required this.demos, required this.isWide, required this.accent});
 
   static const double _cardWidth = 360;
 
@@ -1282,7 +1360,7 @@ class _DemoGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isWide) {
       return Column(
-        children: demos.map((demo) => _DemoTile(demo: demo)).toList(),
+        children: demos.map((demo) => _DemoTile(demo: demo, accent: accent)).toList(),
       );
     }
     return Wrap(
@@ -1292,7 +1370,7 @@ class _DemoGrid extends StatelessWidget {
           .map(
             (demo) => SizedBox(
               width: _cardWidth,
-              child: _DemoTile(demo: demo),
+              child: _DemoTile(demo: demo, accent: accent),
             ),
           )
           .toList(),
@@ -1302,8 +1380,9 @@ class _DemoGrid extends StatelessWidget {
 
 class _DemoTile extends StatefulWidget {
   final LayoutDemo demo;
+  final Color accent;
 
-  const _DemoTile({required this.demo});
+  const _DemoTile({required this.demo, required this.accent});
 
   @override
   State<_DemoTile> createState() => _DemoTileState();
@@ -1316,6 +1395,7 @@ class _DemoTileState extends State<_DemoTile> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final demo = widget.demo;
+    final accent = widget.accent;
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
@@ -1326,7 +1406,7 @@ class _DemoTileState extends State<_DemoTile> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           boxShadow: _hovering
-              ? [BoxShadow(color: colorScheme.primary.withValues(alpha: 0.18), blurRadius: 14, offset: const Offset(0, 4))]
+              ? [BoxShadow(color: accent.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 4))]
               : [],
         ),
         child: Card(
@@ -1334,7 +1414,7 @@ class _DemoTileState extends State<_DemoTile> {
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
-            side: BorderSide(color: _hovering ? colorScheme.primary.withValues(alpha: 0.4) : colorScheme.outlineVariant),
+            side: BorderSide(color: _hovering ? accent.withValues(alpha: 0.5) : colorScheme.outlineVariant),
           ),
           child: InkWell(
             onTap: () => Navigator.of(context).pushNamed(demo.path),
@@ -1343,15 +1423,19 @@ class _DemoTileState extends State<_DemoTile> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Icon section tô màu SOLID theo accent riêng (không phải
+                  // primaryContainer nhạt nhoà như trước) - để mỗi nhóm
+                  // Demos/Examples/Patterns/Cheat Sheet có nhận diện riêng.
                   Container(
                     width: 40,
                     height: 40,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: colorScheme.primaryContainer,
+                      color: accent,
                       borderRadius: BorderRadius.circular(10),
+                      boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 8, offset: const Offset(0, 2))],
                     ),
-                    child: Icon(Icons.widgets_outlined, color: colorScheme.onPrimaryContainer, size: 20),
+                    child: const Icon(Icons.widgets_outlined, color: Colors.white, size: 20),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
