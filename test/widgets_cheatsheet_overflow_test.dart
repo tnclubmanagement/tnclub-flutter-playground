@@ -34,4 +34,26 @@ void main() {
       }
     }
   });
+
+  testWidgets('Tapping a constructor cell opens a code dialog', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 900));
+    await tester.pumpWidget(const MaterialApp(home: WidgetsCheatsheet()));
+    await tester.pumpAndSettle();
+
+    // Tap the first "Container" row's monospace constructor cell (InkWell).
+    final codeCell = find.byTooltip('Bấm để xem code mẫu').first;
+    await tester.tap(codeCell);
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(Dialog), findsOneWidget);
+    expect(find.text('Container'), findsWidgets);
+
+    // Close it via the "Đóng" button.
+    await tester.tap(find.byTooltip('Đóng'));
+    await tester.pumpAndSettle();
+    expect(find.byType(Dialog), findsNothing);
+  });
 }

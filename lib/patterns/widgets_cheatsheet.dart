@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/code_panel.dart';
+
 /// Trang tổng hợp (cheat sheet) dạng BẢNG các widget hay dùng nhất, liệt kê
 /// nhanh: hình minh hoạ (render thật), constructor mẫu, dùng để làm gì, và
 /// đặc điểm riêng (có padding/margin/background sẵn không, có cuộn được
@@ -904,7 +906,7 @@ class _WidgetTable extends StatelessWidget {
     4: FixedColumnWidth(260), // Đặc điểm riêng
   };
 
-  static const _headers = ['Minh hoạ', 'Widget', 'Constructor mẫu', 'Dùng để làm gì', 'Đặc điểm riêng'];
+  static const _headers = ['Minh hoạ', 'Widget', 'Constructor mẫu (bấm để xem)', 'Dùng để làm gì', 'Đặc điểm riêng'];
 
   @override
   Widget build(BuildContext context) {
@@ -945,7 +947,12 @@ class _WidgetTable extends StatelessWidget {
                   children: [
                     _previewCell(context, rows[i].preview),
                     _cell(context, rows[i].name, bold: true),
-                    _cell(context, rows[i].constructor, monospace: true),
+                    _cell(
+                      context,
+                      rows[i].constructor,
+                      monospace: true,
+                      onTap: () => _showCodeDialog(context, rows[i].name, rows[i].constructor),
+                    ),
                     _cell(context, rows[i].usage, muted: true),
                     _cell(context, rows[i].special, muted: true),
                   ],
@@ -964,26 +971,49 @@ class _WidgetTable extends StatelessWidget {
     bool bold = false,
     bool monospace = false,
     bool muted = false,
+    VoidCallback? onTap,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     if (monospace) {
+      final codeChip = Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(6),
+          border: onTap != null ? Border.all(color: colorScheme.outlineVariant) : null,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontFamily: 'monospace',
+                  fontSize: 12.5,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ),
+            if (onTap != null) ...[
+              const SizedBox(width: 4),
+              Icon(Icons.open_in_full, size: 13, color: colorScheme.primary),
+            ],
+          ],
+        ),
+      );
       return Padding(
         padding: const EdgeInsets.all(10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontFamily: 'monospace',
-              fontSize: 12.5,
-              color: colorScheme.onSurface,
-            ),
-          ),
-        ),
+        child: onTap == null
+            ? codeChip
+            : Tooltip(
+                message: 'Bấm để xem code mẫu',
+                child: InkWell(
+                  onTap: onTap,
+                  borderRadius: BorderRadius.circular(6),
+                  child: codeChip,
+                ),
+              ),
       );
     }
     return Padding(
@@ -1014,6 +1044,49 @@ class _WidgetTable extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  /// Mở dialog hiện code mẫu đầy đủ (có tô màu syntax qua [CodePanel]) cho
+  /// 1 widget - bấm vào cell "Constructor mẫu" trong bảng sẽ gọi hàm này.
+  void _showCodeDialog(BuildContext context, String name, String code) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        final colorScheme = Theme.of(dialogContext).colorScheme;
+        return Dialog(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 560, maxHeight: 420),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+                  child: Row(
+                    children: [
+                      Icon(Icons.code, color: colorScheme.primary, size: 18),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          name,
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        tooltip: 'Đóng',
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(height: 1),
+                Expanded(child: CodePanel(source: code, error: null)),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
