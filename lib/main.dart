@@ -983,44 +983,95 @@ class _IntroSection extends StatelessWidget {
 /// khảo. Luôn hiện TỔNG số trang thật (không theo kết quả đang lọc) để
 /// làm điểm tham chiếu ổn định, không nhảy số theo search/tag.
 class _StatStrip extends StatelessWidget {
-  const _StatStrip();
+  final bool isWide;
+
+  const _StatStrip({required this.isWide});
+
+  static const _items = [
+    ('Demos', Icons.widgets_outlined),
+    ('Examples', Icons.assignment_outlined),
+    ('Patterns', Icons.extension_outlined),
+    ('Cheat Sheet', Icons.menu_book_outlined),
+  ];
+
+  static int _countFor(String title) => switch (title) {
+        'Demos' => HomePage.demos.length,
+        'Examples' => HomePage.examples.length,
+        'Patterns' => HomePage.patterns.length,
+        _ => HomePage.cheatSheets.length,
+      };
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      ('Demos', HomePage.demos.length, Icons.widgets_outlined),
-      ('Examples', HomePage.examples.length, Icons.assignment_outlined),
-      ('Patterns', HomePage.patterns.length, Icons.extension_outlined),
-      ('Cheat Sheet', HomePage.cheatSheets.length, Icons.menu_book_outlined),
-    ];
+    final tiles = _items.map((item) {
+      final (title, icon) = item;
+      return _StatTile(title: title, icon: icon, count: _countFor(title));
+    }).toList();
+
+    // Màn rộng: 4 ô giãn ĐỀU hết chiều ngang (Expanded), không còn width cố
+    // định để trống khoảng thừa như trước. Màn hẹp: Wrap 2 ô/hàng vì 4
+    // Expanded cạnh nhau sẽ quá chật.
+    if (isWide) {
+      // Mỗi _StatTile đã tự set height:120 cố định rồi nên KHÔNG cần
+      // IntrinsicHeight để ép bằng nhau (tránh đúng cạm bẫy tràn layout đã
+      // gặp ở hero row trước đó).
+      return Row(
+        children: [
+          for (var i = 0; i < tiles.length; i++) ...[
+            if (i > 0) const SizedBox(width: 12),
+            Expanded(child: tiles[i]),
+          ],
+        ],
+      );
+    }
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: items.map((item) {
-        final (title, count, icon) = item;
-        final accent = kSectionAccent[title]!;
-        // Chữ trên nền SOLID cần tương phản tốt - vàng (Cheat Sheet) sáng
-        // nên dùng chữ đen, 3 màu còn lại tối hơn nên dùng chữ trắng.
-        final onAccent = title == 'Cheat Sheet' ? Colors.black : Colors.white;
-        // Width CỐ ĐỊNH (không dùng MediaQuery) để Wrap tự xuống dòng theo
-        // không gian thật - MediaQuery.sizeOf không phản ánh đúng kích
-        // thước giả lập trong test (`setSurfaceSize`), đã gặp lỗi này ở
-        // sidebar trước đây nên tránh lặp lại.
-        return Container(
-          width: 150,
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(18)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: onAccent, size: 20),
-              const SizedBox(height: 10),
-              Text('$count', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: onAccent)),
-              Text(title, style: TextStyle(fontSize: 12, color: onAccent.withValues(alpha: 0.85), fontWeight: FontWeight.w600)),
-            ],
+      children: tiles.map((t) => SizedBox(width: 160, child: t)).toList(),
+    );
+  }
+}
+
+class _StatTile extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final int count;
+
+  const _StatTile({required this.title, required this.icon, required this.count});
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = kSectionAccent[title]!;
+    // Chữ trên nền SOLID cần tương phản tốt - vàng (Cheat Sheet) sáng nên
+    // dùng chữ đen, 3 màu còn lại tối hơn nên dùng chữ trắng.
+    final onAccent = title == 'Cheat Sheet' ? Colors.black : Colors.white;
+    return Container(
+      width: double.infinity,
+      height: 120,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(18)),
+      child: Stack(
+        children: [
+          // Icon THIN (outline) khổ lớn làm HÌNH NỀN mờ, ló ra góc dưới
+          // phải - thay cho icon nhỏ rời rạc phía trên như bản cũ.
+          Positioned(
+            right: -14,
+            bottom: -18,
+            child: Icon(icon, size: 110, color: onAccent.withValues(alpha: 0.22)),
           ),
-        );
-      }).toList(),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('$count', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: onAccent)),
+                Text(title, style: TextStyle(fontSize: 13, color: onAccent.withValues(alpha: 0.9), fontWeight: FontWeight.w600)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1084,7 +1135,7 @@ class _MainContent extends StatelessWidget {
       children: [
         hero,
         const SizedBox(height: 12),
-        const _StatStrip(),
+        _StatStrip(isWide: isWide),
         const SizedBox(height: 20),
         if (!hasAnyResult)
           Padding(
