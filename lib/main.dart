@@ -107,13 +107,18 @@ class MyApp extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 2,
         centerTitle: false,
+        titleTextStyle: TextStyle(
+          color: colorScheme.onSurface,
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 0,
         color: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
           side: BorderSide(color: colorScheme.outlineVariant),
         ),
       ),
@@ -124,13 +129,84 @@ class MyApp extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         side: BorderSide.none,
+        shape: const StadiumBorder(),
       ),
       dividerTheme: DividerThemeData(color: colorScheme.outlineVariant),
+      // Indicator dạng "pill" (bo tròn hết, phủ cả tab) thay vạch kẻ mảnh
+      // mặc định - đồng bộ với tinh thần "bento block" bo góc lớn.
       tabBarTheme: TabBarThemeData(
-        labelColor: colorScheme.primary,
+        labelColor: colorScheme.onPrimary,
         unselectedLabelColor: colorScheme.onSurfaceVariant,
-        indicatorColor: colorScheme.primary,
-        dividerColor: colorScheme.outlineVariant,
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicator: BoxDecoration(
+          color: colorScheme.primary,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        dividerColor: Colors.transparent,
+        labelStyle: const TextStyle(fontWeight: FontWeight.w700),
+      ),
+      // Button bo góc lớn (14px, không còn pill mảnh/vuông mặc định) +
+      // chữ đậm - khớp với card bo 16-20px đã đổi ở trang chủ.
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          elevation: 0,
+          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          side: BorderSide(color: colorScheme.outline),
+          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
+      // Input/search field bo tròn pill, nền tint nhẹ thay viền mỏng xám
+      // mặc định - đồng bộ với ô tìm kiếm ở sidebar.
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected) ? colorScheme.primary : null,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected) ? colorScheme.primary.withValues(alpha: 0.5) : null,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected) ? colorScheme.primary : null,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.primary),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       textTheme: const TextTheme().apply(
         bodyColor: colorScheme.onSurface,
