@@ -1277,31 +1277,46 @@ class _NavSidebar extends StatelessWidget {
     required this.cheatSheets,
   });
 
+  // Style TINH TẾ hơn bản cũ (bỏ chữ IN HOA + badge số nổi bật + icon màu
+  // đậm) - gần với mục "Performance" trong ảnh tham khảo: chữ thường,
+  // weight vừa phải, icon/chevron trung tính (xám), chỉ 1 điểm nhấn màu
+  // nhỏ (chấm tròn) để gợi ý accent riêng thay vì tô cả dòng.
   Widget _sectionLabel(BuildContext context, String title, IconData icon, int count) {
     final cs = Theme.of(context).colorScheme;
     final expanded = expandedSections.contains(title);
     final accent = kSectionAccent[title] ?? cs.primary;
-    return InkWell(
-      onTap: () => onSectionToggle(title),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 12, 4),
-        child: Row(
-          children: [
-            Icon(icon, size: 16, color: accent),
-            const SizedBox(width: 6),
-            Text(
-              title.toUpperCase(),
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: accent),
-            ),
-            const SizedBox(width: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-              decoration: BoxDecoration(color: cs.surfaceContainerHighest, borderRadius: BorderRadius.circular(10)),
-              child: Text('$count', style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
-            ),
-            const Spacer(),
-            Icon(expanded ? Icons.expand_less : Icons.expand_more, size: 18, color: cs.outline),
-          ],
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () => onSectionToggle(title),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 8, 10),
+          child: Row(
+            children: [
+              Container(
+                width: 6,
+                height: 6,
+                margin: const EdgeInsets.only(right: 8),
+                decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+              ),
+              Icon(icon, size: 17, color: cs.onSurfaceVariant),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: cs.onSurface),
+              ),
+              const SizedBox(width: 6),
+              Text('$count', style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant)),
+              const Spacer(),
+              Icon(
+                expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                size: 18,
+                color: cs.onSurfaceVariant,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1309,10 +1324,10 @@ class _NavSidebar extends StatelessWidget {
 
   Widget _groupLabel(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 6, 16, 2),
+      padding: const EdgeInsets.fromLTRB(34, 8, 16, 2),
       child: Text(
         title,
-        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.outline),
+        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.outline),
       ),
     );
   }
@@ -1366,14 +1381,22 @@ class _NavSidebar extends StatelessWidget {
 
   NavigationDrawerDestination _destinationFor(LayoutDemo demo) {
     return NavigationDrawerDestination(
-      icon: const Icon(Icons.circle_outlined, size: 14),
+      // Bỏ icon riêng cho từng item con (trước là vòng tròn outline) -
+      // chỉ còn khoảng trống thụt lề, giống style "chỉ chữ, thụt lề" của
+      // mục con dưới "Performance" trong ảnh tham khảo, đỡ rối mắt hơn.
+      icon: const SizedBox(width: 2),
       // NavigationDrawerDestination xếp icon+label trong 1 Row KHÔNG có
       // Expanded/Flexible nội bộ - label dài (tiêu đề đầy đủ kèm emoji) sẽ
       // làm Row tràn. Ép width cố định để Text tự ellipsis đúng cách thay
       // vì tràn ra ngoài.
       label: SizedBox(
-        width: 200,
-        child: Text(demo.title, overflow: TextOverflow.ellipsis, maxLines: 1),
+        width: 204,
+        child: Text(
+          demo.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }

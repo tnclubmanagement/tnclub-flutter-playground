@@ -91,8 +91,12 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    // Fold "Demos" (section đầu tiên) bằng cách bấm vào label của nó.
-    await tester.tap(find.text('DEMOS'));
+    // Fold "Demos" (section đầu tiên) bằng cách bấm vào label của nó -
+    // "Demos" cũng xuất hiện ở _SectionHeader bên vùng nội dung chính nên
+    // phải giới hạn tìm trong NavigationDrawer (sidebar) để tránh lẫn.
+    await tester.tap(
+      find.descendant(of: find.byType(NavigationDrawer), matching: find.text('Demos')),
+    );
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
