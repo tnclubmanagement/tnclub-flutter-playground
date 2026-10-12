@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -899,13 +901,22 @@ class _HomePageState extends State<HomePage> {
                   cheatSheets: filteredCheatSheets,
                 );
 
-                if (!isWide) return mainContent;
-
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                // _BackgroundBlobs nằm Ở DƯỚI CÙNG (phía sau) - các
+                // _GlassPanel (sidebar, section panel) phía trên làm mờ
+                // đúng những khối màu này, tạo hiệu ứng Liquid Glass.
+                return Stack(
                   children: [
-                    SizedBox(width: 300, child: sidebar),
-                    Expanded(child: mainContent),
+                    const Positioned.fill(child: _BackgroundBlobs()),
+                    if (!isWide)
+                      mainContent
+                    else
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(width: 300, child: sidebar),
+                          Expanded(child: mainContent),
+                        ],
+                      ),
                   ],
                 );
               },
@@ -1285,27 +1296,105 @@ class _SectionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: accent.withValues(alpha: 0.18)),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: _GlassPanel(
+        borderColor: accent.withValues(alpha: 0.18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _SectionHeader(title),
+            if (description != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Text(description!),
+              ),
+            const SizedBox(height: 4),
+            child,
+          ],
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _SectionHeader(title),
-          if (description != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(description!),
+    );
+  }
+}
+
+/// Khối "kính mờ" (liquid glass) dùng chung: làm mờ (blur) những gì ở PHÍA
+/// SAU nó rồi phủ 1 lớp màu rất nhạt lên trên - khác hẳn Container nền đặc
+/// thường thấy. Cần có thứ gì đó phía sau (xem [_BackgroundBlobs]) thì hiệu
+/// ứng kính khúc xạ mới thấy rõ, nếu không sẽ chỉ như 1 card mờ bình thường.
+class _GlassPanel extends StatelessWidget {
+  final Widget child;
+  final Color? borderColor;
+
+  static const _padding = EdgeInsets.all(16);
+  static const _borderRadius = BorderRadius.all(Radius.circular(22));
+
+  const _GlassPanel({required this.child, this.borderColor});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Alpha thấp hơn ở dark mode vì nền tối dễ "ăn" màu trắng phủ lên hơn -
+    // giữ y nguyên ở light mode thì dark mode sẽ bị trắng bệch, mất chất tối.
+    final overlayTop = isDark ? 0.10 : 0.55;
+    final overlayBottom = isDark ? 0.03 : 0.22;
+    return ClipRRect(
+      borderRadius: _borderRadius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+        child: Container(
+          width: double.infinity,
+          padding: _padding,
+          decoration: BoxDecoration(
+            borderRadius: _borderRadius,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white.withValues(alpha: overlayTop),
+                Colors.white.withValues(alpha: overlayBottom),
+              ],
             ),
-          const SizedBox(height: 4),
-          child,
+            border: Border.all(
+              color: borderColor ?? Colors.white.withValues(alpha: isDark ? 0.08 : 0.6),
+            ),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+/// Vài khối màu lớn, làm mờ (blur) sẵn, đặt PHÍA SAU toàn bộ nội dung trang
+/// chủ - để các [_GlassPanel] (sidebar, section panel) phía trên có gì đó
+/// để "khúc xạ" qua lớp kính mờ, đúng tinh thần hiệu ứng Liquid Glass thay
+/// vì kính mờ phủ lên nền trắng/xám trơn (nhìn chỉ như card mờ vô nghĩa).
+class _BackgroundBlobs extends StatelessWidget {
+  const _BackgroundBlobs();
+
+  Widget _blob(Color color, double size) {
+    return ImageFiltered(
+      imageFilter: ImageFilter.blur(sigmaX: 90, sigmaY: 90),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.45), shape: BoxShape.circle),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // IgnorePointer để các khối màu trang trí này KHÔNG chặn tương tác
+    // (bấm/cuộn) của nội dung thật nằm phía trên.
+    return IgnorePointer(
+      child: Stack(
+        children: [
+          Positioned(top: -100, left: -80, child: _blob(kSectionAccent['Demos']!, 280)),
+          Positioned(top: 160, right: -120, child: _blob(kSectionAccent['Examples']!, 320)),
+          Positioned(bottom: -120, left: 200, child: _blob(kSectionAccent['Cheat Sheet']!, 260)),
+          Positioned(bottom: 40, right: 120, child: _blob(kSectionAccent['Patterns']!, 220)),
         ],
       ),
     );
@@ -1492,13 +1581,22 @@ class _NavSidebar extends StatelessWidget {
       groupByField: true,
     );
 
-    return NavigationDrawer(
-      // -1: không có mục nào "đang chọn" cố định - mỗi lần bấm sẽ MỞ 1
-      // trang MỚI (push) chứ không phải chuyển tab trong cùng 1 màn hình.
-      selectedIndex: -1,
-      onDestinationSelected: (index) => Navigator.of(context).pushNamed(flatOrder[index].path),
-      indicatorColor: cs.primaryContainer,
-      header: Padding(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Kính mờ (Liquid Glass) cho CẢ sidebar: NavigationDrawer mặc định vẽ
+    // nền ĐẶC (opaque) nên phải tự set backgroundColor TRONG SUỐT rồi bọc
+    // ngoài bằng BackdropFilter - nếu không blur sẽ không thấy gì (nền đặc
+    // của Drawer che mất những gì bị làm mờ phía sau).
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        child: NavigationDrawer(
+          backgroundColor: Colors.white.withValues(alpha: isDark ? 0.06 : 0.45),
+          // -1: không có mục nào "đang chọn" cố định - mỗi lần bấm sẽ MỞ 1
+          // trang MỚI (push) chứ không phải chuyển tab trong cùng 1 màn hình.
+          selectedIndex: -1,
+          onDestinationSelected: (index) => Navigator.of(context).pushNamed(flatOrder[index].path),
+          indicatorColor: cs.primaryContainer,
+          header: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1634,7 +1732,9 @@ class _NavSidebar extends StatelessWidget {
           ],
         ),
       ),
-      children: destinations,
+          children: destinations,
+        ),
+      ),
     );
   }
 }
