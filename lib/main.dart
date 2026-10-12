@@ -52,13 +52,14 @@ final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(ThemeMode.light
 
 /// Mỗi nhóm lớn trên trang chủ (Demos/Examples/Patterns/Cheat Sheet) có 1
 /// màu "thương hiệu" RIÊNG (không suy ra từ seed color chung) - dùng cho
-/// icon section, badge icon từng thẻ, và viền/bóng khi hover - để mỗi khu
-/// vực có cá tính thị giác rõ ràng thay vì mọi thứ cùng 1 tông tím nhạt.
+/// icon section, nền card kiểu "bento block", và viền/bóng khi hover - để
+/// mỗi khu vực có cá tính thị giác rõ ràng. Theo đúng bảng màu tham khảo
+/// (lavender/cam đất/xám/vàng) - ô "hồng" trong ảnh gốc đổi thành cam đất.
 const Map<String, Color> kSectionAccent = {
-  'Demos': Color(0xFF2563EB), // xanh dương
-  'Examples': Color(0xFFEA580C), // cam
-  'Patterns': Color(0xFF9333EA), // tím
-  'Cheat Sheet': Color(0xFF0D9488), // xanh ngọc (teal)
+  'Demos': Color(0xFF7C6FE0), // tím lavender
+  'Examples': Color(0xFFC1623D), // cam đất (terracotta) - thay cho hồng
+  'Patterns': Color(0xFF64748B), // xám đậm
+  'Cheat Sheet': Color(0xFFD4A017), // vàng gold
 };
 
 void main() {
@@ -90,9 +91,9 @@ class MyApp extends StatelessWidget {
 
   static ThemeData _buildTheme(Brightness brightness) {
     final colorScheme = ColorScheme.fromSeed(
-      // Seed sống động hơn bản tím nhạt cũ (0xFF5B4FE9) - cùng gốc
-      // indigo/violet nhưng bão hoà cao hơn, đỡ "nhạt nhoà".
-      seedColor: const Color(0xFF4F3DF5),
+      // Cam đất (terracotta) làm màu CHỦ ĐẠO của app - thay cho tím/indigo
+      // trước đó - theo đúng bảng màu tham khảo người dùng đưa ra.
+      seedColor: const Color(0xFFC1623D),
       brightness: brightness,
     );
     return ThemeData(
@@ -911,6 +912,53 @@ class _IntroSection extends StatelessWidget {
   }
 }
 
+/// Dải "bento block" màu đậm hiện tổng số trang theo mỗi nhóm - lấy cảm
+/// hứng từ các ô thống kê màu nổi bật (vàng/xám/cam đất) trong ảnh tham
+/// khảo. Luôn hiện TỔNG số trang thật (không theo kết quả đang lọc) để
+/// làm điểm tham chiếu ổn định, không nhảy số theo search/tag.
+class _StatStrip extends StatelessWidget {
+  const _StatStrip();
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      ('Demos', HomePage.demos.length, Icons.widgets_outlined),
+      ('Examples', HomePage.examples.length, Icons.assignment_outlined),
+      ('Patterns', HomePage.patterns.length, Icons.extension_outlined),
+      ('Cheat Sheet', HomePage.cheatSheets.length, Icons.menu_book_outlined),
+    ];
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: items.map((item) {
+        final (title, count, icon) = item;
+        final accent = kSectionAccent[title]!;
+        // Chữ trên nền SOLID cần tương phản tốt - vàng (Cheat Sheet) sáng
+        // nên dùng chữ đen, 3 màu còn lại tối hơn nên dùng chữ trắng.
+        final onAccent = title == 'Cheat Sheet' ? Colors.black : Colors.white;
+        // Width CỐ ĐỊNH (không dùng MediaQuery) để Wrap tự xuống dòng theo
+        // không gian thật - MediaQuery.sizeOf không phản ánh đúng kích
+        // thước giả lập trong test (`setSurfaceSize`), đã gặp lỗi này ở
+        // sidebar trước đây nên tránh lặp lại.
+        return Container(
+          width: 150,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(18)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: onAccent, size: 20),
+              const SizedBox(height: 10),
+              Text('$count', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: onAccent)),
+              Text(title, style: TextStyle(fontSize: 12, color: onAccent.withValues(alpha: 0.85), fontWeight: FontWeight.w600)),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
 /// Toàn bộ vùng nội dung chính bên phải sidebar (hoặc TOÀN màn hình khi
 /// hẹp, sidebar gấp vào Drawer): khối giới thiệu + các section đã lọc theo
 /// search/tag hiện tại. Section nào lọc ra rỗng thì tự ẩn, không hiện tiêu
@@ -938,6 +986,8 @@ class _MainContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _IntroSection(),
+        const SizedBox(height: 12),
+        const _StatStrip(),
         const SizedBox(height: 20),
         if (!hasAnyResult)
           Padding(
@@ -1396,48 +1446,52 @@ class _DemoTileState extends State<_DemoTile> {
     final colorScheme = Theme.of(context).colorScheme;
     final demo = widget.demo;
     final accent = widget.accent;
+    // Nền "bento block" pastel - pha accent vào nền theme (khác nhau giữa
+    // light/dark) thay vì màu CỨNG, để vẫn đọc được chữ ở cả 2 mode.
+    final blockColor = Color.alphaBlend(accent.withValues(alpha: 0.16), colorScheme.surface);
+    final blockColorHover = Color.alphaBlend(accent.withValues(alpha: 0.24), colorScheme.surface);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        margin: const EdgeInsets.symmetric(vertical: 4),
+        curve: Curves.easeOut,
+        margin: EdgeInsets.only(bottom: 8, top: _hovering ? 0 : 4),
+        transform: Matrix4.translationValues(0, _hovering ? -4 : 0, 0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
+          color: _hovering ? blockColorHover : blockColor,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: _hovering
-              ? [BoxShadow(color: accent.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 4))]
-              : [],
+              ? [BoxShadow(color: accent.withValues(alpha: 0.3), blurRadius: 18, offset: const Offset(0, 8))]
+              : [BoxShadow(color: accent.withValues(alpha: 0.08), blurRadius: 6, offset: const Offset(0, 2))],
         ),
-        child: Card(
-          margin: EdgeInsets.zero,
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
           clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: BorderSide(color: _hovering ? accent.withValues(alpha: 0.5) : colorScheme.outlineVariant),
-          ),
           child: InkWell(
             onTap: () => Navigator.of(context).pushNamed(demo.path),
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Icon section tô màu SOLID theo accent riêng (không phải
-                  // primaryContainer nhạt nhoà như trước) - để mỗi nhóm
-                  // Demos/Examples/Patterns/Cheat Sheet có nhận diện riêng.
+                  // Icon section tô màu SOLID theo accent riêng - để mỗi
+                  // nhóm Demos/Examples/Patterns/Cheat Sheet có nhận diện
+                  // riêng, nổi trên nền pastel cùng tông.
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 44,
+                    height: 44,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: accent,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 8, offset: const Offset(0, 2))],
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.widgets_outlined, color: Colors.white, size: 20),
+                    child: const Icon(Icons.widgets_outlined, color: Colors.white, size: 22),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1445,7 +1499,8 @@ class _DemoTileState extends State<_DemoTile> {
                         Text(
                           demo.title,
                           style: TextStyle(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15,
                             color: colorScheme.onSurface,
                           ),
                         ),
@@ -1455,7 +1510,7 @@ class _DemoTileState extends State<_DemoTile> {
                           style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
                         ),
                         if (demo.tags.isNotEmpty) ...[
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
                           Wrap(
                             spacing: 6,
                             runSpacing: 6,
@@ -1464,12 +1519,12 @@ class _DemoTileState extends State<_DemoTile> {
                                   (tag) => Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                     decoration: BoxDecoration(
-                                      color: colorScheme.secondaryContainer,
+                                      color: colorScheme.surface.withValues(alpha: 0.7),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
                                       tag,
-                                      style: TextStyle(fontSize: 10, color: colorScheme.onSecondaryContainer, fontWeight: FontWeight.w600),
+                                      style: TextStyle(fontSize: 10, color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 )
@@ -1479,7 +1534,18 @@ class _DemoTileState extends State<_DemoTile> {
                       ],
                     ),
                   ),
-                  Icon(Icons.chevron_right, color: colorScheme.outline),
+                  // Nút mũi tên tròn kiểu "bento block" (giống ảnh tham
+                  // khảo) thay cho chevron mảnh trước đây.
+                  Container(
+                    width: 28,
+                    height: 28,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: colorScheme.surface.withValues(alpha: 0.7),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.north_east, size: 14, color: colorScheme.onSurface),
+                  ),
                 ],
               ),
             ),
