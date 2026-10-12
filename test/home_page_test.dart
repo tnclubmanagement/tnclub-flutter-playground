@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_layout_playground/main.dart';
 
 void main() {
@@ -13,14 +14,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(themeModeNotifier.value, ThemeMode.light);
-    expect(find.byIcon(Icons.dark_mode_outlined), findsOneWidget);
+    expect(find.byIcon(Symbols.dark_mode), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.dark_mode_outlined));
+    await tester.tap(find.byIcon(Symbols.dark_mode));
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
     expect(themeModeNotifier.value, ThemeMode.dark);
-    expect(find.byIcon(Icons.light_mode_outlined), findsOneWidget);
+    expect(find.byIcon(Symbols.light_mode), findsOneWidget);
     // Theme.of thực sự đổi brightness (không chỉ icon đổi hình).
     final context = tester.element(find.byType(Scaffold).first);
     expect(Theme.of(context).brightness, Brightness.dark);
@@ -69,16 +70,19 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    // "i18n" giờ cũng hiện như tag chip màu trên từng card (không chỉ
-    // FilterChip ở sidebar) - chỉ nhắm đúng FilterChip để bấm.
+    // Hàng tag ở sidebar giờ cuộn NGANG (ListView.separated) - chỉ vài tag
+    // đầu tiên (theo thứ tự alphabet) thực sự được build sẵn trong viewport,
+    // nên dùng "animation" (gần đầu danh sách) thay vì "i18n" (ở giữa, có
+    // thể chưa build). "animation" cũng hiện như tag chip màu trên card
+    // (không chỉ FilterChip ở sidebar) - chỉ nhắm đúng FilterChip để bấm.
     await tester.tap(
-      find.descendant(of: find.byType(FilterChip), matching: find.text('i18n')),
+      find.descendant(of: find.byType(FilterChip), matching: find.text('animation')),
     );
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
     expect(find.text('Row & Column'), findsNothing);
-    expect(find.textContaining('i18n'), findsWidgets);
+    expect(find.textContaining('Animation cheat sheet'), findsWidgets);
   });
 
   testWidgets('Folding a section hides its items and does not shift the '

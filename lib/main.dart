@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'demos/column_row_demo.dart';
 import 'demos/container_constraints_demo.dart';
@@ -90,11 +91,28 @@ class MyApp extends StatelessWidget {
   }
 
   static ThemeData _buildTheme(Brightness brightness) {
-    final colorScheme = ColorScheme.fromSeed(
-      // Cam đất (terracotta) làm màu CHỦ ĐẠO của app - thay cho tím/indigo
-      // trước đó - theo đúng bảng màu tham khảo người dùng đưa ra.
-      seedColor: const Color(0xFFC1623D),
+    final isLight = brightness == Brightness.light;
+    // Tím nhạt (lavender) làm màu CHỦ ĐẠO - thay cam đất (terracotta) vì
+    // bị chê quá gắt. Primary/secondary/tertiary vẫn suy từ seed này.
+    final seeded = ColorScheme.fromSeed(
+      seedColor: const Color(0xFF9575CD),
       brightness: brightness,
+    );
+    // NHƯNG nền/card dùng XÁM TRUNG TÍNH THẬT (không pha màu tím của M3 "surface
+    // tint") làm chủ đạo - ép lại các tông surface thay vì để seed chi phối,
+    // để nền luôn xám sạch, chỉ có card/button mới có màu.
+    final neutralBg = isLight ? const Color(0xFFF2F3F5) : const Color(0xFF17181B);
+    final neutralBgLow = isLight ? const Color(0xFFF7F8FA) : const Color(0xFF1C1D21);
+    final neutralCard = isLight ? Colors.white : const Color(0xFF232428);
+    final neutralOutline = isLight ? const Color(0xFFE3E5E9) : const Color(0xFF34363B);
+    final colorScheme = seeded.copyWith(
+      surface: neutralCard,
+      surfaceContainerLowest: neutralBg,
+      surfaceContainerLow: neutralBgLow,
+      surfaceContainer: neutralBgLow,
+      surfaceContainerHigh: neutralCard,
+      surfaceContainerHighest: neutralOutline,
+      outlineVariant: neutralOutline,
     );
     return ThemeData(
       colorScheme: colorScheme,
@@ -988,10 +1006,10 @@ class _StatStrip extends StatelessWidget {
   const _StatStrip({required this.isWide});
 
   static const _items = [
-    ('Demos', Icons.widgets_outlined),
-    ('Examples', Icons.assignment_outlined),
-    ('Patterns', Icons.extension_outlined),
-    ('Cheat Sheet', Icons.menu_book_outlined),
+    ('Demos', Symbols.widgets),
+    ('Examples', Symbols.assignment),
+    ('Patterns', Symbols.extension),
+    ('Cheat Sheet', Symbols.menu_book),
   ];
 
   static int _countFor(String title) => switch (title) {
@@ -1057,7 +1075,10 @@ class _StatTile extends StatelessWidget {
           Positioned(
             right: -14,
             bottom: -18,
-            child: Icon(icon, size: 110, color: onAccent.withValues(alpha: 0.22)),
+            // weight: 150 - icon THẬT SỰ mảnh (Material Symbols cho phép
+            // chỉnh độ dày nét 100-700, khác hẳn Icons mặc định của Flutter
+            // vốn chỉ có 1 độ dày cố định không chỉnh được).
+            child: Icon(icon, size: 110, weight: 150, color: onAccent.withValues(alpha: 0.22)),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
@@ -1352,7 +1373,7 @@ class _NavSidebar extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 8),
                 decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
               ),
-              Icon(icon, size: 17, color: cs.onSurfaceVariant),
+              Icon(icon, size: 17, weight: 300, color: cs.onSurfaceVariant),
               const SizedBox(width: 8),
               Text(
                 title,
@@ -1362,8 +1383,9 @@ class _NavSidebar extends StatelessWidget {
               Text('$count', style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant)),
               const Spacer(),
               Icon(
-                expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                expanded ? Symbols.keyboard_arrow_up : Symbols.keyboard_arrow_down,
                 size: 18,
+                weight: 300,
                 color: cs.onSurfaceVariant,
               ),
             ],
@@ -1457,15 +1479,15 @@ class _NavSidebar extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final destinations = <Widget>[];
     final flatOrder = <LayoutDemo>[];
-    _addSection(context, destinations, flatOrder, 'Demos', Icons.widgets_outlined, demos);
-    _addSection(context, destinations, flatOrder, 'Examples', Icons.assignment_outlined, examples);
-    _addSection(context, destinations, flatOrder, 'Patterns', Icons.extension_outlined, patterns);
+    _addSection(context, destinations, flatOrder, 'Demos', Symbols.widgets, demos);
+    _addSection(context, destinations, flatOrder, 'Examples', Symbols.assignment, examples);
+    _addSection(context, destinations, flatOrder, 'Patterns', Symbols.extension, patterns);
     _addSection(
       context,
       destinations,
       flatOrder,
       'Cheat Sheet',
-      Icons.menu_book_outlined,
+      Symbols.menu_book,
       cheatSheets,
       groupByField: true,
     );
@@ -1498,7 +1520,7 @@ class _NavSidebar extends StatelessWidget {
                     final isDark = mode == ThemeMode.dark;
                     return IconButton(
                       tooltip: isDark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode',
-                      icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined, size: 20),
+                      icon: Icon(isDark ? Symbols.light_mode : Symbols.dark_mode, size: 20, weight: 300),
                       visualDensity: VisualDensity.compact,
                       onPressed: () => themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark,
                     );
@@ -1509,7 +1531,7 @@ class _NavSidebar extends StatelessWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.explore_outlined, size: 18, color: cs.primary),
+                Icon(Symbols.explore, size: 18, weight: 300, color: cs.primary),
                 const SizedBox(width: 6),
                 Text(
                   'MỤC LỤC',
@@ -1527,11 +1549,11 @@ class _NavSidebar extends StatelessWidget {
                   style: const TextStyle(fontSize: 13),
                   decoration: InputDecoration(
                     hintText: 'Tìm trang...',
-                    prefixIcon: const Icon(Icons.search, size: 18),
+                    prefixIcon: const Icon(Symbols.search, size: 18, weight: 300),
                     suffixIcon: searchController.text.isEmpty
                         ? null
                         : IconButton(
-                            icon: const Icon(Icons.close, size: 16),
+                            icon: const Icon(Symbols.close, size: 16, weight: 300),
                             onPressed: () {
                               searchController.clear();
                               onSearchChanged('');
@@ -1554,27 +1576,57 @@ class _NavSidebar extends StatelessWidget {
               },
             ),
             if (allTags.isNotEmpty) ...[
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: allTags
-                    .map(
-                      (tag) => FilterChip(
-                        label: Text(tag, style: const TextStyle(fontSize: 10)),
-                        selected: selectedTags.contains(tag),
-                        onSelected: (_) => onTagToggle(tag),
-                        visualDensity: VisualDensity.compact,
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        showCheckmark: false,
-                        selectedColor: cs.primary,
-                        labelStyle: TextStyle(
-                          color: selectedTags.contains(tag) ? cs.onPrimary : null,
-                          fontSize: 10,
-                        ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Text(
+                    'LỌC THEO TAG',
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.onSurfaceVariant),
+                  ),
+                  const Spacer(),
+                  if (selectedTags.isNotEmpty)
+                    GestureDetector(
+                      onTap: () {
+                        for (final t in List<String>.from(selectedTags)) {
+                          onTagToggle(t);
+                        }
+                      },
+                      child: Text(
+                        'Xoá lọc (${selectedTags.length})',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: cs.primary),
                       ),
-                    )
-                    .toList(),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Cuộn NGANG 1 hàng (thay vì Wrap nhiều hàng) - ~24 tag mà
+              // xuống dòng hết sẽ chiếm rất nhiều chỗ của sidebar, đẩy cả
+              // mục lục xuống thấp. 1 hàng cuộn ngang gọn và "tử tế" hơn.
+              SizedBox(
+                height: 30,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: allTags.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 6),
+                  itemBuilder: (context, i) {
+                    final tag = allTags[i];
+                    final selected = selectedTags.contains(tag);
+                    return FilterChip(
+                      label: Text(tag, style: const TextStyle(fontSize: 11)),
+                      selected: selected,
+                      onSelected: (_) => onTagToggle(tag),
+                      visualDensity: VisualDensity.compact,
+                      showCheckmark: false,
+                      backgroundColor: cs.surfaceContainerHighest,
+                      selectedColor: cs.primary,
+                      side: BorderSide.none,
+                      labelStyle: TextStyle(
+                        color: selected ? cs.onPrimary : cs.onSurfaceVariant,
+                        fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
             const SizedBox(height: 4),
@@ -1781,7 +1833,7 @@ class _DemoTileState extends State<_DemoTile> {
                       color: accent,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.widgets_outlined, color: Colors.white, size: 22),
+                    child: const Icon(Symbols.widgets, color: Colors.white, size: 22, weight: 300),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -1806,17 +1858,20 @@ class _DemoTileState extends State<_DemoTile> {
                           Wrap(
                             spacing: 6,
                             runSpacing: 6,
+                            // Tag nhuộm màu theo ĐÚNG accent của card (thay
+                            // vì màu trung tính rời rạc) - vừa đồng bộ hơn,
+                            // vừa đỡ "chìm" trên nền pastel cùng tông.
                             children: demo.tags
                                 .map(
                                   (tag) => Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: colorScheme.surface.withValues(alpha: 0.7),
+                                      color: accent.withValues(alpha: 0.16),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
                                       tag,
-                                      style: TextStyle(fontSize: 10, color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600),
+                                      style: TextStyle(fontSize: 10.5, color: accent, fontWeight: FontWeight.w700),
                                     ),
                                   ),
                                 )
@@ -1836,7 +1891,7 @@ class _DemoTileState extends State<_DemoTile> {
                       color: colorScheme.surface.withValues(alpha: 0.7),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.north_east, size: 14, color: colorScheme.onSurface),
+                    child: Icon(Symbols.north_east, size: 14, weight: 300, color: colorScheme.onSurface),
                   ),
                 ],
               ),
