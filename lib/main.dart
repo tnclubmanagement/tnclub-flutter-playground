@@ -1058,10 +1058,41 @@ class _MainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasAnyResult =
         demos.isNotEmpty || examples.isNotEmpty || patterns.isNotEmpty || cheatSheets.isNotEmpty;
+    final shownCount = demos.length + examples.length + patterns.length + cheatSheets.length;
+    final totalCount = HomePage.demos.length +
+        HomePage.examples.length +
+        HomePage.patterns.length +
+        HomePage.cheatSheets.length;
+
+    // Hero: card giới thiệu (to) + vòng tròn % (nhỏ) nằm CẠNH NHAU như ảnh
+    // tham khảo - trên màn hẹp thì xếp dọc lại (Column) cho vừa.
+    //
+    // CỐ Ý không dùng IntrinsicHeight để ép 2 card cao bằng nhau: nó tính
+    // chiều cao "intrinsic" của Text theo 1 cách khác với lúc layout thật
+    // (width bị bó hẹp bởi flex), lệch vài pixel là RenderFlex tràn ngay -
+    // đây là 1 cạm bẫy kinh điển của IntrinsicHeight. Để mỗi card tự co
+    // theo nội dung (align top) an toàn hơn, chấp nhận 2 card cao khác nhau.
+    final hero = isWide
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Expanded(flex: 2, child: _IntroSection()),
+              const SizedBox(width: 12),
+              Expanded(child: _ProgressRingCard(shown: shownCount, total: totalCount)),
+            ],
+          )
+        : Column(
+            children: [
+              const _IntroSection(),
+              const SizedBox(height: 12),
+              _ProgressRingCard(shown: shownCount, total: totalCount),
+            ],
+          );
+
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _IntroSection(),
+        hero,
         const SizedBox(height: 12),
         const _StatStrip(),
         const SizedBox(height: 20),
@@ -1073,53 +1104,148 @@ class _MainContent extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ),
-        if (demos.isNotEmpty) ...[
-          const _SectionHeader('Demos'),
-          _DemoGrid(demos: demos, isWide: isWide, accent: kSectionAccent['Demos']!),
-          const SizedBox(height: 16),
-        ],
-        if (examples.isNotEmpty) ...[
-          const _SectionHeader('Examples'),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text(
-              'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
-              'tự luyện trước khi xem đáp án.',
-            ),
+        if (demos.isNotEmpty)
+          _SectionPanel(
+            title: 'Demos',
+            accent: kSectionAccent['Demos']!,
+            child: _DemoGrid(demos: demos, isWide: isWide, accent: kSectionAccent['Demos']!),
           ),
-          _DemoGrid(demos: examples, isWide: isWide, accent: kSectionAccent['Examples']!),
-          const SizedBox(height: 16),
-        ],
-        if (patterns.isNotEmpty) ...[
-          const _SectionHeader('Patterns'),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text(
-              'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
-              'package phổ biến đáng tìm hiểu thêm.',
-            ),
+        if (examples.isNotEmpty)
+          _SectionPanel(
+            title: 'Examples',
+            accent: kSectionAccent['Examples']!,
+            description: 'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
+                'tự luyện trước khi xem đáp án.',
+            child: _DemoGrid(demos: examples, isWide: isWide, accent: kSectionAccent['Examples']!),
           ),
-          _DemoGrid(demos: patterns, isWide: isWide, accent: kSectionAccent['Patterns']!),
-          const SizedBox(height: 16),
-        ],
-        if (cheatSheets.isNotEmpty) ...[
-          const _SectionHeader('Cheat Sheet'),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text(
-              'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
-              'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
-              'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
-            ),
+        if (patterns.isNotEmpty)
+          _SectionPanel(
+            title: 'Patterns',
+            accent: kSectionAccent['Patterns']!,
+            description: 'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
+                'package phổ biến đáng tìm hiểu thêm.',
+            child: _DemoGrid(demos: patterns, isWide: isWide, accent: kSectionAccent['Patterns']!),
           ),
-          _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide, accent: kSectionAccent['Cheat Sheet']!),
-        ],
+        if (cheatSheets.isNotEmpty)
+          _SectionPanel(
+            title: 'Cheat Sheet',
+            accent: kSectionAccent['Cheat Sheet']!,
+            description: 'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
+                'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
+                'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
+            child: _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide, accent: kSectionAccent['Cheat Sheet']!),
+          ),
       ],
     );
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(isWide ? 24 : 8),
       child: content,
+    );
+  }
+}
+
+/// Vòng tròn % (donut) - mô phỏng kiểu thẻ "27% Courses rated above 4.5"
+/// trong ảnh tham khảo. Ở đây dùng cho con số thật của app: bao nhiêu % số
+/// trang đang hiện ra khớp với search/tag đang lọc (100% khi không lọc gì).
+class _ProgressRingCard extends StatelessWidget {
+  final int shown;
+  final int total;
+
+  const _ProgressRingCard({required this.shown, required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    final percent = total == 0 ? 0.0 : shown / total;
+    final accent = kSectionAccent['Patterns']!;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Color.alphaBlend(accent.withValues(alpha: 0.14), Theme.of(context).colorScheme.surface),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 64,
+            height: 64,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: CircularProgressIndicator(
+                    value: percent,
+                    strokeWidth: 7,
+                    backgroundColor: accent.withValues(alpha: 0.15),
+                    valueColor: AlwaysStoppedAnimation(accent),
+                  ),
+                ),
+                Text('${(percent * 100).round()}%', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: accent)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '$shown / $total trang đang hiện',
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Theo bộ lọc search/tag hiện tại',
+            style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Khung "panel" bo góc lớn bọc quanh mỗi section (Demos/Examples/Patterns/
+/// Cheat Sheet) - để mỗi nhóm trông như 1 khối card RIÊNG BIỆT (giống các
+/// panel tách bạch trong ảnh tham khảo) thay vì chỉ là tiêu đề + nội dung
+/// trôi nổi liền mạch trên nền trang.
+class _SectionPanel extends StatelessWidget {
+  final String title;
+  final Color accent;
+  final String? description;
+  final Widget child;
+
+  const _SectionPanel({
+    required this.title,
+    required this.accent,
+    required this.child,
+    this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: accent.withValues(alpha: 0.18)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionHeader(title),
+          if (description != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(description!),
+            ),
+          const SizedBox(height: 4),
+          child,
+        ],
+      ),
     );
   }
 }
