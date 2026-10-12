@@ -851,28 +851,18 @@ class _HomePageState extends State<HomePage> {
       builder: (context, outerConstraints) {
         final isWide = outerConstraints.maxWidth >= 900;
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Flutter Layout Playground'),
-            actions: [
-              // Toggle Dark Mode THẬT (không chỉ demo trong cheat sheet) -
-              // đổi themeModeNotifier.value sẽ áp dụng NGAY cho toàn app,
-              // kể cả các trang đã push trước đó (Theme là InheritedWidget
-              // toàn cục qua MaterialApp, không chỉ riêng HomePage).
-              ValueListenableBuilder<ThemeMode>(
-                valueListenable: themeModeNotifier,
-                builder: (context, mode, _) {
-                  final isDark = mode == ThemeMode.dark;
-                  return IconButton(
-                    tooltip: isDark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode',
-                    icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
-                    onPressed: () => themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark,
-                  );
-                },
-              ),
-              const SizedBox(width: 4),
-            ],
-          ),
-          // Màn hình hẹp: sidebar gấp vào Drawer (bấm icon ☰ ở AppBar để
+          // KHÔNG còn AppBar/header riêng - tên app + nút dark mode giờ
+          // nằm NGAY trong sidebar (xem _NavSidebar) để trang đỡ bị chia
+          // làm 2 tầng điều hướng (header + sidebar) như trước.
+          //
+          // Màn hình hẹp vẫn cần 1 thanh TỐI THIỂU chỉ để có icon ☰ mở
+          // Drawer (không có AppBar thì không có cách chuẩn nào để mở
+          // sidebar) - không hiện title ở đây nữa vì title đã chuyển vào
+          // sidebar/drawer rồi.
+          appBar: isWide
+              ? null
+              : AppBar(title: const SizedBox.shrink(), toolbarHeight: 48),
+          // Màn hình hẹp: sidebar gấp vào Drawer (bấm icon ☰ ở thanh trên để
           // mở). Màn hình rộng: CÙNG widget sidebar hiện cố định bên trái
           // (xem Row dưới) - NavigationDrawer (Material 3) vốn đã tự vẽ
           // elevation/shadow riêng, không cần Drawer bọc ngoài nữa.
@@ -1417,6 +1407,32 @@ class _NavSidebar extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Tên app đóng vai trò "logo" của sidebar - thay cho AppBar
+            // riêng đã bỏ, giống cách 1 dashboard thật gộp luôn tên sản
+            // phẩm vào góc trên sidebar thay vì có cả header lẫn sidebar.
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Flutter Layout Playground',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: cs.onSurface),
+                  ),
+                ),
+                ValueListenableBuilder<ThemeMode>(
+                  valueListenable: themeModeNotifier,
+                  builder: (context, mode, _) {
+                    final isDark = mode == ThemeMode.dark;
+                    return IconButton(
+                      tooltip: isDark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode',
+                      icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined, size: 20),
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () => themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark,
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
             Row(
               children: [
                 Icon(Icons.explore_outlined, size: 18, color: cs.primary),

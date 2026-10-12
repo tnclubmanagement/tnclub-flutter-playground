@@ -5,7 +5,7 @@ import 'package:flutter_layout_playground/main.dart';
 void main() {
   tearDown(() => themeModeNotifier.value = ThemeMode.light);
 
-  testWidgets('Dark mode toggle in AppBar actually switches ThemeMode', (
+  testWidgets('Dark mode toggle in sidebar header actually switches ThemeMode', (
     tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(1400, 900));
