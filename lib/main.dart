@@ -51,7 +51,9 @@ import 'widgets/example_scaffold.dart';
 /// cả app, xem [ThemeCheatsheet] cho pattern giải thích chi tiết). Dùng
 /// `ValueNotifier` + `ValueListenableBuilder` thay vì setState thủ công -
 /// đúng pattern đã dạy ở mục Pattern/ValueNotifier của app này.
-final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(ThemeMode.light);
+final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
+  ThemeMode.light,
+);
 
 /// Mỗi nhóm lớn trên trang chủ (Demos/Examples/Patterns/Cheat Sheet) có 1
 /// màu "thương hiệu" RIÊNG (không suy ra từ seed color chung) - dùng cho
@@ -89,7 +91,10 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(settings: settings, builder: demo.builder);
       }
     }
-    return MaterialPageRoute(settings: settings, builder: (_) => const HomePage());
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => const HomePage(),
+    );
   }
 
   static ThemeData _buildTheme(Brightness brightness) {
@@ -103,10 +108,16 @@ class MyApp extends StatelessWidget {
     // NHƯNG nền/card dùng XÁM TRUNG TÍNH THẬT (không pha màu tím của M3 "surface
     // tint") làm chủ đạo - ép lại các tông surface thay vì để seed chi phối,
     // để nền luôn xám sạch, chỉ có card/button mới có màu.
-    final neutralBg = isLight ? const Color(0xFFF2F3F5) : const Color(0xFF17181B);
-    final neutralBgLow = isLight ? const Color(0xFFF7F8FA) : const Color(0xFF1C1D21);
+    final neutralBg = isLight
+        ? const Color(0xFFF2F3F5)
+        : const Color(0xFF17181B);
+    final neutralBgLow = isLight
+        ? const Color(0xFFF7F8FA)
+        : const Color(0xFF1C1D21);
     final neutralCard = isLight ? Colors.white : const Color(0xFF232428);
-    final neutralOutline = isLight ? const Color(0xFFE3E5E9) : const Color(0xFF34363B);
+    final neutralOutline = isLight
+        ? const Color(0xFFE3E5E9)
+        : const Color(0xFF34363B);
     final colorScheme = seeded.copyWith(
       surface: neutralCard,
       surfaceContainerLowest: neutralBg,
@@ -173,7 +184,9 @@ class MyApp extends StatelessWidget {
           foregroundColor: colorScheme.onPrimary,
           elevation: 0,
           textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         ),
       ),
@@ -182,7 +195,9 @@ class MyApp extends StatelessWidget {
           foregroundColor: colorScheme.primary,
           side: BorderSide(color: colorScheme.outline),
           textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         ),
       ),
@@ -190,7 +205,9 @@ class MyApp extends StatelessWidget {
         style: TextButton.styleFrom(
           foregroundColor: colorScheme.primary,
           textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
       ),
       // Input/search field bo tròn pill, nền tint nhẹ thay viền mỏng xám
@@ -198,7 +215,10 @@ class MyApp extends StatelessWidget {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
@@ -210,19 +230,27 @@ class MyApp extends StatelessWidget {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected) ? colorScheme.primary : null,
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : null,
         ),
         trackColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected) ? colorScheme.primary.withValues(alpha: 0.5) : null,
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primary.withValues(alpha: 0.5)
+              : null,
         ),
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected) ? colorScheme.primary : null,
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : null,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       ),
-      progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.primary),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: colorScheme.primary,
+      ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
@@ -410,7 +438,8 @@ class HomePage extends StatefulWidget {
     ),
     LayoutDemo(
       title: 'Login Form',
-      description: 'Column các field + Row (Checkbox/Spacer) + Expanded(Divider)',
+      description:
+          'Column các field + Row (Checkbox/Spacer) + Expanded(Divider)',
       path: '/examples/login-form',
       tags: const ['form', 'layout'],
       builder: (_) => ExampleScaffold(
@@ -472,7 +501,8 @@ class HomePage extends StatefulWidget {
     ),
     LayoutDemo(
       title: 'Dashboard Stats',
-      description: 'Wrap cho thẻ thống kê + ListView ngang cho hoạt động gần đây',
+      description:
+          'Wrap cho thẻ thống kê + ListView ngang cho hoạt động gần đây',
       path: '/examples/dashboard-stats',
       tags: const ['layout', 'list', 'scroll'],
       builder: (_) => ExampleScaffold(
@@ -521,7 +551,8 @@ class HomePage extends StatefulWidget {
     ),
     LayoutDemo(
       title: 'Named & Factory constructor',
-      description: 'Nhiều cách tạo object theo ngữ cảnh, factory tự chọn implementation',
+      description:
+          'Nhiều cách tạo object theo ngữ cảnh, factory tự chọn implementation',
       path: '/patterns/constructors',
       tags: const ['dart', 'pattern'],
       builder: (_) => const DemoScaffold(
@@ -794,7 +825,12 @@ class _HomePageState extends State<HomePage> {
   // NavigationDrawer (Material 3) không tự hỗ trợ fold từng nhóm như
   // ExpansionTile, nên tự quản lý: bấm tiêu đề section để ẩn/hiện các
   // NavigationDrawerDestination con của nó (xem _NavSidebar._addSection).
-  final Set<String> _expandedSections = {'Demos', 'Examples', 'Patterns', 'Cheat Sheet'};
+  final Set<String> _expandedSections = {
+    'Demos',
+    'Examples',
+    'Patterns',
+    'Cheat Sheet',
+  };
 
   @override
   void dispose() {
@@ -804,7 +840,8 @@ class _HomePageState extends State<HomePage> {
 
   bool _matches(LayoutDemo demo) {
     final q = _query.trim().toLowerCase();
-    final matchesQuery = q.isEmpty ||
+    final matchesQuery =
+        q.isEmpty ||
         demo.title.toLowerCase().contains(q) ||
         demo.description.toLowerCase().contains(q) ||
         demo.tags.any((t) => t.toLowerCase().contains(q));
@@ -935,26 +972,29 @@ class _IntroSection extends StatelessWidget {
   const _IntroSection();
 
   Widget _step(BuildContext context, String text, Color dotColor) => Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 5),
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                text,
-                style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
-              ),
-            ),
-          ],
+    padding: const EdgeInsets.only(bottom: 5),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 5),
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
         ),
-      );
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -969,7 +1009,11 @@ class _IntroSection extends StatelessWidget {
         children: [
           Text(
             '👋 Flutter Layout Playground',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: cs.onSurface),
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -980,16 +1024,35 @@ class _IntroSection extends StatelessWidget {
             style: TextStyle(color: cs.onSurfaceVariant),
           ),
           const SizedBox(height: 12),
-          Text('Gợi ý thứ tự học:', style: TextStyle(fontWeight: FontWeight.bold, color: cs.onSurface)),
+          Text(
+            'Gợi ý thứ tự học:',
+            style: TextStyle(fontWeight: FontWeight.bold, color: cs.onSurface),
+          ),
           const SizedBox(height: 4),
-          _step(context, '1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)', kSectionAccent['Demos']!),
-          _step(context, '2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án', kSectionAccent['Examples']!),
-          _step(context, '3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần', kSectionAccent['Cheat Sheet']!),
+          _step(
+            context,
+            '1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)',
+            kSectionAccent['Demos']!,
+          ),
+          _step(
+            context,
+            '2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án',
+            kSectionAccent['Examples']!,
+          ),
+          _step(
+            context,
+            '3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần',
+            kSectionAccent['Cheat Sheet']!,
+          ),
           const SizedBox(height: 8),
           Text(
             '💡 Dùng ô tìm kiếm/tag ở sidebar bên trái (hoặc mở menu ☰ nếu màn '
             'hình hẹp) để lọc nhanh theo chủ đề.',
-            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: cs.onSurfaceVariant),
+            style: TextStyle(
+              fontSize: 12,
+              fontStyle: FontStyle.italic,
+              color: cs.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -1014,11 +1077,11 @@ class _StatStrip extends StatelessWidget {
   ];
 
   static int _countFor(String title) => switch (title) {
-        'Demos' => HomePage.demos.length,
-        'Examples' => HomePage.examples.length,
-        'Patterns' => HomePage.patterns.length,
-        _ => HomePage.cheatSheets.length,
-      };
+    'Demos' => HomePage.demos.length,
+    'Examples' => HomePage.examples.length,
+    'Patterns' => HomePage.patterns.length,
+    _ => HomePage.cheatSheets.length,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -1056,7 +1119,11 @@ class _StatTile extends StatelessWidget {
   final IconData icon;
   final int count;
 
-  const _StatTile({required this.title, required this.icon, required this.count});
+  const _StatTile({
+    required this.title,
+    required this.icon,
+    required this.count,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1068,7 +1135,10 @@ class _StatTile extends StatelessWidget {
       width: double.infinity,
       height: 120,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(18)),
+      decoration: BoxDecoration(
+        color: accent,
+        borderRadius: BorderRadius.circular(18),
+      ),
       child: Stack(
         children: [
           // Icon THIN (outline) khổ lớn làm HÌNH NỀN mờ, ló ra góc dưới
@@ -1079,7 +1149,12 @@ class _StatTile extends StatelessWidget {
             // weight: 150 - icon THẬT SỰ mảnh (Material Symbols cho phép
             // chỉnh độ dày nét 100-700, khác hẳn Icons mặc định của Flutter
             // vốn chỉ có 1 độ dày cố định không chỉnh được).
-            child: Icon(icon, size: 110, weight: 150, color: onAccent.withValues(alpha: 0.22)),
+            child: Icon(
+              icon,
+              size: 110,
+              weight: 150,
+              color: onAccent.withValues(alpha: 0.22),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
@@ -1087,8 +1162,22 @@ class _StatTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('$count', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: onAccent)),
-                Text(title, style: TextStyle(fontSize: 13, color: onAccent.withValues(alpha: 0.9), fontWeight: FontWeight.w600)),
+                Text(
+                  '$count',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w800,
+                    color: onAccent,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: onAccent.withValues(alpha: 0.9),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
@@ -1120,9 +1209,14 @@ class _MainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasAnyResult =
-        demos.isNotEmpty || examples.isNotEmpty || patterns.isNotEmpty || cheatSheets.isNotEmpty;
-    final shownCount = demos.length + examples.length + patterns.length + cheatSheets.length;
-    final totalCount = HomePage.demos.length +
+        demos.isNotEmpty ||
+        examples.isNotEmpty ||
+        patterns.isNotEmpty ||
+        cheatSheets.isNotEmpty;
+    final shownCount =
+        demos.length + examples.length + patterns.length + cheatSheets.length;
+    final totalCount =
+        HomePage.demos.length +
         HomePage.examples.length +
         HomePage.patterns.length +
         HomePage.cheatSheets.length;
@@ -1141,7 +1235,9 @@ class _MainContent extends StatelessWidget {
             children: [
               const Expanded(flex: 2, child: _IntroSection()),
               const SizedBox(width: 12),
-              Expanded(child: _ProgressRingCard(shown: shownCount, total: totalCount)),
+              Expanded(
+                child: _ProgressRingCard(shown: shownCount, total: totalCount),
+              ),
             ],
           )
         : Column(
@@ -1164,39 +1260,60 @@ class _MainContent extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Text(
               'Không tìm thấy trang phù hợp - thử bỏ bớt từ khoá/tag đang lọc.',
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         if (demos.isNotEmpty)
           _SectionPanel(
             title: 'Demos',
             accent: kSectionAccent['Demos']!,
-            child: _DemoGrid(demos: demos, isWide: isWide, accent: kSectionAccent['Demos']!),
+            child: _DemoGrid(
+              demos: demos,
+              isWide: isWide,
+              accent: kSectionAccent['Demos']!,
+            ),
           ),
         if (examples.isNotEmpty)
           _SectionPanel(
             title: 'Examples',
             accent: kSectionAccent['Examples']!,
-            description: 'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
+            description:
+                'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
                 'tự luyện trước khi xem đáp án.',
-            child: _DemoGrid(demos: examples, isWide: isWide, accent: kSectionAccent['Examples']!),
+            child: _DemoGrid(
+              demos: examples,
+              isWide: isWide,
+              accent: kSectionAccent['Examples']!,
+            ),
           ),
         if (patterns.isNotEmpty)
           _SectionPanel(
             title: 'Patterns',
             accent: kSectionAccent['Patterns']!,
-            description: 'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
+            description:
+                'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
                 'package phổ biến đáng tìm hiểu thêm.',
-            child: _DemoGrid(demos: patterns, isWide: isWide, accent: kSectionAccent['Patterns']!),
+            child: _DemoGrid(
+              demos: patterns,
+              isWide: isWide,
+              accent: kSectionAccent['Patterns']!,
+            ),
           ),
         if (cheatSheets.isNotEmpty)
           _SectionPanel(
             title: 'Cheat Sheet',
             accent: kSectionAccent['Cheat Sheet']!,
-            description: 'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
+            description:
+                'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
                 'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
                 'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
-            child: _CheatSheetGroups(cheatSheets: cheatSheets, isWide: isWide, accent: kSectionAccent['Cheat Sheet']!),
+            child: _CheatSheetGroups(
+              cheatSheets: cheatSheets,
+              isWide: isWide,
+              accent: kSectionAccent['Cheat Sheet']!,
+            ),
           ),
       ],
     );
@@ -1225,7 +1342,10 @@ class _ProgressRingCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Color.alphaBlend(accent.withValues(alpha: 0.14), Theme.of(context).colorScheme.surface),
+        color: Color.alphaBlend(
+          accent.withValues(alpha: 0.14),
+          Theme.of(context).colorScheme.surface,
+        ),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -1247,19 +1367,33 @@ class _ProgressRingCard extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation(accent),
                   ),
                 ),
-                Text('${(percent * 100).round()}%', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: accent)),
+                Text(
+                  '${(percent * 100).round()}%',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                    color: accent,
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 12),
           Text(
             '$shown / $total trang đang hiện',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 2),
           Text(
             'Theo bộ lọc search/tag hiện tại',
-            style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -1346,7 +1480,9 @@ class _GlassPanel extends StatelessWidget {
               ],
             ),
             border: Border.all(
-              color: borderColor ?? Colors.white.withValues(alpha: isDark ? 0.08 : 0.6),
+              color:
+                  borderColor ??
+                  Colors.white.withValues(alpha: isDark ? 0.08 : 0.6),
             ),
           ),
           child: child,
@@ -1369,7 +1505,10 @@ class _BackgroundBlobs extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        decoration: BoxDecoration(color: color.withValues(alpha: 0.45), shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.45),
+          shape: BoxShape.circle,
+        ),
       ),
     );
   }
@@ -1381,10 +1520,26 @@ class _BackgroundBlobs extends StatelessWidget {
     return IgnorePointer(
       child: Stack(
         children: [
-          Positioned(top: -100, left: -80, child: _blob(kSectionAccent['Demos']!, 280)),
-          Positioned(top: 160, right: -120, child: _blob(kSectionAccent['Examples']!, 320)),
-          Positioned(bottom: -120, left: 200, child: _blob(kSectionAccent['Cheat Sheet']!, 260)),
-          Positioned(bottom: 40, right: 120, child: _blob(kSectionAccent['Patterns']!, 220)),
+          Positioned(
+            top: -100,
+            left: -80,
+            child: _blob(kSectionAccent['Demos']!, 280),
+          ),
+          Positioned(
+            top: 160,
+            right: -120,
+            child: _blob(kSectionAccent['Examples']!, 320),
+          ),
+          Positioned(
+            bottom: -120,
+            left: 200,
+            child: _blob(kSectionAccent['Cheat Sheet']!, 260),
+          ),
+          Positioned(
+            bottom: 40,
+            right: 120,
+            child: _blob(kSectionAccent['Patterns']!, 220),
+          ),
         ],
       ),
     );
@@ -1432,7 +1587,12 @@ class _NavSidebar extends StatelessWidget {
   // đậm) - gần với mục "Performance" trong ảnh tham khảo: chữ thường,
   // weight vừa phải, icon/chevron trung tính (xám), chỉ 1 điểm nhấn màu
   // nhỏ (chấm tròn) để gợi ý accent riêng thay vì tô cả dòng.
-  Widget _sectionLabel(BuildContext context, String title, IconData icon, int count) {
+  Widget _sectionLabel(
+    BuildContext context,
+    String title,
+    IconData icon,
+    int count,
+  ) {
     final cs = Theme.of(context).colorScheme;
     final expanded = expandedSections.contains(title);
     final accent = kSectionAccent[title] ?? cs.primary;
@@ -1450,19 +1610,31 @@ class _NavSidebar extends StatelessWidget {
                 width: 6,
                 height: 6,
                 margin: const EdgeInsets.only(right: 8),
-                decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: accent,
+                  shape: BoxShape.circle,
+                ),
               ),
               Icon(icon, size: 17, weight: 300, color: cs.onSurfaceVariant),
               const SizedBox(width: 8),
               Text(
                 title,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: cs.onSurface),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: cs.onSurface,
+                ),
               ),
               const SizedBox(width: 6),
-              Text('$count', style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant)),
+              Text(
+                '$count',
+                style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+              ),
               const Spacer(),
               Icon(
-                expanded ? Symbols.keyboard_arrow_up : Symbols.keyboard_arrow_down,
+                expanded
+                    ? Symbols.keyboard_arrow_up
+                    : Symbols.keyboard_arrow_down,
                 size: 18,
                 weight: 300,
                 color: cs.onSurfaceVariant,
@@ -1479,7 +1651,10 @@ class _NavSidebar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(34, 8, 16, 2),
       child: Text(
         title,
-        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.outline),
+        style: TextStyle(
+          fontSize: 11,
+          color: Theme.of(context).colorScheme.outline,
+        ),
       ),
     );
   }
@@ -1517,10 +1692,12 @@ class _NavSidebar extends StatelessWidget {
     final byGroup = <String, List<LayoutDemo>>{};
     for (final d in items) {
       final g = d.group ?? 'Khác';
-      byGroup.putIfAbsent(g, () {
-        groupOrder.add(g);
-        return [];
-      }).add(d);
+      byGroup
+          .putIfAbsent(g, () {
+            groupOrder.add(g);
+            return [];
+          })
+          .add(d);
     }
     for (final g in groupOrder) {
       destinations.add(_groupLabel(context, g));
@@ -1558,9 +1735,30 @@ class _NavSidebar extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final destinations = <Widget>[];
     final flatOrder = <LayoutDemo>[];
-    _addSection(context, destinations, flatOrder, 'Demos', Symbols.widgets, demos);
-    _addSection(context, destinations, flatOrder, 'Examples', Symbols.assignment, examples);
-    _addSection(context, destinations, flatOrder, 'Patterns', Symbols.extension, patterns);
+    _addSection(
+      context,
+      destinations,
+      flatOrder,
+      'Demos',
+      Symbols.widgets,
+      demos,
+    );
+    _addSection(
+      context,
+      destinations,
+      flatOrder,
+      'Examples',
+      Symbols.assignment,
+      examples,
+    );
+    _addSection(
+      context,
+      destinations,
+      flatOrder,
+      'Patterns',
+      Symbols.extension,
+      patterns,
+    );
     _addSection(
       context,
       destinations,
@@ -1584,144 +1782,198 @@ class _NavSidebar extends StatelessWidget {
           // -1: không có mục nào "đang chọn" cố định - mỗi lần bấm sẽ MỞ 1
           // trang MỚI (push) chứ không phải chuyển tab trong cùng 1 màn hình.
           selectedIndex: -1,
-          onDestinationSelected: (index) => Navigator.of(context).pushNamed(flatOrder[index].path),
+          onDestinationSelected: (index) =>
+              Navigator.of(context).pushNamed(flatOrder[index].path),
           indicatorColor: cs.primaryContainer,
           header: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Tên app đóng vai trò "logo" của sidebar - thay cho AppBar
-            // riêng đã bỏ, giống cách 1 dashboard thật gộp luôn tên sản
-            // phẩm vào góc trên sidebar thay vì có cả header lẫn sidebar.
-            Row(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: Text(
-                    'Flutter Layout Playground',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: cs.onSurface),
-                  ),
-                ),
-                ValueListenableBuilder<ThemeMode>(
-                  valueListenable: themeModeNotifier,
-                  builder: (context, mode, _) {
-                    final isDark = mode == ThemeMode.dark;
-                    return IconButton(
-                      tooltip: isDark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode',
-                      icon: Icon(isDark ? Symbols.light_mode : Symbols.dark_mode, size: 20, weight: 300),
-                      visualDensity: VisualDensity.compact,
-                      onPressed: () => themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark,
-                    );
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Symbols.explore, size: 18, weight: 300, color: cs.primary),
-                const SizedBox(width: 6),
-                Text(
-                  'MỤC LỤC',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1, color: cs.primary),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            AnimatedBuilder(
-              animation: searchController,
-              builder: (context, _) {
-                return TextField(
-                  controller: searchController,
-                  onChanged: onSearchChanged,
-                  style: const TextStyle(fontSize: 13),
-                  decoration: InputDecoration(
-                    hintText: 'Tìm trang...',
-                    prefixIcon: const Icon(Symbols.search, size: 18, weight: 300),
-                    suffixIcon: searchController.text.isEmpty
-                        ? null
-                        : IconButton(
-                            icon: const Icon(Symbols.close, size: 16, weight: 300),
-                            onPressed: () {
-                              searchController.clear();
-                              onSearchChanged('');
-                            },
+                // Tên app đóng vai trò "logo" của sidebar - thay cho AppBar
+                // riêng đã bỏ, giống cách 1 dashboard thật gộp luôn tên sản
+                // phẩm vào góc trên sidebar thay vì có cả header lẫn sidebar.
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Flutter Layout Playground',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: cs.onSurface,
                           ),
-                    isDense: true,
-                    filled: true,
-                    fillColor: cs.surfaceContainerHighest,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide(color: cs.primary, width: 1.5),
-                    ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ValueListenableBuilder<ThemeMode>(
+                        valueListenable: themeModeNotifier,
+                        builder: (context, mode, _) {
+                          final isDark = mode == ThemeMode.dark;
+                          return IconButton(
+                            tooltip: isDark
+                                ? 'Chuyển sang Light mode'
+                                : 'Chuyển sang Dark mode',
+                            icon: Icon(
+                              isDark ? Symbols.light_mode : Symbols.dark_mode,
+                              size: 20,
+                              weight: 300,
+                            ),
+                            visualDensity: VisualDensity.compact,
+                            onPressed: () => themeModeNotifier.value = isDark
+                                ? ThemeMode.light
+                                : ThemeMode.dark,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-            if (allTags.isNotEmpty) ...[
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Text(
-                    'LỌC THEO TAG',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: cs.onSurfaceVariant),
-                  ),
-                  const Spacer(),
-                  if (selectedTags.isNotEmpty)
-                    GestureDetector(
-                      onTap: () {
-                        for (final t in List<String>.from(selectedTags)) {
-                          onTagToggle(t);
-                        }
-                      },
-                      child: Text(
-                        'Xoá lọc (${selectedTags.length})',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: cs.primary),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Icon(
+                      Symbols.explore,
+                      size: 18,
+                      weight: 300,
+                      color: cs.primary,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'MỤC LỤC',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        color: cs.primary,
                       ),
                     ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              // Cuộn NGANG 1 hàng (thay vì Wrap nhiều hàng) - ~24 tag mà
-              // xuống dòng hết sẽ chiếm rất nhiều chỗ của sidebar, đẩy cả
-              // mục lục xuống thấp. 1 hàng cuộn ngang gọn và "tử tế" hơn.
-              SizedBox(
-                height: 30,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: allTags.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 6),
-                  itemBuilder: (context, i) {
-                    final tag = allTags[i];
-                    final selected = selectedTags.contains(tag);
-                    return FilterChip(
-                      label: Text(tag, style: const TextStyle(fontSize: 11)),
-                      selected: selected,
-                      onSelected: (_) => onTagToggle(tag),
-                      visualDensity: VisualDensity.compact,
-                      showCheckmark: false,
-                      backgroundColor: cs.surfaceContainerHighest,
-                      selectedColor: cs.primary,
-                      side: BorderSide.none,
-                      labelStyle: TextStyle(
-                        color: selected ? cs.onPrimary : cs.onSurfaceVariant,
-                        fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  ],
+                ),
+                const SizedBox(height: 12),
+                AnimatedBuilder(
+                  animation: searchController,
+                  builder: (context, _) {
+                    return TextField(
+                      controller: searchController,
+                      onChanged: onSearchChanged,
+                      style: const TextStyle(fontSize: 13),
+                      decoration: InputDecoration(
+                        hintText: 'Tìm trang...',
+                        prefixIcon: const Icon(
+                          Symbols.search,
+                          size: 18,
+                          weight: 300,
+                        ),
+                        suffixIcon: searchController.text.isEmpty
+                            ? null
+                            : IconButton(
+                                icon: const Icon(
+                                  Symbols.close,
+                                  size: 16,
+                                  weight: 300,
+                                ),
+                                onPressed: () {
+                                  searchController.clear();
+                                  onSearchChanged('');
+                                },
+                              ),
+                        isDense: true,
+                        filled: true,
+                        fillColor: cs.surfaceContainerHighest,
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 8,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide(color: cs.primary, width: 1.5),
+                        ),
                       ),
                     );
                   },
                 ),
-              ),
-            ],
-            const SizedBox(height: 4),
-            Divider(height: 1, color: cs.outlineVariant),
-          ],
-        ),
-      ),
+                if (allTags.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Text(
+                        'LỌC THEO TAG',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                          color: cs.onSurfaceVariant,
+                        ),
+                      ),
+                      const Spacer(),
+                      if (selectedTags.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            for (final t in List<String>.from(selectedTags)) {
+                              onTagToggle(t);
+                            }
+                          },
+                          child: Text(
+                            'Xoá lọc (${selectedTags.length})',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: cs.primary,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Cuộn NGANG 1 hàng (thay vì Wrap nhiều hàng) - ~24 tag mà
+                  // xuống dòng hết sẽ chiếm rất nhiều chỗ của sidebar, đẩy cả
+                  // mục lục xuống thấp. 1 hàng cuộn ngang gọn và "tử tế" hơn.
+                  SizedBox(
+                    height: 30,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: allTags.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 6),
+                      itemBuilder: (context, i) {
+                        final tag = allTags[i];
+                        final selected = selectedTags.contains(tag);
+                        return FilterChip(
+                          label: Text(
+                            tag,
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                          selected: selected,
+                          onSelected: (_) => onTagToggle(tag),
+                          visualDensity: VisualDensity.compact,
+                          showCheckmark: false,
+                          backgroundColor: cs.surfaceContainerHighest,
+                          selectedColor: cs.primary,
+                          side: BorderSide.none,
+                          labelStyle: TextStyle(
+                            color: selected
+                                ? cs.onPrimary
+                                : cs.onSurfaceVariant,
+                            fontWeight: selected
+                                ? FontWeight.w700
+                                : FontWeight.w500,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 16),
+                Divider(height: 1, color: cs.outlineVariant),
+              ],
+            ),
+          ),
           children: destinations,
         ),
       ),
@@ -1777,7 +2029,11 @@ class _CheatSheetGroups extends StatelessWidget {
   final bool isWide;
   final Color accent;
 
-  const _CheatSheetGroups({required this.cheatSheets, required this.isWide, required this.accent});
+  const _CheatSheetGroups({
+    required this.cheatSheets,
+    required this.isWide,
+    required this.accent,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1836,7 +2092,11 @@ class _DemoGrid extends StatelessWidget {
   final bool isWide;
   final Color accent;
 
-  const _DemoGrid({required this.demos, required this.isWide, required this.accent});
+  const _DemoGrid({
+    required this.demos,
+    required this.isWide,
+    required this.accent,
+  });
 
   static const double _cardWidth = 360;
 
@@ -1844,7 +2104,9 @@ class _DemoGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isWide) {
       return Column(
-        children: demos.map((demo) => _DemoTile(demo: demo, accent: accent)).toList(),
+        children: demos
+            .map((demo) => _DemoTile(demo: demo, accent: accent))
+            .toList(),
       );
     }
     return Wrap(
@@ -1882,8 +2144,14 @@ class _DemoTileState extends State<_DemoTile> {
     final accent = widget.accent;
     // Nền "bento block" pastel - pha accent vào nền theme (khác nhau giữa
     // light/dark) thay vì màu CỨNG, để vẫn đọc được chữ ở cả 2 mode.
-    final blockColor = Color.alphaBlend(accent.withValues(alpha: 0.16), colorScheme.surface);
-    final blockColorHover = Color.alphaBlend(accent.withValues(alpha: 0.24), colorScheme.surface);
+    final blockColor = Color.alphaBlend(
+      accent.withValues(alpha: 0.16),
+      colorScheme.surface,
+    );
+    final blockColorHover = Color.alphaBlend(
+      accent.withValues(alpha: 0.24),
+      colorScheme.surface,
+    );
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
@@ -1898,8 +2166,20 @@ class _DemoTileState extends State<_DemoTile> {
           color: _hovering ? blockColorHover : blockColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: _hovering
-              ? [BoxShadow(color: accent.withValues(alpha: 0.3), blurRadius: 18, offset: const Offset(0, 8))]
-              : [BoxShadow(color: accent.withValues(alpha: 0.08), blurRadius: 6, offset: const Offset(0, 2))],
+              ? [
+                  BoxShadow(
+                    color: accent.withValues(alpha: 0.3),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: accent.withValues(alpha: 0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Material(
           color: Colors.transparent,
@@ -1923,7 +2203,12 @@ class _DemoTileState extends State<_DemoTile> {
                       color: accent,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Symbols.widgets, color: Colors.white, size: 22, weight: 300),
+                    child: const Icon(
+                      Symbols.widgets,
+                      color: Colors.white,
+                      size: 22,
+                      weight: 300,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -1941,7 +2226,10 @@ class _DemoTileState extends State<_DemoTile> {
                         const SizedBox(height: 4),
                         Text(
                           demo.description,
-                          style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
                         if (demo.tags.isNotEmpty) ...[
                           const SizedBox(height: 10),
@@ -1954,14 +2242,21 @@ class _DemoTileState extends State<_DemoTile> {
                             children: demo.tags
                                 .map(
                                   (tag) => Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: accent.withValues(alpha: 0.16),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
                                       tag,
-                                      style: TextStyle(fontSize: 10.5, color: accent, fontWeight: FontWeight.w700),
+                                      style: TextStyle(
+                                        fontSize: 10.5,
+                                        color: accent,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -1981,7 +2276,12 @@ class _DemoTileState extends State<_DemoTile> {
                       color: colorScheme.surface.withValues(alpha: 0.7),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Symbols.north_east, size: 14, weight: 300, color: colorScheme.onSurface),
+                    child: Icon(
+                      Symbols.north_east,
+                      size: 14,
+                      weight: 300,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ],
               ),
