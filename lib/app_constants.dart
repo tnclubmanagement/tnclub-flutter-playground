@@ -11,11 +11,12 @@ final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
 /// Mỗi nhóm lớn trên trang chủ (Demos/Examples/Patterns/Cheat Sheet) có 1
 /// màu "thương hiệu" RIÊNG (không suy ra từ seed color chung) - dùng cho
 /// icon section, nền card kiểu "bento block", và viền/bóng khi hover - để
-/// mỗi khu vực có cá tính thị giác rõ ràng. Theo đúng bảng màu tham khảo
-/// (lavender/cam đất/xám/vàng) - ô "hồng" trong ảnh gốc đổi thành cam đất.
+/// mỗi khu vực có cá tính thị giác rõ ràng. Bảng màu PASTEL nhẹ nhàng, tươi
+/// nhưng không gắt (xanh dương/san hô/ngọc bích/vàng bơ) - thay cho bộ màu
+/// đậm (tím/cam đất/xám/vàng gold) cũ bị chê quá xỉn.
 const Map<String, Color> kSectionAccent = {
-  'Demos': Color(0xFF7C6FE0), // tím lavender
-  'Examples': Color(0xFFC1623D), // cam đất (terracotta) - thay cho hồng
-  'Patterns': Color(0xFF64748B), // xám đậm
-  'Cheat Sheet': Color(0xFFD4A017), // vàng gold
+  'Demos': Color(0xFF7C93F0), // xanh dương pastel (periwinkle)
+  'Examples': Color(0xFFF0836E), // hồng san hô (coral) pastel
+  'Patterns': Color(0xFF5FB3A6), // xanh ngọc (teal) pastel
+  'Cheat Sheet': Color(0xFFF2C14E), // vàng bơ (butter yellow) pastel
 };

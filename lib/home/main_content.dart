@@ -79,6 +79,7 @@ class MainContent extends StatelessWidget {
         const SizedBox(height: 12),
         StatStrip(isWide: isWide),
         const SizedBox(height: 20),
+
         if (!hasAnyResult)
           Padding(
             padding: const EdgeInsets.all(16),
@@ -87,6 +88,21 @@ class MainContent extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
+            ),
+          ),
+
+        if (cheatSheets.isNotEmpty)
+          SectionPanel(
+            title: 'Cheat Sheet',
+            accent: kSectionAccent['Cheat Sheet']!,
+            description:
+                'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
+                'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
+                'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
+            child: CheatSheetGroups(
+              cheatSheets: cheatSheets,
+              isWide: isWide,
+              accent: kSectionAccent['Cheat Sheet']!,
             ),
           ),
         if (demos.isNotEmpty)
@@ -123,20 +139,6 @@ class MainContent extends StatelessWidget {
               demos: patterns,
               isWide: isWide,
               accent: kSectionAccent['Patterns']!,
-            ),
-          ),
-        if (cheatSheets.isNotEmpty)
-          SectionPanel(
-            title: 'Cheat Sheet',
-            accent: kSectionAccent['Cheat Sheet']!,
-            description:
-                'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
-                'hợp sẵn syntax/widget hay dùng kèm ví dụ, để tra lại '
-                'khi quên. Gom theo nhóm vì danh sách đã khá dài.',
-            child: CheatSheetGroups(
-              cheatSheets: cheatSheets,
-              isWide: isWide,
-              accent: kSectionAccent['Cheat Sheet']!,
             ),
           ),
       ],

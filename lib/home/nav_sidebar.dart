@@ -189,6 +189,15 @@ class NavSidebar extends StatelessWidget {
       context,
       destinations,
       flatOrder,
+      'Cheat Sheet',
+      Symbols.menu_book,
+      cheatSheets,
+      groupByField: true,
+    );
+    _addSection(
+      context,
+      destinations,
+      flatOrder,
       'Demos',
       Symbols.widgets,
       demos,
@@ -208,15 +217,6 @@ class NavSidebar extends StatelessWidget {
       'Patterns',
       Symbols.extension,
       patterns,
-    );
-    _addSection(
-      context,
-      destinations,
-      flatOrder,
-      'Cheat Sheet',
-      Symbols.menu_book,
-      cheatSheets,
-      groupByField: true,
     );
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
