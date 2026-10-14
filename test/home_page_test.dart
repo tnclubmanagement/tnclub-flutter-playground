@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:flutter_layout_playground/app_constants.dart';
 import 'package:flutter_layout_playground/main.dart';
 
 void main() {
   tearDown(() => themeModeNotifier.value = ThemeMode.light);
 
-  testWidgets('Dark mode toggle in sidebar header actually switches ThemeMode', (
-    tester,
-  ) async {
-    await tester.binding.setSurfaceSize(const Size(1400, 900));
-    await tester.pumpWidget(const MyApp());
-    await tester.pumpAndSettle();
+  testWidgets(
+    'Dark mode toggle in sidebar header actually switches ThemeMode',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1400, 900));
+      await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
 
-    expect(themeModeNotifier.value, ThemeMode.light);
-    expect(find.byIcon(Symbols.dark_mode), findsOneWidget);
+      expect(themeModeNotifier.value, ThemeMode.light);
+      expect(find.byIcon(Symbols.dark_mode), findsOneWidget);
 
-    await tester.tap(find.byIcon(Symbols.dark_mode));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Symbols.dark_mode));
+      await tester.pumpAndSettle();
 
-    expect(tester.takeException(), isNull);
-    expect(themeModeNotifier.value, ThemeMode.dark);
-    expect(find.byIcon(Symbols.light_mode), findsOneWidget);
-    // Theme.of thực sự đổi brightness (không chỉ icon đổi hình).
-    final context = tester.element(find.byType(Scaffold).first);
-    expect(Theme.of(context).brightness, Brightness.dark);
-  });
+      expect(tester.takeException(), isNull);
+      expect(themeModeNotifier.value, ThemeMode.dark);
+      expect(find.byIcon(Symbols.light_mode), findsOneWidget);
+      // Theme.of thực sự đổi brightness (không chỉ icon đổi hình).
+      final context = tester.element(find.byType(Scaffold).first);
+      expect(Theme.of(context).brightness, Brightness.dark);
+    },
+  );
 
   testWidgets('HomePage renders without overflow on wide and narrow sizes', (
     tester,
@@ -76,7 +78,10 @@ void main() {
     // thể chưa build). "animation" cũng hiện như tag chip màu trên card
     // (không chỉ FilterChip ở sidebar) - chỉ nhắm đúng FilterChip để bấm.
     await tester.tap(
-      find.descendant(of: find.byType(FilterChip), matching: find.text('animation')),
+      find.descendant(
+        of: find.byType(FilterChip),
+        matching: find.text('animation'),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -99,21 +104,30 @@ void main() {
     // "Demos" cũng xuất hiện ở _SectionHeader bên vùng nội dung chính nên
     // phải giới hạn tìm trong NavigationDrawer (sidebar) để tránh lẫn.
     await tester.tap(
-      find.descendant(of: find.byType(NavigationDrawer), matching: find.text('Demos')),
+      find.descendant(
+        of: find.byType(NavigationDrawer),
+        matching: find.text('Demos'),
+      ),
     );
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
     // Item của Demos không còn hiện trong sidebar (NavigationDrawer) nữa.
     expect(
-      find.descendant(of: find.byType(NavigationDrawer), matching: find.text('Row & Column')),
+      find.descendant(
+        of: find.byType(NavigationDrawer),
+        matching: find.text('Row & Column'),
+      ),
       findsNothing,
     );
 
     // Bấm 1 item ở section SAU "Demos" (Patterns) - nếu mapping index vẫn
     // đúng sau khi fold, phải điều hướng tới ĐÚNG trang Constructors pattern.
     await tester.tap(
-      find.descendant(of: find.byType(NavigationDrawer), matching: find.text('Named & Factory constructor')),
+      find.descendant(
+        of: find.byType(NavigationDrawer),
+        matching: find.text('Named & Factory constructor'),
+      ),
     );
     await tester.pumpAndSettle();
 
