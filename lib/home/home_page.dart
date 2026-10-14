@@ -474,9 +474,14 @@ class HomePage extends StatefulWidget {
       tags: const ['error-handling', 'async'],
       builder: (_) => const ErrorHandlingCheatsheet(),
     ),
-    // ---- Môi trường & Công cụ ----
+  ];
+
+  // "Môi trường & Công cụ" trước là 1 group con bên trong Cheat Sheet, giờ
+  // tách thành 1 CHỦ ĐỀ riêng (ngang hàng Demos/Examples/Patterns/Cheat
+  // Sheet) vì nội dung (cài đặt máy, công cụ dòng lệnh) khác hẳn các trang
+  // tra cứu syntax/widget còn lại.
+  static final List<LayoutDemo> environmentTools = [
     LayoutDemo(
-      group: 'Môi trường & Công cụ',
       title: '🛠️ Dev Environment & FVM cheat sheet',
       description:
           'Cài IDE, extension hữu ích, flutter doctor, vì sao cần FVM để '
@@ -487,7 +492,6 @@ class HomePage extends StatefulWidget {
       builder: (_) => const DevEnvironmentCheatsheet(),
     ),
     LayoutDemo(
-      group: 'Môi trường & Công cụ',
       title: '⌨️ Dart Tooling cheat sheet',
       description:
           'dart pub add/get, dart format, dart analyze, dart fix, dart '
@@ -561,6 +565,7 @@ class _HomePageState extends State<HomePage> {
     'Examples',
     'Patterns',
     'Cheat Sheet',
+    'Môi trường & Công cụ',
   };
 
   @override
@@ -591,6 +596,7 @@ class _HomePageState extends State<HomePage> {
       ...HomePage.examples,
       ...HomePage.patterns,
       ...HomePage.cheatSheets,
+      ...HomePage.environmentTools,
     ]) {
       tags.addAll(d.tags);
     }
@@ -615,6 +621,7 @@ class _HomePageState extends State<HomePage> {
     final filteredExamples = _filter(HomePage.examples);
     final filteredPatterns = _filter(HomePage.patterns);
     final filteredCheatSheets = _filter(HomePage.cheatSheets);
+    final filteredEnvironmentTools = _filter(HomePage.environmentTools);
 
     final sidebar = NavSidebar(
       searchController: _searchController,
@@ -628,6 +635,7 @@ class _HomePageState extends State<HomePage> {
       examples: filteredExamples,
       patterns: filteredPatterns,
       cheatSheets: filteredCheatSheets,
+      environmentTools: filteredEnvironmentTools,
     );
 
     // Dùng LayoutBuilder (không phải MediaQuery) để quyết định hiện sidebar
@@ -667,6 +675,7 @@ class _HomePageState extends State<HomePage> {
                   examples: filteredExamples,
                   patterns: filteredPatterns,
                   cheatSheets: filteredCheatSheets,
+                  environmentTools: filteredEnvironmentTools,
                 );
 
                 // BackgroundBlobs nằm Ở DƯỚI CÙNG (phía sau) - các

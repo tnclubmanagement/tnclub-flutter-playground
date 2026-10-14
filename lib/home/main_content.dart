@@ -20,6 +20,7 @@ class MainContent extends StatelessWidget {
   final List<LayoutDemo> examples;
   final List<LayoutDemo> patterns;
   final List<LayoutDemo> cheatSheets;
+  final List<LayoutDemo> environmentTools;
 
   const MainContent({
     super.key,
@@ -28,6 +29,7 @@ class MainContent extends StatelessWidget {
     required this.examples,
     required this.patterns,
     required this.cheatSheets,
+    required this.environmentTools,
   });
 
   @override
@@ -36,14 +38,20 @@ class MainContent extends StatelessWidget {
         demos.isNotEmpty ||
         examples.isNotEmpty ||
         patterns.isNotEmpty ||
-        cheatSheets.isNotEmpty;
+        cheatSheets.isNotEmpty ||
+        environmentTools.isNotEmpty;
     final shownCount =
-        demos.length + examples.length + patterns.length + cheatSheets.length;
+        demos.length +
+        examples.length +
+        patterns.length +
+        cheatSheets.length +
+        environmentTools.length;
     final totalCount =
         HomePage.demos.length +
         HomePage.examples.length +
         HomePage.patterns.length +
-        HomePage.cheatSheets.length;
+        HomePage.cheatSheets.length +
+        HomePage.environmentTools.length;
 
     // Hero: card giới thiệu (to) + vòng tròn % (nhỏ) nằm CẠNH NHAU như ảnh
     // tham khảo - trên màn hẹp thì xếp dọc lại (Column) cho vừa.
@@ -76,7 +84,7 @@ class MainContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         hero,
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         StatStrip(isWide: isWide),
         const SizedBox(height: 20),
 
@@ -103,6 +111,19 @@ class MainContent extends StatelessWidget {
               cheatSheets: cheatSheets,
               isWide: isWide,
               accent: kSectionAccent['Cheat Sheet']!,
+            ),
+          ),
+        if (environmentTools.isNotEmpty)
+          SectionPanel(
+            title: 'Môi trường & Công cụ',
+            accent: kSectionAccent['Môi trường & Công cụ']!,
+            description:
+                'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
+                'theo project.',
+            child: DemoGrid(
+              demos: environmentTools,
+              isWide: isWide,
+              accent: kSectionAccent['Môi trường & Công cụ']!,
             ),
           ),
         if (demos.isNotEmpty)

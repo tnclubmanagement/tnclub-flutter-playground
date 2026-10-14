@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       ...HomePage.examples,
       ...HomePage.patterns,
       ...HomePage.cheatSheets,
+      ...HomePage.environmentTools,
     ]) {
       if (demo.path == settings.name) {
         return MaterialPageRoute(settings: settings, builder: demo.builder);

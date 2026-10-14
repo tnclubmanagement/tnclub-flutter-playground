@@ -18,13 +18,15 @@ class StatStrip extends StatelessWidget {
     ('Examples', Symbols.assignment),
     ('Patterns', Symbols.extension),
     ('Cheat Sheet', Symbols.menu_book),
+    ('Môi trường & Công cụ', Symbols.build),
   ];
 
   static int _countFor(String title) => switch (title) {
     'Demos' => HomePage.demos.length,
     'Examples' => HomePage.examples.length,
     'Patterns' => HomePage.patterns.length,
-    _ => HomePage.cheatSheets.length,
+    'Cheat Sheet' => HomePage.cheatSheets.length,
+    _ => HomePage.environmentTools.length,
   };
 
   @override
@@ -117,6 +119,8 @@ class StatTile extends StatelessWidget {
                 ),
                 Text(
                   title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 13,
                     color: onAccent.withValues(alpha: 0.9),

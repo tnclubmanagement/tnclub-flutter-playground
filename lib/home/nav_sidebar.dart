@@ -28,6 +28,7 @@ class NavSidebar extends StatelessWidget {
   final List<LayoutDemo> examples;
   final List<LayoutDemo> patterns;
   final List<LayoutDemo> cheatSheets;
+  final List<LayoutDemo> environmentTools;
 
   const NavSidebar({
     super.key,
@@ -42,6 +43,7 @@ class NavSidebar extends StatelessWidget {
     required this.examples,
     required this.patterns,
     required this.cheatSheets,
+    required this.environmentTools,
   });
 
   // Style TINH TẾ hơn bản cũ (bỏ chữ IN HOA + badge số nổi bật + icon màu
@@ -67,12 +69,15 @@ class NavSidebar extends StatelessWidget {
             children: [
               Icon(icon, size: 17, weight: 300, color: cs.onSurfaceVariant),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: cs.onSurface,
+              Flexible(
+                child: Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: cs.onSurface,
+                  ),
                 ),
               ),
               const SizedBox(width: 6),
@@ -193,6 +198,14 @@ class NavSidebar extends StatelessWidget {
       Symbols.menu_book,
       cheatSheets,
       groupByField: true,
+    );
+    _addSection(
+      context,
+      destinations,
+      flatOrder,
+      'Môi trường & Công cụ',
+      Symbols.build,
+      environmentTools,
     );
     _addSection(
       context,
