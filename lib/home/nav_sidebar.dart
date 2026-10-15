@@ -69,23 +69,35 @@ class NavSidebar extends StatelessWidget {
             children: [
               Icon(icon, size: 17, weight: 300, color: cs.onSurfaceVariant),
               const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: cs.onSurface,
-                  ),
+              // Bọc title+count trong 1 Expanded DUY NHẤT (thay vì để
+              // Flexible(title) với Spacer() cạnh tranh ngang hàng - 2 cái
+              // flex bằng nhau sẽ bị Row CHIA ĐÔI khoảng trống, ép title
+              // vào đúng nửa đầu dù chữ ngắn vẫn bị "...", còn Spacer luôn
+              // chiếm trọn nửa sau -> khoảng trắng thừa, chevron lệch).
+              // Expanded này là flex DUY NHẤT của Row ngoài nên chiếm hết
+              // khoảng trống còn lại, chevron tự động dính sát mép phải.
+              Expanded(
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: cs.onSurface,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '$count',
+                      style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(
-                '$count',
-                style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
-              ),
-              const Spacer(),
               Icon(
                 expanded
                     ? Symbols.keyboard_arrow_up
