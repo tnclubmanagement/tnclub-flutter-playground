@@ -130,10 +130,14 @@ class MainContent extends StatelessWidget {
           SectionPanel(
             title: 'Demos',
             accent: kSectionAccent['Demos']!,
+            description:
+                'Học theo ĐÚNG thứ tự số (1, 2, 3...) trên mỗi thẻ - các '
+                'demo sau thường dùng lại khái niệm của demo trước.',
             child: DemoGrid(
               demos: demos,
               isWide: isWide,
               accent: kSectionAccent['Demos']!,
+              showIndex: true,
             ),
           ),
         if (examples.isNotEmpty)

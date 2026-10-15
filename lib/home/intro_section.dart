@@ -69,17 +69,23 @@ class IntroSection extends StatelessWidget {
           const SizedBox(height: 4),
           _step(
             context,
-            '1. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)',
+            '1. Môi trường & Công cụ - cài Flutter, chạy app đầu tiên (nếu '
+            'bạn chưa từng đụng Flutter, bắt đầu từ đây)',
+            kSectionAccent['Môi trường & Công cụ']!,
+          ),
+          _step(
+            context,
+            '2. Demos - nắm widget layout cơ bản (Row/Column/Stack/ListView...)',
             kSectionAccent['Demos']!,
           ),
           _step(
             context,
-            '2. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án',
+            '3. Examples - tự làm bài tập layout UI thực tế, đối chiếu đáp án',
             kSectionAccent['Examples']!,
           ),
           _step(
             context,
-            '3. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần',
+            '4. Patterns & Cheat Sheet - tra cứu khi cần, không cần học hết 1 lần',
             kSectionAccent['Cheat Sheet']!,
           ),
           const SizedBox(height: 8),

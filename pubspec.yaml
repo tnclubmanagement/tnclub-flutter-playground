@@ -70,6 +70,7 @@ flutter:
   # Source code của từng demo được nhúng làm asset để hiển thị trực tiếp
   # trong app (xem lib/widgets/demo_scaffold.dart).
   assets:
+    - lib/demos/stateless_vs_stateful_demo.dart
     - lib/demos/column_row_demo.dart
     - lib/demos/expanded_flexible_demo.dart
     - lib/demos/stack_demo.dart

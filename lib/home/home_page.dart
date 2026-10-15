@@ -7,6 +7,7 @@ import '../demos/expanded_flexible_demo.dart';
 import '../demos/gridview_demo.dart';
 import '../demos/listview_demo.dart';
 import '../demos/stack_demo.dart';
+import '../demos/stateless_vs_stateful_demo.dart';
 import '../demos/wrap_demo.dart';
 import '../examples/chat_bubble_example.dart';
 import '../examples/chat_bubble_starter.dart';
@@ -31,6 +32,7 @@ import '../patterns/error_handling_cheatsheet.dart';
 import '../patterns/extension_pattern.dart';
 import '../patterns/file_preview_cheatsheet.dart';
 import '../patterns/getting_started_cheatsheet.dart';
+import '../patterns/glossary_cheatsheet.dart';
 import '../patterns/i18n_cheatsheet.dart';
 import '../patterns/inherited_widget_pattern.dart';
 import '../patterns/libraries_page.dart';
@@ -52,6 +54,19 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static final List<LayoutDemo> demos = [
+    LayoutDemo(
+      title: 'StatelessWidget vs StatefulWidget',
+      description:
+          'Nền tảng cơ bản nhất: khi nào widget "tĩnh", khi nào cần giữ '
+          'state + setState() để tự thay đổi',
+      path: '/stateless-vs-stateful',
+      tags: const ['widget', 'state', 'beginner'],
+      builder: (_) => const DemoScaffold(
+        title: 'StatelessWidget vs StatefulWidget',
+        assetPath: 'lib/demos/stateless_vs_stateful_demo.dart',
+        bodyBuilder: _buildStatelessVsStatefulDemo,
+      ),
+    ),
     LayoutDemo(
       title: 'Row & Column',
       description: 'Sắp xếp widget theo trục ngang/dọc, mainAxisAlignment, crossAxisAlignment',
@@ -275,6 +290,7 @@ class HomePage extends StatefulWidget {
       description: 'Chia sẻ dữ liệu xuống widget con sâu nhiều lớp, không cần truyền qua constructor',
       path: '/patterns/inherited-widget',
       tags: const ['state', 'pattern'],
+      advanced: true,
       builder: (_) => const DemoScaffold(
         title: 'Pattern: InheritedWidget',
         assetPath: 'lib/patterns/inherited_widget_pattern.dart',
@@ -369,6 +385,7 @@ class HomePage extends StatefulWidget {
           'provider/riverpod/bloc (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/state-management',
       tags: const ['state'],
+      advanced: true,
       builder: (_) => const StateManagementCheatsheet(),
     ),
     LayoutDemo(
@@ -401,6 +418,7 @@ class HomePage extends StatefulWidget {
           'tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/api-service',
       tags: const ['network', 'async'],
+      advanced: true,
       builder: (_) => const ApiServiceCheatsheet(),
     ),
     LayoutDemo(
@@ -412,6 +430,7 @@ class HomePage extends StatefulWidget {
           'lọc theo nhóm)',
       path: '/cheatsheet/auth',
       tags: const ['auth', 'security', 'storage'],
+      advanced: true,
       builder: (_) => const AuthCheatsheet(),
     ),
     LayoutDemo(
@@ -433,6 +452,7 @@ class HomePage extends StatefulWidget {
           'test, pump() vs pumpAndSettle() (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/testing',
       tags: const ['testing'],
+      advanced: true,
       builder: (_) => const TestingCheatsheet(),
     ),
     LayoutDemo(
@@ -443,6 +463,7 @@ class HomePage extends StatefulWidget {
           'RepaintBoundary, DevTools (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/performance',
       tags: const ['performance'],
+      advanced: true,
       builder: (_) => const PerformanceCheatsheet(),
     ),
     LayoutDemo(
@@ -463,6 +484,7 @@ class HomePage extends StatefulWidget {
           'theo vùng (package:intl) (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/i18n',
       tags: const ['i18n'],
+      advanced: true,
       builder: (_) => const I18nCheatsheet(),
     ),
     LayoutDemo(
@@ -473,6 +495,7 @@ class HomePage extends StatefulWidget {
           'Crashlytics (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/error-handling',
       tags: const ['error-handling', 'async'],
+      advanced: true,
       builder: (_) => const ErrorHandlingCheatsheet(),
     ),
   ];
@@ -483,7 +506,7 @@ class HomePage extends StatefulWidget {
   // tra cứu syntax/widget còn lại.
   static final List<LayoutDemo> environmentTools = [
     LayoutDemo(
-      title: '� Bắt đầu với Flutter',
+      title: '🚀 Bắt đầu với Flutter',
       description:
           'Dành cho người MỚI TINH: Flutter/Dart là gì, cài SDK, tạo '
           'project đầu tiên, cấu trúc project, flutter run + Hot Reload/'
@@ -493,7 +516,7 @@ class HomePage extends StatefulWidget {
       builder: (_) => const GettingStartedCheatsheet(),
     ),
     LayoutDemo(
-      title: '�🛠️ Dev Environment & FVM cheat sheet',
+      title: '🛠️ Dev Environment & FVM cheat sheet',
       description:
           'Cài IDE, extension hữu ích, flutter doctor, vì sao cần FVM để '
           'quản lý version Flutter theo project (trang tổng hợp tĩnh, '
@@ -511,8 +534,20 @@ class HomePage extends StatefulWidget {
       tags: const ['dart', 'tooling'],
       builder: (_) => const DartToolingCheatsheet(),
     ),
+    LayoutDemo(
+      title: '📚 Giải thích thuật ngữ (Glossary)',
+      description:
+          'Tra nhanh các từ hay gặp khi mới học (Widget, State, '
+          'BuildContext, SDK, pubspec.yaml, null safety...) (trang tổng '
+          'hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/glossary',
+      tags: const ['beginner', 'dart'],
+      builder: (_) => const GlossaryCheatsheet(),
+    ),
   ];
 
+  static Widget _buildStatelessVsStatefulDemo(BuildContext context) =>
+      const StatelessVsStatefulDemo();
   static Widget _buildColumnRowDemo(BuildContext context) =>
       const ColumnRowDemo();
   static Widget _buildExpandedFlexibleDemo(BuildContext context) =>
