@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/cheatsheet_scaffold.dart';
 import '../widgets/code_panel.dart';
 
 /// Trang tổng hợp (cheat sheet) dạng BẢNG các widget hay dùng nhất, liệt kê
@@ -840,31 +841,13 @@ class WidgetsCheatsheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Widget cheat sheet'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ..._categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _WidgetTable(rows: _rows),
-              ..._categories.map(
-                (c) => _WidgetTable(
-                  rows: _rows.where((r) => r.category == c).toList(),
-                ),
-              ),
-            ],
-          ),
-        ),
+    return CategoryFilterScaffold(
+      title: 'Widget cheat sheet',
+      categories: _categories,
+      bodyBuilder: (category) => _WidgetTable(
+        rows: category == null
+            ? _rows
+            : _rows.where((r) => r.category == category).toList(),
       ),
     );
   }

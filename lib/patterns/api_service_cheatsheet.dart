@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../widgets/cheatsheet_scaffold.dart';
 import '../widgets/code_panel.dart';
 
 /// Trang tổng hợp (cheat sheet) cách gọi API/service hay gặp trong Flutter:
@@ -216,29 +217,13 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('API & Service cheat sheet'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ..._categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _ApiList(items: _items),
-              ..._categories.map(
-                (c) => _ApiList(items: _items.where((i) => i.category == c).toList()),
-              ),
-            ],
-          ),
-        ),
+    return CategoryFilterScaffold(
+      title: 'API & Service cheat sheet',
+      categories: _categories,
+      bodyBuilder: (category) => _ApiList(
+        items: category == null
+            ? _items
+            : _items.where((i) => i.category == category).toList(),
       ),
     );
   }

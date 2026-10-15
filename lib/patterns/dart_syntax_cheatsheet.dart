@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/cheatsheet_scaffold.dart';
 import '../widgets/code_panel.dart';
 
 /// Trang tổng hợp (cheat sheet) các CÚ PHÁP Dart/Flutter hay gặp nhưng dễ
@@ -929,31 +930,13 @@ class Circle {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Dart syntax cheat sheet'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ..._categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _SyntaxList(items: _items),
-              ..._categories.map(
-                (c) => _SyntaxList(
-                  items: _items.where((i) => i.category == c).toList(),
-                ),
-              ),
-            ],
-          ),
-        ),
+    return CategoryFilterScaffold(
+      title: 'Dart syntax cheat sheet',
+      categories: _categories,
+      bodyBuilder: (category) => _SyntaxList(
+        items: category == null
+            ? _items
+            : _items.where((i) => i.category == category).toList(),
       ),
     );
   }

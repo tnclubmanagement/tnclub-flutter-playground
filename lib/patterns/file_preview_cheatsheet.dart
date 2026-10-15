@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/cheatsheet_scaffold.dart';
 import '../widgets/code_panel.dart';
 
 /// Trang tổng hợp (cheat sheet) cách XEM/CHỌN file hay gặp: zoom/pan ảnh,
@@ -128,29 +129,13 @@ final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowe
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('File preview cheat sheet'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ..._categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _FileList(items: _items),
-              ..._categories.map(
-                (c) => _FileList(items: _items.where((i) => i.category == c).toList()),
-              ),
-            ],
-          ),
-        ),
+    return CategoryFilterScaffold(
+      title: 'File preview cheat sheet',
+      categories: _categories,
+      bodyBuilder: (category) => _FileList(
+        items: category == null
+            ? _items
+            : _items.where((i) => i.category == category).toList(),
       ),
     );
   }

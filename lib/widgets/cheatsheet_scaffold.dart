@@ -21,13 +21,14 @@ class CheatsheetEntry {
 }
 
 /// Khung dùng CHUNG cho mọi trang "cheat sheet" dạng danh sách thẻ có lọc
-/// theo nhóm (tab) - gồm AppBar + TabBar ("Tất cả" + từng category) +
-/// TabBarView, mỗi thẻ hiện mô tả + preview chạy thật + code mẫu tô màu.
+/// theo nhóm - gồm AppBar + nav DỌC bên trái ("Tất cả" + từng category) +
+/// nội dung bên phải, mỗi thẻ hiện mô tả + preview chạy thật + code mẫu tô
+/// màu.
 ///
 /// Trước đây mỗi trang cheat sheet tự viết lại TOÀN BỘ khung này (AppBar,
 /// TabBar, TabBarView, Card...) - viết 1 lần ở đây, các trang mới chỉ cần
 /// khai báo [CheatsheetEntry] + preview riêng của nó.
-class CheatsheetScaffold extends StatelessWidget {
+class CheatsheetScaffold extends StatefulWidget {
   final String title;
   final String intro;
   final List<CheatsheetEntry> items;
@@ -39,36 +40,65 @@ class CheatsheetScaffold extends StatelessWidget {
     required this.items,
   });
 
-  List<String> get _categories => items.map((i) => i.category).toSet().toList();
+  @override
+  State<CheatsheetScaffold> createState() => _CheatsheetScaffoldState();
+}
+
+class _CheatsheetScaffoldState extends State<CheatsheetScaffold> {
+  int _selectedIndex = 0;
+
+  List<String> get _categories =>
+      widget.items.map((i) => i.category).toSet().toList();
 
   @override
   Widget build(BuildContext context) {
     final categories = _categories;
-    return DefaultTabController(
-      length: categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ...categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _EntryList(intro: intro, items: items),
-              ...categories.map(
-                (c) => _EntryList(
-                  intro: intro,
-                  items: items.where((i) => i.category == c).toList(),
+    final labels = ['Tất cả', ...categories];
+    final visibleItems = _selectedIndex == 0
+        ? widget.items
+        : widget.items
+            .where((i) => i.category == categories[_selectedIndex - 1])
+            .toList();
+
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      body: SelectionArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Nav DỌC bên trái thay cho TabBar ngang trước đây - mỗi mục là
+            // 1 category, bấm vào để lọc danh sách thẻ bên phải.
+            SizedBox(
+              width: 220,
+              child: Material(
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: labels.length,
+                  itemBuilder: (context, index) {
+                    final selected = index == _selectedIndex;
+                    return ListTile(
+                      selected: selected,
+                      selectedTileColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      title: Text(
+                        labels[index],
+                        style: TextStyle(
+                          fontWeight:
+                              selected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                      onTap: () => setState(() => _selectedIndex = index),
+                    );
+                  },
                 ),
               ),
-            ],
-          ),
+            ),
+            const VerticalDivider(width: 1),
+            Expanded(
+              child: _EntryList(intro: widget.intro, items: visibleItems),
+            ),
+          ],
         ),
       ),
     );
@@ -153,6 +183,78 @@ class _EntryCard extends StatelessWidget {
                 child: CodePanel(source: info.snippet, error: null),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Khung AppBar + nav DỌC bên trái theo category - dùng cho các trang cheat
+/// sheet có cấu trúc dữ liệu RIÊNG (không theo [CheatsheetEntry], vd bảng so
+/// sánh widget/syntax) nhưng vẫn cần lọc theo category giống
+/// [CheatsheetScaffold]. [bodyBuilder] nhận `null` khi đang ở "Tất cả", hoặc
+/// tên category đang chọn.
+class CategoryFilterScaffold extends StatefulWidget {
+  final String title;
+  final List<String> categories;
+  final Widget Function(String? category) bodyBuilder;
+
+  const CategoryFilterScaffold({
+    super.key,
+    required this.title,
+    required this.categories,
+    required this.bodyBuilder,
+  });
+
+  @override
+  State<CategoryFilterScaffold> createState() =>
+      _CategoryFilterScaffoldState();
+}
+
+class _CategoryFilterScaffoldState extends State<CategoryFilterScaffold> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = ['Tất cả', ...widget.categories];
+    final selectedCategory =
+        _selectedIndex == 0 ? null : widget.categories[_selectedIndex - 1];
+
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      body: SelectionArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              width: 220,
+              child: Material(
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: labels.length,
+                  itemBuilder: (context, index) {
+                    final selected = index == _selectedIndex;
+                    return ListTile(
+                      selected: selected,
+                      selectedTileColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      title: Text(
+                        labels[index],
+                        style: TextStyle(
+                          fontWeight:
+                              selected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                      onTap: () => setState(() => _selectedIndex = index),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const VerticalDivider(width: 1),
+            Expanded(child: widget.bodyBuilder(selectedCategory)),
           ],
         ),
       ),

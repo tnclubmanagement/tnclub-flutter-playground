@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../widgets/cheatsheet_scaffold.dart';
 import '../widgets/code_panel.dart';
 
 /// Trang tổng hợp (cheat sheet) các vấn đề hay gặp khi làm LOGIN/CREDENTIAL:
@@ -143,29 +144,13 @@ TextField(
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length + 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Login & Credential cheat sheet'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              const Tab(text: 'Tất cả'),
-              ..._categories.map((c) => Tab(text: c)),
-            ],
-          ),
-        ),
-        body: SelectionArea(
-          child: TabBarView(
-            children: [
-              _AuthList(items: _items),
-              ..._categories.map(
-                (c) => _AuthList(items: _items.where((i) => i.category == c).toList()),
-              ),
-            ],
-          ),
-        ),
+    return CategoryFilterScaffold(
+      title: 'Login & Credential cheat sheet',
+      categories: _categories,
+      bodyBuilder: (category) => _AuthList(
+        items: category == null
+            ? _items
+            : _items.where((i) => i.category == category).toList(),
       ),
     );
   }
