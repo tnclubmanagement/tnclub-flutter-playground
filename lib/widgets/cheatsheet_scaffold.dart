@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'code_panel.dart';
 
+/// Key gắn vào `ListView` của nav category dọc (dùng trong cả
+/// [CheatsheetScaffold] lẫn [CategoryFilterScaffold]) - để test scope đúng
+/// `ListTile` của nav, tránh nhầm với `ListTile` khác xuất hiện trong nội
+/// dung demo (vd preview của AnimatedList).
+const cheatsheetCategoryNavKey = Key('cheatsheetCategoryNav');
+
+/// Ngưỡng width nav category chuyển từ sidebar cố định sang gấp vào Drawer
+/// (xem [_CategoryNavScaffold]) - export ra để test dùng chung, tránh lặp
+/// lại số "700" ở nhiều nơi.
+const cheatsheetNavWideBreakpoint = 700.0;
+
 /// 1 mục trong [CheatsheetScaffold]: tên, nhóm (để lọc theo tab), mô tả,
 /// code mẫu, và 1 preview chạy thật (hoặc mô phỏng nếu cần package ngoài).
 class CheatsheetEntry {
@@ -60,47 +71,88 @@ class _CheatsheetScaffoldState extends State<CheatsheetScaffold> {
             .where((i) => i.category == categories[_selectedIndex - 1])
             .toList();
 
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: SelectionArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Nav DỌC bên trái thay cho TabBar ngang trước đây - mỗi mục là
-            // 1 category, bấm vào để lọc danh sách thẻ bên phải.
-            SizedBox(
-              width: 220,
-              child: Material(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: labels.length,
-                  itemBuilder: (context, index) {
-                    final selected = index == _selectedIndex;
-                    return ListTile(
-                      selected: selected,
-                      selectedTileColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      title: Text(
-                        labels[index],
-                        style: TextStyle(
-                          fontWeight:
-                              selected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      onTap: () => setState(() => _selectedIndex = index),
-                    );
-                  },
+    return _CategoryNavScaffold(
+      title: widget.title,
+      labels: labels,
+      selectedIndex: _selectedIndex,
+      onSelect: (index) => setState(() => _selectedIndex = index),
+      body: _EntryList(intro: widget.intro, items: visibleItems),
+    );
+  }
+}
+
+/// Khung dùng chung bên trong cho cả [CheatsheetScaffold] lẫn
+/// [CategoryFilterScaffold]: AppBar + nav category - cố định bên trái khi
+/// màn hình đủ rộng, gấp vào [Drawer] khi hẹp (dùng [LayoutBuilder] thay vì
+/// `MediaQuery`, nhất quán với cách `HomePage` tự co sidebar theo
+/// `constraints.maxWidth` - và để test được qua `setSurfaceSize`).
+class _CategoryNavScaffold extends StatelessWidget {
+  final String title;
+  final List<String> labels;
+  final int selectedIndex;
+  final ValueChanged<int> onSelect;
+  final Widget body;
+
+  const _CategoryNavScaffold({
+    required this.title,
+    required this.labels,
+    required this.selectedIndex,
+    required this.onSelect,
+    required this.body,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth >= cheatsheetNavWideBreakpoint;
+
+        Widget buildNavList(BuildContext navContext) => Material(
+          color: Theme.of(navContext).colorScheme.surfaceContainerLow,
+          child: ListView.builder(
+            key: cheatsheetCategoryNavKey,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            itemCount: labels.length,
+            itemBuilder: (itemContext, index) {
+              final selected = index == selectedIndex;
+              return ListTile(
+                selected: selected,
+                selectedTileColor:
+                    Theme.of(itemContext).colorScheme.primaryContainer,
+                title: Text(
+                  labels[index],
+                  style: TextStyle(
+                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                  ),
                 ),
-              ),
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(
-              child: _EntryList(intro: widget.intro, items: visibleItems),
-            ),
-          ],
-        ),
-      ),
+                onTap: () {
+                  onSelect(index);
+                  // Màn hình hẹp: nav nằm trong Drawer - đóng lại sau khi
+                  // chọn. Màn hình rộng: nav cố định, không có gì để đóng.
+                  if (!isWide) Navigator.pop(itemContext);
+                },
+              );
+            },
+          ),
+        );
+
+        return Scaffold(
+          appBar: AppBar(title: Text(title)),
+          drawer: isWide ? null : Drawer(child: Builder(builder: buildNavList)),
+          body: SelectionArea(
+            child: isWide
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(width: 220, child: Builder(builder: buildNavList)),
+                      const VerticalDivider(width: 1),
+                      Expanded(child: body),
+                    ],
+                  )
+                : body,
+          ),
+        );
+      },
     );
   }
 }
@@ -221,43 +273,12 @@ class _CategoryFilterScaffoldState extends State<CategoryFilterScaffold> {
     final selectedCategory =
         _selectedIndex == 0 ? null : widget.categories[_selectedIndex - 1];
 
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: SelectionArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              width: 220,
-              child: Material(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: labels.length,
-                  itemBuilder: (context, index) {
-                    final selected = index == _selectedIndex;
-                    return ListTile(
-                      selected: selected,
-                      selectedTileColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      title: Text(
-                        labels[index],
-                        style: TextStyle(
-                          fontWeight:
-                              selected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      onTap: () => setState(() => _selectedIndex = index),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(child: widget.bodyBuilder(selectedCategory)),
-          ],
-        ),
-      ),
+    return _CategoryNavScaffold(
+      title: widget.title,
+      labels: labels,
+      selectedIndex: _selectedIndex,
+      onSelect: (index) => setState(() => _selectedIndex = index),
+      body: widget.bodyBuilder(selectedCategory),
     );
   }
 }

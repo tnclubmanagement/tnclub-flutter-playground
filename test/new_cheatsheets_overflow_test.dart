@@ -10,6 +10,7 @@ import 'package:flutter_layout_playground/patterns/performance_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/state_management_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/testing_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/theme_cheatsheet.dart';
+import 'cheatsheet_test_utils.dart';
 
 /// Test CHUNG cho các cheat sheet dùng [CheatsheetScaffold] - 1 file loop
 /// qua tất cả thay vì 1 file riêng gần như giống nhau cho mỗi trang, để dễ
@@ -46,15 +47,15 @@ void main() {
           if (e0 != null) debugPrint('${entry.key} EXC @ $size tab0: $e0');
           expect(e0, isNull, reason: '${entry.key} exception at size $size (tab 0)');
 
-          final tabs = find.byType(Tab);
-          final tabCount = tabs.evaluate().length;
-          for (var i = 0; i < tabCount; i++) {
-            await tester.tap(tabs.at(i));
-            await tester.pumpAndSettle();
-            final e = tester.takeException();
-            if (e != null) debugPrint('${entry.key} EXC @ $size tab$i: $e');
-            expect(e, isNull, reason: '${entry.key} exception at size $size (tab $i)');
-          }
+          await tapThroughCategoryNav(
+            tester,
+            size: size,
+            onSelected: (i) async {
+              final e = tester.takeException();
+              if (e != null) debugPrint('${entry.key} EXC @ $size tab$i: $e');
+              expect(e, isNull, reason: '${entry.key} exception at size $size (tab $i)');
+            },
+          );
         }
       },
     );

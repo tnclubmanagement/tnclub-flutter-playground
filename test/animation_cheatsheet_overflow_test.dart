@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_layout_playground/patterns/animation_cheatsheet.dart';
+import 'package:flutter_layout_playground/widgets/cheatsheet_scaffold.dart';
+import 'cheatsheet_test_utils.dart';
 
 void main() {
   testWidgets('AnimationCheatsheet renders without overflow on common '
@@ -17,15 +19,15 @@ void main() {
       if (e0 != null) debugPrint('EXC @ $size tab0: $e0');
       expect(e0, isNull, reason: 'Exception at size $size (tab 0)');
 
-      final tabs = find.byType(Tab);
-      final tabCount = tabs.evaluate().length;
-      for (var i = 0; i < tabCount; i++) {
-        await tester.tap(tabs.at(i));
-        await tester.pumpAndSettle();
-        final e = tester.takeException();
-        if (e != null) debugPrint('EXC @ $size tab$i: $e');
-        expect(e, isNull, reason: 'Exception at size $size (tab $i)');
-      }
+      await tapThroughCategoryNav(
+        tester,
+        size: size,
+        onSelected: (i) async {
+          final e = tester.takeException();
+          if (e != null) debugPrint('EXC @ $size tab$i: $e');
+          expect(e, isNull, reason: 'Exception at size $size (tab $i)');
+        },
+      );
     }
   });
 
@@ -60,7 +62,11 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(
-        find.widgetWithText(Tab, 'Danh sách (List) mượt & đúng state'),
+        find.descendant(
+          of: find.byKey(cheatsheetCategoryNavKey),
+          matching:
+              find.widgetWithText(ListTile, 'Danh sách (List) mượt & đúng state'),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -108,7 +114,11 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.widgetWithText(Tab, 'Danh sách (List) mượt & đúng state'),
+      find.descendant(
+        of: find.byKey(cheatsheetCategoryNavKey),
+        matching:
+            find.widgetWithText(ListTile, 'Danh sách (List) mượt & đúng state'),
+      ),
     );
     await tester.pumpAndSettle();
 
