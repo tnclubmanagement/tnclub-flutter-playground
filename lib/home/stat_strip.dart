@@ -14,11 +14,11 @@ class StatStrip extends StatelessWidget {
   const StatStrip({super.key, required this.isWide});
 
   static const _items = [
+    ('Môi trường & Công cụ', Symbols.build),
     ('Demos', Symbols.widgets),
     ('Examples', Symbols.assignment),
     ('Patterns', Symbols.extension),
     ('Cheat Sheet', Symbols.menu_book),
-    ('Môi trường & Công cụ', Symbols.build),
   ];
 
   static int _countFor(String title) => switch (title) {

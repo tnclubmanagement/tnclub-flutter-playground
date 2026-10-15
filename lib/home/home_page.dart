@@ -30,6 +30,7 @@ import '../patterns/dev_environment_cheatsheet.dart';
 import '../patterns/error_handling_cheatsheet.dart';
 import '../patterns/extension_pattern.dart';
 import '../patterns/file_preview_cheatsheet.dart';
+import '../patterns/getting_started_cheatsheet.dart';
 import '../patterns/i18n_cheatsheet.dart';
 import '../patterns/inherited_widget_pattern.dart';
 import '../patterns/libraries_page.dart';
@@ -482,7 +483,17 @@ class HomePage extends StatefulWidget {
   // tra cứu syntax/widget còn lại.
   static final List<LayoutDemo> environmentTools = [
     LayoutDemo(
-      title: '🛠️ Dev Environment & FVM cheat sheet',
+      title: '� Bắt đầu với Flutter',
+      description:
+          'Dành cho người MỚI TINH: Flutter/Dart là gì, cài SDK, tạo '
+          'project đầu tiên, cấu trúc project, flutter run + Hot Reload/'
+          'Restart (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/getting-started',
+      tags: const ['setup', 'beginner'],
+      builder: (_) => const GettingStartedCheatsheet(),
+    ),
+    LayoutDemo(
+      title: '�🛠️ Dev Environment & FVM cheat sheet',
       description:
           'Cài IDE, extension hữu ích, flutter doctor, vì sao cần FVM để '
           'quản lý version Flutter theo project (trang tổng hợp tĩnh, '

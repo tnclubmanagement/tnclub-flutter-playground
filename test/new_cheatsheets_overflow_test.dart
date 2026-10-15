@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_layout_playground/patterns/dart_tooling_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/dev_environment_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/error_handling_cheatsheet.dart';
+import 'package:flutter_layout_playground/patterns/getting_started_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/i18n_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/local_storage_cheatsheet.dart';
 import 'package:flutter_layout_playground/patterns/navigation_cheatsheet.dart';
@@ -28,6 +29,7 @@ void main() {
     'ErrorHandlingCheatsheet': (_) => const ErrorHandlingCheatsheet(),
     'DevEnvironmentCheatsheet': (_) => const DevEnvironmentCheatsheet(),
     'DartToolingCheatsheet': (_) => const DartToolingCheatsheet(),
+    'GettingStartedCheatsheet': (_) => const GettingStartedCheatsheet(),
   };
 
   for (final entry in pages.entries) {

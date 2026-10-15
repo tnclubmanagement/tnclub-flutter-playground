@@ -99,6 +99,19 @@ class MainContent extends StatelessWidget {
             ),
           ),
 
+        if (environmentTools.isNotEmpty)
+          SectionPanel(
+            title: 'Môi trường & Công cụ',
+            accent: kSectionAccent['Môi trường & Công cụ']!,
+            description:
+                'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
+                'theo project.',
+            child: DemoGrid(
+              demos: environmentTools,
+              isWide: isWide,
+              accent: kSectionAccent['Môi trường & Công cụ']!,
+            ),
+          ),
         if (cheatSheets.isNotEmpty)
           SectionPanel(
             title: 'Cheat Sheet',
@@ -111,19 +124,6 @@ class MainContent extends StatelessWidget {
               cheatSheets: cheatSheets,
               isWide: isWide,
               accent: kSectionAccent['Cheat Sheet']!,
-            ),
-          ),
-        if (environmentTools.isNotEmpty)
-          SectionPanel(
-            title: 'Môi trường & Công cụ',
-            accent: kSectionAccent['Môi trường & Công cụ']!,
-            description:
-                'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
-                'theo project.',
-            child: DemoGrid(
-              demos: environmentTools,
-              isWide: isWide,
-              accent: kSectionAccent['Môi trường & Công cụ']!,
             ),
           ),
         if (demos.isNotEmpty)

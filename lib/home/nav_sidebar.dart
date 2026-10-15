@@ -194,18 +194,18 @@ class NavSidebar extends StatelessWidget {
       context,
       destinations,
       flatOrder,
-      'Cheat Sheet',
-      Symbols.menu_book,
-      cheatSheets,
-      groupByField: true,
+      'Môi trường & Công cụ',
+      Symbols.build,
+      environmentTools,
     );
     _addSection(
       context,
       destinations,
       flatOrder,
-      'Môi trường & Công cụ',
-      Symbols.build,
-      environmentTools,
+      'Cheat Sheet',
+      Symbols.menu_book,
+      cheatSheets,
+      groupByField: true,
     );
     _addSection(
       context,
