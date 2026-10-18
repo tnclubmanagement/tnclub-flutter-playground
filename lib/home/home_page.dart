@@ -27,6 +27,7 @@ import '../patterns/auth_cheatsheet.dart';
 import '../patterns/constructors_pattern.dart';
 import '../patterns/dart_syntax_cheatsheet.dart';
 import '../patterns/dart_tooling_cheatsheet.dart';
+import '../patterns/deploy_cheatsheet.dart';
 import '../patterns/dev_environment_cheatsheet.dart';
 import '../patterns/error_handling_cheatsheet.dart';
 import '../patterns/extension_pattern.dart';
@@ -524,6 +525,17 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/dev-environment',
       tags: const ['setup', 'tooling'],
       builder: (_) => const DevEnvironmentCheatsheet(),
+    ),
+    LayoutDemo(
+      title: '📦 Deploy lên Android & iOS',
+      description:
+          'Chuẩn bị tên/icon/version, ký + build release cho Android '
+          '(keystore, AAB) và iOS (Xcode signing, IPA - cần máy Mac), '
+          'nộp lên Play Store/App Store/TestFlight, checklist trước khi '
+          'submit (trang tổng hợp tĩnh, lọc theo nhóm)',
+      path: '/cheatsheet/deploy',
+      tags: const ['setup', 'tooling', 'android', 'ios'],
+      builder: (_) => const DeployCheatsheet(),
     ),
     LayoutDemo(
       title: '⌨️ Dart Tooling cheat sheet',
