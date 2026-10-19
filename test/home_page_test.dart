@@ -43,6 +43,16 @@ void main() {
     }
   });
 
+  testWidgets('marks cheat sheets that have a Markdown article', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 900));
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Đã chuyển đổi sang bài viết'), findsNWidgets(6));
+  });
+
   testWidgets('Search box filters sections down to matching pages only', (
     tester,
   ) async {

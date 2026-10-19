@@ -514,6 +514,8 @@ class HomePage extends StatefulWidget {
           'Flutter SDK, IDE và cách chọn thiết bị chạy thử',
       path: '/cheatsheet/requirements',
       tags: const ['setup', 'beginner'],
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/01-requirements.vi.md',
       builder: (_) => const RequirementsCheatsheet(),
     ),
     LayoutDemo(
@@ -524,6 +526,7 @@ class HomePage extends StatefulWidget {
           'Restart (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/getting-started',
       tags: const ['setup', 'beginner'],
+      articleAssetPath: 'content/articles/chapter-01-getting-started/02-first-flutter-app.vi.md',
       builder: (_) => const GettingStartedCheatsheet(),
     ),
     LayoutDemo(
@@ -534,6 +537,7 @@ class HomePage extends StatefulWidget {
           'lọc theo nhóm)',
       path: '/cheatsheet/dev-environment',
       tags: const ['setup', 'tooling'],
+      articleAssetPath: 'content/articles/chapter-01-getting-started/03-dev-environment.vi.md',
       builder: (_) => const DevEnvironmentCheatsheet(),
     ),
     LayoutDemo(
@@ -545,6 +549,8 @@ class HomePage extends StatefulWidget {
           'submit (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/deploy',
       tags: const ['setup', 'tooling', 'android', 'ios'],
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/04-deploy.vi.md',
       builder: (_) => const DeployCheatsheet(),
     ),
     LayoutDemo(
@@ -554,6 +560,8 @@ class HomePage extends StatefulWidget {
           'compile (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/dart-tooling',
       tags: const ['dart', 'tooling'],
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/05-dart-tooling.vi.md',
       builder: (_) => const DartToolingCheatsheet(),
     ),
     LayoutDemo(
@@ -564,6 +572,8 @@ class HomePage extends StatefulWidget {
           'hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/glossary',
       tags: const ['beginner', 'dart'],
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/06-glossary.vi.md',
       builder: (_) => const GlossaryCheatsheet(),
     ),
   ];
