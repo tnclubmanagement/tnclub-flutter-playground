@@ -39,7 +39,13 @@ class CheatSheetGroups extends StatelessWidget {
         for (final group in groupOrder) ...[
           SubSectionHeader(group),
           const SizedBox(height: 8),
-          DemoGrid(demos: byGroup[group]!, isWide: isWide, accent: accent),
+          DemoGrid(
+            demos: byGroup[group]!,
+            isWide: isWide,
+            accent: accent,
+            showIndex: true,
+            chapterLabel: 'Chapter 2',
+          ),
           const SizedBox(height: 16),
         ],
       ],

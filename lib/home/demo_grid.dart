@@ -10,9 +10,9 @@ class DemoGrid extends StatelessWidget {
   final List<LayoutDemo> demos;
   final bool isWide;
   final Color accent;
-  // Chỉ bật cho mục "Demos" - hiện số thứ tự (1, 2, 3...) lên card để người
-  // mới biết nên học theo đúng thứ tự nào, thay vì tự đoán từ vị trí.
+  // Hiện số bài trên card để dễ trao đổi theo chapter/lesson.
   final bool showIndex;
+  final String? chapterLabel;
 
   const DemoGrid({
     super.key,
@@ -20,6 +20,7 @@ class DemoGrid extends StatelessWidget {
     required this.isWide,
     required this.accent,
     this.showIndex = false,
+    this.chapterLabel,
   });
 
   static const double _cardWidth = 360;
@@ -34,6 +35,7 @@ class DemoGrid extends StatelessWidget {
               demo: demos[i],
               accent: accent,
               index: showIndex ? i + 1 : null,
+              chapterLabel: chapterLabel,
             ),
         ],
       );
@@ -49,6 +51,7 @@ class DemoGrid extends StatelessWidget {
               demo: demos[i],
               accent: accent,
               index: showIndex ? i + 1 : null,
+              chapterLabel: chapterLabel,
             ),
           ),
       ],
@@ -60,8 +63,15 @@ class DemoTile extends StatefulWidget {
   final LayoutDemo demo;
   final Color accent;
   final int? index;
+  final String? chapterLabel;
 
-  const DemoTile({super.key, required this.demo, required this.accent, this.index});
+  const DemoTile({
+    super.key,
+    required this.demo,
+    required this.accent,
+    this.index,
+    this.chapterLabel,
+  });
 
   @override
   State<DemoTile> createState() => _DemoTileState();
@@ -175,7 +185,10 @@ class _DemoTileState extends State<DemoTile> {
                             if (demo.advanced) ...[
                               const SizedBox(width: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 7,
+                                  vertical: 3,
+                                ),
                                 decoration: BoxDecoration(
                                   color: colorScheme.errorContainer,
                                   borderRadius: BorderRadius.circular(20),
@@ -193,6 +206,15 @@ class _DemoTileState extends State<DemoTile> {
                           ],
                         ),
                         const SizedBox(height: 4),
+                        if (widget.chapterLabel != null && widget.index != null)
+                          Text(
+                            '${widget.chapterLabel} · Lesson ${widget.index}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: accent,
+                            ),
+                          ),
                         Text(
                           demo.description,
                           style: TextStyle(

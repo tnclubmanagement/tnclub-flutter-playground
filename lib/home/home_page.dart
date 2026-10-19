@@ -40,6 +40,7 @@ import '../patterns/libraries_page.dart';
 import '../patterns/local_storage_cheatsheet.dart';
 import '../patterns/navigation_cheatsheet.dart';
 import '../patterns/performance_cheatsheet.dart';
+import '../patterns/requirements_cheatsheet.dart';
 import '../patterns/state_management_cheatsheet.dart';
 import '../patterns/testing_cheatsheet.dart';
 import '../patterns/theme_cheatsheet.dart';
@@ -506,6 +507,15 @@ class HomePage extends StatefulWidget {
   // Sheet) vì nội dung (cài đặt máy, công cụ dòng lệnh) khác hẳn các trang
   // tra cứu syntax/widget còn lại.
   static final List<LayoutDemo> environmentTools = [
+    LayoutDemo(
+      title: '✅ Yêu cầu trước khi học Flutter',
+      description:
+          'Checklist dành cho người mới: kiến thức nền tảng, thiết bị, '
+          'Flutter SDK, IDE và cách chọn thiết bị chạy thử',
+      path: '/cheatsheet/requirements',
+      tags: const ['setup', 'beginner'],
+      builder: (_) => const RequirementsCheatsheet(),
+    ),
     LayoutDemo(
       title: '🚀 Bắt đầu với Flutter',
       description:

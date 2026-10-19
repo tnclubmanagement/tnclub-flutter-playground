@@ -112,7 +112,7 @@ class MainContent extends StatelessWidget {
 
         if (environmentTools.isNotEmpty)
           SectionPanel(
-            title: 'Môi trường & Công cụ',
+            title: 'Chapter 1 · Môi trường & Công cụ',
             accent: kSectionAccent['Môi trường & Công cụ']!,
             description:
                 'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
@@ -121,11 +121,13 @@ class MainContent extends StatelessWidget {
               demos: environmentTools,
               isWide: isWide,
               accent: kSectionAccent['Môi trường & Công cụ']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 1',
             ),
           ),
         if (cheatSheets.isNotEmpty)
           SectionPanel(
-            title: 'Cheat Sheet',
+            title: 'Chapter 2 · Cheat Sheet',
             accent: kSectionAccent['Cheat Sheet']!,
             description:
                 'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
@@ -139,7 +141,7 @@ class MainContent extends StatelessWidget {
           ),
         if (demos.isNotEmpty)
           SectionPanel(
-            title: 'Demos',
+            title: 'Chapter 4 · Demos',
             accent: kSectionAccent['Demos']!,
             description:
                 'Học theo ĐÚNG thứ tự số (1, 2, 3...) trên mỗi thẻ - các '
@@ -149,11 +151,12 @@ class MainContent extends StatelessWidget {
               isWide: isWide,
               accent: kSectionAccent['Demos']!,
               showIndex: true,
+              chapterLabel: 'Chapter 4',
             ),
           ),
         if (examples.isNotEmpty)
           SectionPanel(
-            title: 'Examples',
+            title: 'Chapter 5 · Examples',
             accent: kSectionAccent['Examples']!,
             description:
                 'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
@@ -162,11 +165,13 @@ class MainContent extends StatelessWidget {
               demos: examples,
               isWide: isWide,
               accent: kSectionAccent['Examples']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 5',
             ),
           ),
         if (patterns.isNotEmpty)
           SectionPanel(
-            title: 'Patterns',
+            title: 'Chapter 6 · Patterns',
             accent: kSectionAccent['Patterns']!,
             description:
                 'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
@@ -175,6 +180,8 @@ class MainContent extends StatelessWidget {
               demos: patterns,
               isWide: isWide,
               accent: kSectionAccent['Patterns']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 6',
             ),
           ),
       ],

@@ -93,7 +93,10 @@ class NavSidebar extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       '$count',
-                      style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: cs.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -126,6 +129,20 @@ class NavSidebar extends StatelessWidget {
     );
   }
 
+  Widget _chapterLabel(BuildContext context, String chapter) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(34, 8, 16, 2),
+      child: Text(
+        chapter,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
   /// Gộp 1 section vào [destinations] - tự chèn label section (+ label
   /// từng group con nếu [groupByField]) rồi mới tới các
   /// [NavigationDrawerDestination]. Section rỗng (do bị lọc hết) tự ẩn.
@@ -143,13 +160,24 @@ class NavSidebar extends StatelessWidget {
     IconData icon,
     List<LayoutDemo> items, {
     bool groupByField = false,
+    String? chapterLabel,
+    Map<int, String>? chapterBreaks,
   }) {
     if (items.isEmpty) return;
     destinations.add(_sectionLabel(context, title, icon, items.length));
     if (!expandedSections.contains(title)) return; // fold: ẩn hết item con
 
+    if (chapterLabel != null) {
+      destinations.add(_chapterLabel(context, chapterLabel));
+    }
+
     if (!groupByField) {
-      for (final d in items) {
+      for (var i = 0; i < items.length; i++) {
+        final chapter = chapterBreaks?[i];
+        if (chapter != null) {
+          destinations.add(_chapterLabel(context, chapter));
+        }
+        final d = items[i];
         flatOrder.add(d);
         destinations.add(_destinationFor(d));
       }
@@ -209,6 +237,7 @@ class NavSidebar extends StatelessWidget {
       'Môi trường & Công cụ',
       Symbols.build,
       environmentTools,
+      chapterLabel: 'Chapter 1',
     );
     _addSection(
       context,
@@ -218,6 +247,7 @@ class NavSidebar extends StatelessWidget {
       Symbols.menu_book,
       cheatSheets,
       groupByField: true,
+      chapterLabel: 'Chapter 2',
     );
     _addSection(
       context,
@@ -226,6 +256,7 @@ class NavSidebar extends StatelessWidget {
       'Demos',
       Symbols.widgets,
       demos,
+      chapterBreaks: const {0: 'Chapter 3', 1: 'Chapter 4'},
     );
     _addSection(
       context,
@@ -234,6 +265,7 @@ class NavSidebar extends StatelessWidget {
       'Examples',
       Symbols.assignment,
       examples,
+      chapterLabel: 'Chapter 5',
     );
     _addSection(
       context,
@@ -242,6 +274,7 @@ class NavSidebar extends StatelessWidget {
       'Patterns',
       Symbols.extension,
       patterns,
+      chapterLabel: 'Chapter 6',
     );
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -280,7 +313,7 @@ class NavSidebar extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Flutter Layout Playground',
+                          'Flutter Beginner Journey',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,

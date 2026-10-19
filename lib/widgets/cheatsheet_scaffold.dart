@@ -68,8 +68,8 @@ class _CheatsheetScaffoldState extends State<CheatsheetScaffold> {
     final visibleItems = _selectedIndex == 0
         ? widget.items
         : widget.items
-            .where((i) => i.category == categories[_selectedIndex - 1])
-            .toList();
+              .where((i) => i.category == categories[_selectedIndex - 1])
+              .toList();
 
     return _CategoryNavScaffold(
       title: widget.title,
@@ -117,10 +117,11 @@ class _CategoryNavScaffold extends StatelessWidget {
               final selected = index == selectedIndex;
               return ListTile(
                 selected: selected,
-                selectedTileColor:
-                    Theme.of(itemContext).colorScheme.primaryContainer,
+                selectedTileColor: Theme.of(itemContext)
+                    .colorScheme
+                    .primaryContainer,
                 title: Text(
-                  labels[index],
+                  '${(index + 1).toString().padLeft(2, '0')} · ${labels[index]}',
                   style: TextStyle(
                     fontWeight: selected ? FontWeight.bold : FontWeight.normal,
                   ),
@@ -144,7 +145,10 @@ class _CategoryNavScaffold extends StatelessWidget {
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(width: 220, child: Builder(builder: buildNavList)),
+                      SizedBox(
+                        width: 220,
+                        child: Builder(builder: buildNavList),
+                      ),
                       const VerticalDivider(width: 1),
                       Expanded(child: body),
                     ],
@@ -175,7 +179,7 @@ class _EntryList extends StatelessWidget {
             child: Text(intro),
           );
         }
-        return _EntryCard(info: items[index - 1]);
+        return _EntryCard(info: items[index - 1], lessonIndex: index);
       },
     );
   }
@@ -183,8 +187,9 @@ class _EntryList extends StatelessWidget {
 
 class _EntryCard extends StatelessWidget {
   final CheatsheetEntry info;
+  final int lessonIndex;
 
-  const _EntryCard({required this.info});
+  const _EntryCard({required this.info, required this.lessonIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -200,16 +205,54 @@ class _EntryCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 4,
               children: [
-                Text(info.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    'Lesson ${lessonIndex.toString().padLeft(2, '0')}',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  info.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
-              '▶ Xem trực tiếp (bấm vào demo bên dưới):',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+              '▶ Minh họa trực quan:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
@@ -218,7 +261,9 @@ class _EntryCard extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Builder(builder: info.preview),
@@ -228,7 +273,9 @@ class _EntryCard extends StatelessWidget {
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -260,8 +307,7 @@ class CategoryFilterScaffold extends StatefulWidget {
   });
 
   @override
-  State<CategoryFilterScaffold> createState() =>
-      _CategoryFilterScaffoldState();
+  State<CategoryFilterScaffold> createState() => _CategoryFilterScaffoldState();
 }
 
 class _CategoryFilterScaffoldState extends State<CategoryFilterScaffold> {
@@ -270,8 +316,9 @@ class _CategoryFilterScaffoldState extends State<CategoryFilterScaffold> {
   @override
   Widget build(BuildContext context) {
     final labels = ['Tất cả', ...widget.categories];
-    final selectedCategory =
-        _selectedIndex == 0 ? null : widget.categories[_selectedIndex - 1];
+    final selectedCategory = _selectedIndex == 0
+        ? null
+        : widget.categories[_selectedIndex - 1];
 
     return _CategoryNavScaffold(
       title: widget.title,
@@ -297,7 +344,10 @@ class CheatsheetHint extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        style: TextStyle(
+          fontSize: 11,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
       ),
     );
   }

@@ -104,7 +104,7 @@ class _IntroSectionState extends State<IntroSection>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '👋 Flutter Layout Playground',
+            '👋 Flutter Beginner Journey',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _IntroSectionState extends State<IntroSection>
           ),
           const SizedBox(height: 8),
           Text(
-            'Học Flutter layout bằng thực hành, với:',
+            'Bắt đầu học Flutter từ những nền tảng cơ bản, với:',
             style: TextStyle(color: cs.onSurfaceVariant),
           ),
           const SizedBox(height: 10),

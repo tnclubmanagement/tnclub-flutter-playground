@@ -227,7 +227,7 @@ class _AuthCard extends StatelessWidget {
             Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
             const SizedBox(height: 12),
             Text(
-              '▶ Xem trực tiếp (bấm vào demo bên dưới):',
+              '▶ Minh họa trực quan:',
               style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
             ),
             const SizedBox(height: 8),
