@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../articles/article_page.dart';
 import '../demos/column_row_demo.dart';
 import '../demos/container_constraints_demo.dart';
 import '../demos/edgeinsets_demo.dart';
@@ -26,21 +27,15 @@ import '../patterns/atomic_widgets_cheatsheet.dart';
 import '../patterns/auth_cheatsheet.dart';
 import '../patterns/constructors_pattern.dart';
 import '../patterns/dart_syntax_cheatsheet.dart';
-import '../patterns/dart_tooling_cheatsheet.dart';
-import '../patterns/deploy_cheatsheet.dart';
-import '../patterns/dev_environment_cheatsheet.dart';
 import '../patterns/error_handling_cheatsheet.dart';
 import '../patterns/extension_pattern.dart';
 import '../patterns/file_preview_cheatsheet.dart';
-import '../patterns/getting_started_cheatsheet.dart';
-import '../patterns/glossary_cheatsheet.dart';
 import '../patterns/i18n_cheatsheet.dart';
 import '../patterns/inherited_widget_pattern.dart';
 import '../patterns/libraries_page.dart';
 import '../patterns/local_storage_cheatsheet.dart';
 import '../patterns/navigation_cheatsheet.dart';
 import '../patterns/performance_cheatsheet.dart';
-import '../patterns/requirements_cheatsheet.dart';
 import '../patterns/state_management_cheatsheet.dart';
 import '../patterns/testing_cheatsheet.dart';
 import '../patterns/theme_cheatsheet.dart';
@@ -546,7 +541,10 @@ class HomePage extends StatefulWidget {
       tags: const ['setup', 'beginner'],
       articleAssetPath:
           'content/articles/chapter-01-getting-started/01-requirements.vi.md',
-      builder: (_) => const RequirementsCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/01-requirements.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '🚀 Bắt đầu với Flutter',
@@ -557,7 +555,9 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/getting-started',
       tags: const ['setup', 'beginner'],
       articleAssetPath: 'content/articles/chapter-01-getting-started/02-first-flutter-app.vi.md',
-      builder: (_) => const GettingStartedCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath: 'content/articles/chapter-01-getting-started/02-first-flutter-app.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '🛠️ Dev Environment & FVM cheat sheet',
@@ -568,7 +568,9 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/dev-environment',
       tags: const ['setup', 'tooling'],
       articleAssetPath: 'content/articles/chapter-01-getting-started/03-dev-environment.vi.md',
-      builder: (_) => const DevEnvironmentCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath: 'content/articles/chapter-01-getting-started/03-dev-environment.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '📦 Deploy lên Android & iOS',
@@ -581,7 +583,10 @@ class HomePage extends StatefulWidget {
       tags: const ['setup', 'tooling', 'android', 'ios'],
       articleAssetPath:
           'content/articles/chapter-01-getting-started/04-deploy.vi.md',
-      builder: (_) => const DeployCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/04-deploy.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '⌨️ Dart Tooling cheat sheet',
@@ -592,7 +597,10 @@ class HomePage extends StatefulWidget {
       tags: const ['dart', 'tooling'],
       articleAssetPath:
           'content/articles/chapter-01-getting-started/05-dart-tooling.vi.md',
-      builder: (_) => const DartToolingCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/05-dart-tooling.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '📚 Giải thích thuật ngữ (Glossary)',
@@ -604,7 +612,10 @@ class HomePage extends StatefulWidget {
       tags: const ['beginner', 'dart'],
       articleAssetPath:
           'content/articles/chapter-01-getting-started/06-glossary.vi.md',
-      builder: (_) => const GlossaryCheatsheet(),
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/06-glossary.vi.md',
+      ),
     ),
   ];
 
