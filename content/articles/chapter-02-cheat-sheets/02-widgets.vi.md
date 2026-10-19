@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Chọn widget theo trách nhiệm: hiển thị, bố cục, nhập liệu, cuộn hoặc phản hồi thao tác.
 
-![Sơ đồ tổng quan Widget cheat sheet](chapter-02-overview.png)
+![Sơ đồ tổng quan Widget cheat sheet](02-illustration.png)
 
 ## Nhóm widget chính
 

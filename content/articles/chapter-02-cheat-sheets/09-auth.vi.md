@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Authentication không chỉ là màn hình login: cần quản lý token, session, refresh và logout sạch.
 
-![Sơ đồ tổng quan Login & Credential](chapter-02-overview.png)
+![Sơ đồ tổng quan Login & Credential](09-illustration.png)
 
 ## Token lifecycle
 

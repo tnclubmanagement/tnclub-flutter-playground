@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Test nên mô tả hành vi người dùng nhìn thấy thay vì phụ thuộc implementation nội bộ.
 
-![Sơ đồ tổng quan Testing](chapter-02-overview.png)
+![Sơ đồ tổng quan Testing](11-illustration.png)
 
 ## Widget test
 

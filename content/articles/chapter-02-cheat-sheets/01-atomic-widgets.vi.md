@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 BoxDecoration, TextStyle, alignment, padding và margin là những mảnh ghép nhỏ để tạo nên giao diện rõ ràng.
 
-![Sơ đồ tổng quan Atomic Widgets](chapter-02-overview.png)
+![Sơ đồ tổng quan Atomic Widgets](01-illustration.png)
 
 ## BoxDecoration
 

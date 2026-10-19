@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Null safety, collection, function và async là các phần xuất hiện mỗi ngày trong code Flutter.
 
-![Sơ đồ tổng quan Dart syntax](chapter-02-overview.png)
+![Sơ đồ tổng quan Dart syntax](03-illustration.png)
 
 ## Null safety và collection
 

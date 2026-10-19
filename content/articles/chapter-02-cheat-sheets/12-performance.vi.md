@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Đo trước khi tối ưu: DevTools cho biết frame nào chậm và widget nào rebuild quá nhiều.
 
-![Sơ đồ tổng quan Performance](chapter-02-overview.png)
+![Sơ đồ tổng quan Performance](12-illustration.png)
 
 ## Checklist
 

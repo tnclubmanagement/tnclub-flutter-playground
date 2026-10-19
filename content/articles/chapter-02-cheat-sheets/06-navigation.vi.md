@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Navigator quản lý stack màn hình; route rõ ràng giúp deep link và test dễ hơn.
 
-![Sơ đồ tổng quan Navigation & Routing](chapter-02-overview.png)
+![Sơ đồ tổng quan Navigation & Routing](06-illustration.png)
 
 ## Push và pop
 

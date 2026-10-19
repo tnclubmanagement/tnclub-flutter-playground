@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 File từ người dùng có thể lớn, sai định dạng hoặc không còn tồn tại; UI phải có loading và error state.
 
-![Sơ đồ tổng quan File Preview](chapter-02-overview.png)
+![Sơ đồ tổng quan File Preview](10-illustration.png)
 
 ## Ảnh
 

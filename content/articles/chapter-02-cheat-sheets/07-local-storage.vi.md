@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Không phải dữ liệu nào cũng cần database. Xác định kích thước, cấu trúc và vòng đời trước khi chọn package.
 
-![Sơ đồ tổng quan Local Storage](chapter-02-overview.png)
+![Sơ đồ tổng quan Local Storage](07-illustration.png)
 
 ## Lựa chọn
 

@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Bắt đầu với implicit animation; chỉ dùng controller khi cần điều khiển timeline hoặc gesture.
 
-![Sơ đồ tổng quan Animation](chapter-02-overview.png)
+![Sơ đồ tổng quan Animation](04-illustration.png)
 
 ## Implicit animation
 

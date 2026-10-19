@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 State cục bộ nên ở gần widget sử dụng; state dùng chung cần một nguồn sự thật rõ ràng.
 
-![Sơ đồ tổng quan State Management](chapter-02-overview.png)
+![Sơ đồ tổng quan State Management](05-illustration.png)
 
 ## Từ nhỏ đến lớn
 

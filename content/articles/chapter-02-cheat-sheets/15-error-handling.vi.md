@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Error state cần thân thiện với người dùng nhưng đủ context để developer chẩn đoán.
 
-![Sơ đồ tổng quan Error Handling & Crash Reporting](chapter-02-overview.png)
+![Sơ đồ tổng quan Error Handling & Crash Reporting](15-illustration.png)
 
 ## Các lớp lỗi
 

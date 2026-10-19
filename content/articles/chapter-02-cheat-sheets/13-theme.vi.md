@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Theme tập trung màu sắc, typography và component defaults để màn hình mới không phải tự chọn style.
 
-![Sơ đồ tổng quan Theme & Dark Mode](chapter-02-overview.png)
+![Sơ đồ tổng quan Theme & Dark Mode](13-illustration.png)
 
 ## ThemeData
 

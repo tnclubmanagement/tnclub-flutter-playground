@@ -15,7 +15,7 @@ dartVersion: "3.7+"
 
 Tách HTTP client, model và repository để UI không biết chi tiết endpoint.
 
-![Sơ đồ tổng quan API & Service](chapter-02-overview.png)
+![Sơ đồ tổng quan API & Service](08-illustration.png)
 
 ## Luồng chuẩn
 
