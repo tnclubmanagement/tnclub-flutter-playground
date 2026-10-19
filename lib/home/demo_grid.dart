@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../articles/article_page.dart';
 import '../models/layout_demo.dart';
 
 /// Xếp các [DemoTile] thành lưới nhiều cột (Wrap) khi [isWide], mỗi thẻ có
@@ -129,7 +130,18 @@ class _DemoTileState extends State<DemoTile> {
           borderRadius: BorderRadius.circular(20),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () => Navigator.of(context).pushNamed(demo.path),
+            onTap: () {
+              final articleAssetPath = demo.articleAssetPath;
+              if (articleAssetPath != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ArticlePage(assetPath: articleAssetPath),
+                  ),
+                );
+                return;
+              }
+              Navigator.of(context).pushNamed(demo.path);
+            },
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
