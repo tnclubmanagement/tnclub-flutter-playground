@@ -167,37 +167,144 @@ class _ArticleBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-      children: [
-        Text(
-          article.title,
-          style: Theme.of(context).textTheme.headlineMedium
-              ?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        if (article.subtitle != null) ...[
-          const SizedBox(height: 6),
-          Text(
-            article.subtitle!,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
-        const SizedBox(height: 12),
-        _ArticleMetadata(article: article),
-        const SizedBox(height: 24),
-        MarkdownBody(
-          data: markdown,
-          selectable: true,
-          imageBuilder: (uri, title, alt) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Image.asset(
-              _resolveAssetPath(article.assetDirectory, uri.toString()),
-              errorBuilder: (context, error, stackTrace) =>
-                  Text('Không thể tải hình ảnh: $uri'),
+    final theme = Theme.of(context);
+    final imagePath = _firstImagePath(article.content);
+    final accent = theme.colorScheme.primary;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 980),
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
+          children: [
+            Container(
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                gradient: LinearGradient(
+                  colors: [
+                    Color.alphaBlend(
+                      accent.withValues(alpha: 0.18),
+                      theme.colorScheme.surface,
+                    ),
+                    Color.alphaBlend(
+                      theme.colorScheme.tertiary.withValues(alpha: 0.10),
+                      theme.colorScheme.surface,
+                    ),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                border: Border.all(color: accent.withValues(alpha: 0.20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: accent.withValues(alpha: 0.10),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'CHAPTER ${article.chapter.toString().padLeft(2, '0')}  /  LESSON ${article.lesson.toString().padLeft(2, '0')}',
+                    style: TextStyle(
+                      color: accent,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    article.title,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      height: 1.1,
+                    ),
+                  ),
+                  if (article.subtitle != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      article.subtitle!,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  _ArticleMetadata(article: article),
+                  if (imagePath != null) ...[
+                    const SizedBox(height: 22),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Image.asset(
+                        _resolveAssetPath(article.assetDirectory, imagePath),
+                        height: 190,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const SizedBox.shrink(),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.fromLTRB(28, 24, 28, 30),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: theme.colorScheme.outlineVariant),
+              ),
+              child: MarkdownBody(
+                data: markdown,
+                selectable: true,
+                styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
+                  p: theme.textTheme.bodyLarge?.copyWith(
+                    height: 1.7,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  h2: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    height: 1.2,
+                  ),
+                  h3: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                  code: TextStyle(
+                    fontFamily: 'monospace',
+                    color: theme.colorScheme.onSurface,
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                  ),
+                  codeblockDecoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: theme.colorScheme.outlineVariant),
+                  ),
+                  blockquoteDecoration: BoxDecoration(
+                    color: accent.withValues(alpha: 0.08),
+                    border: Border(left: BorderSide(color: accent, width: 4)),
+                  ),
+                  blockquotePadding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
+                ),
+                imageBuilder: (uri, title, alt) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Image.asset(
+                    _resolveAssetPath(article.assetDirectory, uri.toString()),
+                    errorBuilder: (context, error, stackTrace) =>
+                        Text('Không thể tải hình ảnh: $uri'),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -282,4 +389,9 @@ String _resolveAssetPath(String directory, String imagePath) {
     return imagePath;
   }
   return '$directory$imagePath';
+}
+
+String? _firstImagePath(String markdown) {
+  final match = RegExp(r'!\[[^\]]*\]\(([^)]+)\)').firstMatch(markdown);
+  return match?.group(1);
 }
