@@ -76,7 +76,13 @@ class _CheatsheetScaffoldState extends State<CheatsheetScaffold> {
       labels: labels,
       selectedIndex: _selectedIndex,
       onSelect: (index) => setState(() => _selectedIndex = index),
-      body: _EntryList(intro: widget.intro, items: visibleItems),
+      body: _EntryList(
+        title: widget.title,
+        intro: widget.intro,
+        itemCount: visibleItems.length,
+        categoryCount: categories.length,
+        items: visibleItems,
+      ),
     );
   }
 }
@@ -120,11 +126,31 @@ class _CategoryNavScaffold extends StatelessWidget {
                 selectedTileColor: Theme.of(itemContext)
                     .colorScheme
                     .primaryContainer,
-                title: Text(
-                  '${(index + 1).toString().padLeft(2, '0')} · ${labels[index]}',
-                  style: TextStyle(
-                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                  ),
+                title: Row(
+                  children: [
+                    Text(
+                      '${(index + 1).toString().padLeft(2, '0')} ·',
+                      style: TextStyle(
+                        fontWeight: selected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        color: Theme.of(itemContext)
+                            .colorScheme
+                            .onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        labels[index],
+                        style: TextStyle(
+                          fontWeight: selected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 onTap: () {
                   onSelect(index);
@@ -162,10 +188,19 @@ class _CategoryNavScaffold extends StatelessWidget {
 }
 
 class _EntryList extends StatelessWidget {
+  final String title;
   final String intro;
+  final int itemCount;
+  final int categoryCount;
   final List<CheatsheetEntry> items;
 
-  const _EntryList({required this.intro, required this.items});
+  const _EntryList({
+    required this.title,
+    required this.intro,
+    required this.itemCount,
+    required this.categoryCount,
+    required this.items,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -175,12 +210,203 @@ class _EntryList extends StatelessWidget {
       itemBuilder: (context, index) {
         if (index == 0) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Text(intro),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _CheatsheetHero(
+              title: title,
+              intro: intro,
+              itemCount: itemCount,
+              categoryCount: categoryCount,
+            ),
           );
         }
         return _EntryCard(info: items[index - 1], lessonIndex: index);
       },
+    );
+  }
+}
+
+class _CheatsheetHero extends StatelessWidget {
+  final String title;
+  final String intro;
+  final int itemCount;
+  final int categoryCount;
+
+  const _CheatsheetHero({
+    required this.title,
+    required this.intro,
+    required this.itemCount,
+    required this.categoryCount,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isEnvironment =
+        title.toLowerCase().contains('environment') ||
+        title.toLowerCase().contains('môi trường');
+    final accent = isEnvironment ? cs.tertiary : cs.primary;
+    final icon = isEnvironment ? Icons.terminal_rounded : Icons.auto_awesome;
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        gradient: LinearGradient(
+          colors: [
+            Color.alphaBlend(accent.withValues(alpha: 0.20), cs.surface),
+            Color.alphaBlend(cs.primary.withValues(alpha: 0.08), cs.surface),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border.all(color: accent.withValues(alpha: 0.24)),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.10),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isCompact = constraints.maxWidth < 560;
+          final content = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'LEARNING NOTE  /  CHEAT SHEET',
+                style: TextStyle(
+                  fontSize: 11,
+                  letterSpacing: 1.4,
+                  fontWeight: FontWeight.w800,
+                  color: accent,
+                ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.w900, height: 1.1),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                intro,
+                style: TextStyle(
+                  height: 1.55,
+                  fontSize: 15,
+                  color: cs.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _HeroStat(
+                    icon: Icons.menu_book_rounded,
+                    value: '$itemCount',
+                    label: 'lessons',
+                    accent: accent,
+                  ),
+                  _HeroStat(
+                    icon: Icons.account_tree_rounded,
+                    value: '$categoryCount',
+                    label: 'topics',
+                    accent: accent,
+                  ),
+                  _HeroStat(
+                    icon: Icons.route_rounded,
+                    value: '01',
+                    label: 'start here',
+                    accent: accent,
+                  ),
+                ],
+              ),
+            ],
+          );
+
+          if (isCompact) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _HeroIcon(icon: icon, accent: accent),
+                const SizedBox(height: 18),
+                content,
+              ],
+            );
+          }
+
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: content),
+              const SizedBox(width: 24),
+              _HeroIcon(icon: icon, accent: accent),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _HeroIcon extends StatelessWidget {
+  final IconData icon;
+  final Color accent;
+
+  const _HeroIcon({required this.icon, required this.accent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 88,
+      height: 88,
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: accent.withValues(alpha: 0.28)),
+      ),
+      child: Icon(icon, size: 42, color: accent),
+    );
+  }
+}
+
+class _HeroStat extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+  final Color accent;
+
+  const _HeroStat({
+    required this.icon,
+    required this.value,
+    required this.label,
+    required this.accent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+      decoration: BoxDecoration(
+        color: cs.surface.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: accent),
+          const SizedBox(width: 6),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w900)),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+          ),
+        ],
+      ),
     );
   }
 }
