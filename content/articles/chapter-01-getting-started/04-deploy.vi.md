@@ -17,6 +17,8 @@ Chạy app trên thiết bị thật và phát hành lên store là hai quy trì
 Thiết bị thật phù hợp để kiểm tra; store yêu cầu thêm signing, metadata và
 quy trình review.
 
+![Quy trình từ code đến bản phát hành](04-deploy.png)
+
 ## Chuẩn bị chung
 
 Trước khi build release, kiểm tra:

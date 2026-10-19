@@ -13,6 +13,8 @@ dartVersion: "3.7+"
 
 # Thuật ngữ Flutter và Dart
 
+![Bản đồ các khái niệm nền tảng Flutter và Dart](06-glossary.png)
+
 ## Widget
 
 Đơn vị cấu tạo giao diện Flutter. `Text`, `Container`, `Row`, `Column` và

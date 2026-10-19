@@ -16,6 +16,8 @@ dartVersion: "3.7+"
 Terminal giúp bạn cài dependency, format code, tìm lỗi và kiểm tra project
 trước khi commit. Nên chạy lệnh từ thư mục gốc, nơi có `pubspec.yaml`.
 
+![Vòng lặp các công cụ CLI trong quá trình phát triển](05-dart-tooling.png)
+
 ## Dependency
 
 ```bash

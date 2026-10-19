@@ -17,6 +17,8 @@ Bài này dành cho người chưa từng dùng Flutter. Mục tiêu không ph�
 ngay mọi dòng code, mà là đi từ lúc chưa có project đến lúc nhìn thấy ứng dụng
 đầu tiên chạy trên máy.
 
+![Lộ trình tạo và chạy ứng dụng Flutter đầu tiên](02-first-flutter-app.png)
+
 ## Flutter và Dart là gì?
 
 Dart là ngôn ngữ lập trình do Google phát triển. Flutter là framework dùng Dart

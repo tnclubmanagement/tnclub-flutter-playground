@@ -16,6 +16,8 @@ dartVersion: "3.7+"
 Bạn không cần biết mọi thứ trước khi bắt đầu. Chỉ cần chuẩn bị những điều cơ
 bản dưới đây và học thêm trong quá trình thực hành.
 
+![Lộ trình chuẩn bị trước khi học Flutter](01-requirements.png)
+
 ## Kiến thức nền tảng
 
 Nên biết biến, kiểu dữ liệu, hàm, điều kiện, vòng lặp và cách đọc thông báo

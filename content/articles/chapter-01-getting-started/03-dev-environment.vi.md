@@ -16,6 +16,8 @@ dartVersion: "3.7+"
 Một môi trường ổn định giúp phân biệt lỗi code với lỗi cài đặt. Hãy kiểm tra
 toolchain trước khi tìm cách sửa một lỗi Dart hoặc Flutter.
 
+![Mối liên hệ giữa IDE, toolchain và version Flutter](03-dev-environment.png)
+
 ## Chọn IDE
 
 ### VS Code
