@@ -73,6 +73,7 @@ flutter:
   # trong app (xem lib/widgets/demo_scaffold.dart).
   assets:
     - content/articles/chapter-01-getting-started/
+    - content/articles/chapter-02-cheat-sheets/
     - lib/demos/stateless_vs_stateful_demo.dart
     - lib/demos/column_row_demo.dart
     - lib/demos/expanded_flexible_demo.dart

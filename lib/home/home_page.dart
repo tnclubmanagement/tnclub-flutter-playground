@@ -345,6 +345,8 @@ class HomePage extends StatefulWidget {
           'Positioned, Clip, padding vs margin... (trang tổng hợp tĩnh)',
       path: '/cheatsheet/atomic-widgets',
       tags: const ['widget', 'layout'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/01-atomic-widgets.vi.md',
       builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -355,6 +357,8 @@ class HomePage extends StatefulWidget {
           'background/scroll hay gì đặc biệt (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/widgets',
       tags: const ['widget', 'layout'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/02-widgets.vi.md',
       builder: (_) => const WidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -365,6 +369,8 @@ class HomePage extends StatefulWidget {
           'matching, constructor... (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/dart-syntax',
       tags: const ['dart'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/03-dart-syntax.vi.md',
       builder: (_) => const DartSyntaxCheatsheet(),
     ),
     LayoutDemo(
@@ -376,6 +382,8 @@ class HomePage extends StatefulWidget {
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/animation',
       tags: const ['animation', 'widget'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/04-animation.vi.md',
       builder: (_) => const AnimationCheatsheet(),
     ),
     // ---- Kiến trúc & State ----
@@ -388,6 +396,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/state-management',
       tags: const ['state'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/05-state-management.vi.md',
       builder: (_) => const StateManagementCheatsheet(),
     ),
     LayoutDemo(
@@ -398,6 +408,8 @@ class HomePage extends StatefulWidget {
           'app này đang dùng), go_router (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/navigation',
       tags: const ['navigation'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/06-navigation.vi.md',
       builder: (_) => const NavigationCheatsheet(),
     ),
     LayoutDemo(
@@ -408,6 +420,8 @@ class HomePage extends StatefulWidget {
           'hive) (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/local-storage',
       tags: const ['storage'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/07-local-storage.vi.md',
       builder: (_) => const LocalStorageCheatsheet(),
     ),
     // ---- Networking & Auth ----
@@ -421,6 +435,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/api-service',
       tags: const ['network', 'async'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/08-api-service.vi.md',
       builder: (_) => const ApiServiceCheatsheet(),
     ),
     LayoutDemo(
@@ -433,6 +449,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/auth',
       tags: const ['auth', 'security', 'storage'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/09-auth.vi.md',
       builder: (_) => const AuthCheatsheet(),
     ),
     LayoutDemo(
@@ -443,6 +461,8 @@ class HomePage extends StatefulWidget {
           'PDF, chọn ảnh/file từ máy (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/file-preview',
       tags: const ['image', 'widget'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/10-file-preview.vi.md',
       builder: (_) => const FilePreviewCheatsheet(),
     ),
     // ---- Chất lượng & Vận hành ----
@@ -455,6 +475,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/testing',
       tags: const ['testing'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/11-testing.vi.md',
       builder: (_) => const TestingCheatsheet(),
     ),
     LayoutDemo(
@@ -466,6 +488,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/performance',
       tags: const ['performance'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/12-performance.vi.md',
       builder: (_) => const PerformanceCheatsheet(),
     ),
     LayoutDemo(
@@ -476,6 +500,8 @@ class HomePage extends StatefulWidget {
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/theme',
       tags: const ['theme'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/13-theme.vi.md',
       builder: (_) => const ThemeCheatsheet(),
     ),
     LayoutDemo(
@@ -487,6 +513,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/i18n',
       tags: const ['i18n'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/14-i18n.vi.md',
       builder: (_) => const I18nCheatsheet(),
     ),
     LayoutDemo(
@@ -498,6 +526,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/error-handling',
       tags: const ['error-handling', 'async'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/15-error-handling.vi.md',
       builder: (_) => const ErrorHandlingCheatsheet(),
     ),
   ];

@@ -50,7 +50,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Đã chuyển đổi sang bài viết'), findsNWidgets(6));
+    expect(find.text('Đã chuyển đổi sang bài viết'), findsNWidgets(21));
   });
 
   testWidgets('Search box filters sections down to matching pages only', (
