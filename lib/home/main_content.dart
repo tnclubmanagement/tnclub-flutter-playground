@@ -4,9 +4,7 @@ import '../app_constants.dart';
 import '../models/layout_demo.dart';
 import 'cheat_sheet_groups.dart';
 import 'demo_grid.dart';
-import 'home_page.dart';
 import 'intro_section.dart';
-import 'progress_ring_card.dart';
 import 'section_panel.dart';
 import 'stat_strip.dart';
 
@@ -46,37 +44,52 @@ class MainContent extends StatelessWidget {
         patterns.length +
         cheatSheets.length +
         environmentTools.length;
-    final totalCount =
-        HomePage.demos.length +
-        HomePage.examples.length +
-        HomePage.patterns.length +
-        HomePage.cheatSheets.length +
-        HomePage.environmentTools.length;
 
-    // Hero: card giới thiệu (to) + vòng tròn % (nhỏ) nằm CẠNH NHAU như ảnh
-    // tham khảo - trên màn hẹp thì xếp dọc lại (Column) cho vừa.
+    // Hero: card giới thiệu (to) + thẻ thống kê/donut (nhỏ) nằm CẠNH NHAU,
+    // CAO BẰNG NHAU (crossAxisAlignment.stretch) - trên màn hẹp thì xếp
+    // dọc lại (Column) cho vừa.
+    // Trước đây có THÊM 1 vòng tròn "% đang hiện" riêng cạnh Intro VÀ 1
+    // thẻ donut khác riêng bên dưới - 2 biểu đồ tròn khác nhau nhìn trùng
+    // lặp, giờ gộp làm 1: đưa thẳng StatStrip (đã gồm cả donut lẫn % lọc
+    // ở giữa donut) lên cạnh Intro luôn, bỏ hẳn card donut riêng bên dưới.
     //
-    // CỐ Ý không dùng IntrinsicHeight để ép 2 card cao bằng nhau: nó tính
-    // chiều cao "intrinsic" của Text theo 1 cách khác với lúc layout thật
-    // (width bị bó hẹp bởi flex), lệch vài pixel là RenderFlex tràn ngay -
-    // đây là 1 cạm bẫy kinh điển của IntrinsicHeight. Để mỗi card tự co
-    // theo nội dung (align top) an toàn hơn, chấp nhận 2 card cao khác nhau.
+    // Ép "cao bằng nhau tương đối" bằng `ConstrainedBox(minHeight)` thay vì
+    // `IntrinsicHeight` + `stretch`: 2 cách đó ĐÃ THỬ nhưng đều dính lỗi
+    // thật (không phải lý thuyết suông) - `stretch` cần chiều cao HỮU HẠN
+    // từ parent trong khi Row này nằm trong SingleChildScrollView (chiều
+    // cao vô hạn) -> lỗi "forces an infinite height"; còn `IntrinsicHeight`
+    // thì tính sai lệch vài pixel so với layout thật (đúng cạm bẫy kinh
+    // điển của nó) -> tràn (overflow) ngay khi nội dung dài thêm 1 dòng.
+    // `minHeight` AN TOÀN hơn hẳn: chỉ đặt 1 "sàn" chiều cao, không ép
+    // CHÍNH XÁC bằng nhau nhưng KHÔNG BAO GIỜ tràn - card nào ngắn hơn chỉ
+    // đơn giản có thêm khoảng trắng dưới (xem `mainAxisSize.min` ở Column
+    // của `IntroSection`/`StatStrip` để không bị ép giãn nội dung ra).
+    const heroMinHeight = 380.0;
     final hero = isWide
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(flex: 2, child: IntroSection()),
+              Expanded(
+                flex: 2,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: heroMinHeight),
+                  child: IntroSection(isWide: isWide),
+                ),
+              ),
               const SizedBox(width: 12),
               Expanded(
-                child: ProgressRingCard(shown: shownCount, total: totalCount),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: heroMinHeight),
+                  child: StatStrip(shown: shownCount),
+                ),
               ),
             ],
           )
         : Column(
             children: [
-              const IntroSection(),
+              IntroSection(isWide: isWide),
               const SizedBox(height: 12),
-              ProgressRingCard(shown: shownCount, total: totalCount),
+              StatStrip(shown: shownCount),
             ],
           );
 
@@ -84,8 +97,6 @@ class MainContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         hero,
-        const SizedBox(height: 20),
-        StatStrip(isWide: isWide),
         const SizedBox(height: 20),
 
         if (!hasAnyResult)
@@ -99,9 +110,24 @@ class MainContent extends StatelessWidget {
             ),
           ),
 
+        if (environmentTools.isNotEmpty)
+          SectionPanel(
+            title: 'Chapter 1 · Môi trường & Công cụ',
+            accent: kSectionAccent['Môi trường & Công cụ']!,
+            description:
+                'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
+                'theo project.',
+            child: DemoGrid(
+              demos: environmentTools,
+              isWide: isWide,
+              accent: kSectionAccent['Môi trường & Công cụ']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 1',
+            ),
+          ),
         if (cheatSheets.isNotEmpty)
           SectionPanel(
-            title: 'Cheat Sheet',
+            title: 'Chapter 2 · Cheat Sheet',
             accent: kSectionAccent['Cheat Sheet']!,
             description:
                 'Trang tra cứu nhanh (không phải demo chạy thật): tổng '
@@ -113,32 +139,24 @@ class MainContent extends StatelessWidget {
               accent: kSectionAccent['Cheat Sheet']!,
             ),
           ),
-        if (environmentTools.isNotEmpty)
-          SectionPanel(
-            title: 'Môi trường & Công cụ',
-            accent: kSectionAccent['Môi trường & Công cụ']!,
-            description:
-                'Cài đặt máy, công cụ dòng lệnh và quản lý version Flutter '
-                'theo project.',
-            child: DemoGrid(
-              demos: environmentTools,
-              isWide: isWide,
-              accent: kSectionAccent['Môi trường & Công cụ']!,
-            ),
-          ),
         if (demos.isNotEmpty)
           SectionPanel(
-            title: 'Demos',
+            title: 'Chapter 4 · Demos',
             accent: kSectionAccent['Demos']!,
+            description:
+                'Học theo ĐÚNG thứ tự số (1, 2, 3...) trên mỗi thẻ - các '
+                'demo sau thường dùng lại khái niệm của demo trước.',
             child: DemoGrid(
               demos: demos,
               isWide: isWide,
               accent: kSectionAccent['Demos']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 4',
             ),
           ),
         if (examples.isNotEmpty)
           SectionPanel(
-            title: 'Examples',
+            title: 'Chapter 5 · Examples',
             accent: kSectionAccent['Examples']!,
             description:
                 'Layout mẫu kết hợp nhiều widget, kèm đề bài + gợi ý để bạn '
@@ -147,11 +165,13 @@ class MainContent extends StatelessWidget {
               demos: examples,
               isWide: isWide,
               accent: kSectionAccent['Examples']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 5',
             ),
           ),
         if (patterns.isNotEmpty)
           SectionPanel(
-            title: 'Patterns',
+            title: 'Chapter 6 · Patterns',
             accent: kSectionAccent['Patterns']!,
             description:
                 'Cách tổ chức code/quản lý state hay gặp, và danh sách các '
@@ -160,6 +180,8 @@ class MainContent extends StatelessWidget {
               demos: patterns,
               isWide: isWide,
               accent: kSectionAccent['Patterns']!,
+              showIndex: true,
+              chapterLabel: 'Chapter 6',
             ),
           ),
       ],

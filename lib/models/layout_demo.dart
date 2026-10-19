@@ -11,6 +11,9 @@ class LayoutDemo {
   // Dùng cho search/filter ở sidebar trang chủ - mỗi trang gắn 1-3 tag
   // ngắn, KHÔNG phân biệt hoa/thường khi so khớp (xem _matchesQuery).
   final List<String> tags;
+  // Đánh dấu trang "nâng cao" - hiện badge riêng trên card (xem DemoTile)
+  // để người mới biết nên tạm bỏ qua, học sau khi đã vững nền tảng.
+  final bool advanced;
 
   const LayoutDemo({
     required this.title,
@@ -19,5 +22,6 @@ class LayoutDemo {
     required this.builder,
     this.group,
     this.tags = const [],
+    this.advanced = false,
   });
 }

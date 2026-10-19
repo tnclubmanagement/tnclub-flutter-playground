@@ -10,12 +10,17 @@ class DemoGrid extends StatelessWidget {
   final List<LayoutDemo> demos;
   final bool isWide;
   final Color accent;
+  // Hiện số bài trên card để dễ trao đổi theo chapter/lesson.
+  final bool showIndex;
+  final String? chapterLabel;
 
   const DemoGrid({
     super.key,
     required this.demos,
     required this.isWide,
     required this.accent,
+    this.showIndex = false,
+    this.chapterLabel,
   });
 
   static const double _cardWidth = 360;
@@ -24,22 +29,32 @@ class DemoGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isWide) {
       return Column(
-        children: demos
-            .map((demo) => DemoTile(demo: demo, accent: accent))
-            .toList(),
+        children: [
+          for (var i = 0; i < demos.length; i++)
+            DemoTile(
+              demo: demos[i],
+              accent: accent,
+              index: showIndex ? i + 1 : null,
+              chapterLabel: chapterLabel,
+            ),
+        ],
       );
     }
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: demos
-          .map(
-            (demo) => SizedBox(
-              width: _cardWidth,
-              child: DemoTile(demo: demo, accent: accent),
+      children: [
+        for (var i = 0; i < demos.length; i++)
+          SizedBox(
+            width: _cardWidth,
+            child: DemoTile(
+              demo: demos[i],
+              accent: accent,
+              index: showIndex ? i + 1 : null,
+              chapterLabel: chapterLabel,
             ),
-          )
-          .toList(),
+          ),
+      ],
     );
   }
 }
@@ -47,8 +62,16 @@ class DemoGrid extends StatelessWidget {
 class DemoTile extends StatefulWidget {
   final LayoutDemo demo;
   final Color accent;
+  final int? index;
+  final String? chapterLabel;
 
-  const DemoTile({super.key, required this.demo, required this.accent});
+  const DemoTile({
+    super.key,
+    required this.demo,
+    required this.accent,
+    this.index,
+    this.chapterLabel,
+  });
 
   @override
   State<DemoTile> createState() => _DemoTileState();
@@ -114,7 +137,9 @@ class _DemoTileState extends State<DemoTile> {
                 children: [
                   // Icon section tô màu SOLID theo accent riêng - để mỗi
                   // nhóm Demos/Examples/Patterns/Cheat Sheet có nhận diện
-                  // riêng, nổi trên nền pastel cùng tông.
+                  // riêng, nổi trên nền pastel cùng tông. Khi có [index]
+                  // (chỉ bật cho Demos) thì hiện SỐ THỨ TỰ thay icon, để
+                  // người mới biết nên học card nào trước.
                   Container(
                     width: 44,
                     height: 44,
@@ -123,27 +148,73 @@ class _DemoTileState extends State<DemoTile> {
                       color: accent,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
-                      Symbols.widgets,
-                      color: Colors.white,
-                      size: 22,
-                      weight: 300,
-                    ),
+                    child: widget.index != null
+                        ? Text(
+                            '${widget.index}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        : const Icon(
+                            Symbols.widgets,
+                            color: Colors.white,
+                            size: 22,
+                            weight: 300,
+                          ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          demo.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 15,
-                            color: colorScheme.onSurface,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                demo.title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 15,
+                                  color: colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
+                            if (demo.advanced) ...[
+                              const SizedBox(width: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 7,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.errorContainer,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'Nâng cao',
+                                  style: TextStyle(
+                                    fontSize: 9.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: colorScheme.onErrorContainer,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                         const SizedBox(height: 4),
+                        if (widget.chapterLabel != null && widget.index != null)
+                          Text(
+                            '${widget.chapterLabel} · Lesson ${widget.index}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: accent,
+                            ),
+                          ),
                         Text(
                           demo.description,
                           style: TextStyle(
