@@ -22,8 +22,9 @@ toolchain trước khi tìm cách sửa một lỗi Dart hoặc Flutter.
 
 ### VS Code
 
-VS Code nhẹ, khởi động nhanh và phù hợp với đa số người mới. Cài extension
-**Flutter**; extension này sẽ cài kèm **Dart**:
+VS Code nhẹ, khởi động nhanh và phù hợp với đa số người mới. Cài
+[↗ extension Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter);
+extension này sẽ cài kèm [↗ Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code):
 
 ```bash
 code --install-extension Dart-Code.flutter
@@ -39,7 +40,8 @@ Nên bật format code khi lưu:
 
 ### Android Studio
 
-Android Studio nặng hơn nhưng tích hợp Android SDK Manager và AVD Manager.
+[↗ Android Studio](https://developer.android.com/studio) nặng hơn nhưng tích hợp
+Android SDK Manager và AVD Manager.
 Chọn công cụ này nếu bạn thường xuyên cần tạo Android Emulator hoặc debug code
 native Android.
 

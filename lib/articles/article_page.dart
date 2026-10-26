@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/article.dart';
 import 'article_loader.dart';
@@ -38,6 +39,12 @@ class _ArticlePageState extends State<ArticlePage> {
         return _ArticleScaffold(
           article: snapshot.data!,
           selectedSection: _selectedSection,
+          onOpenLink: (url) async {
+            final uri = Uri.tryParse(url);
+            if (uri != null && await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            }
+          },
           onSelectSection: (index) {
             setState(() => _selectedSection = index);
           },
@@ -50,11 +57,13 @@ class _ArticlePageState extends State<ArticlePage> {
 class _ArticleScaffold extends StatelessWidget {
   final Article article;
   final int selectedSection;
+  final Future<void> Function(String url) onOpenLink;
   final ValueChanged<int> onSelectSection;
 
   const _ArticleScaffold({
     required this.article,
     required this.selectedSection,
+    required this.onOpenLink,
     required this.onSelectSection,
   });
 
@@ -77,6 +86,7 @@ class _ArticleScaffold extends StatelessWidget {
           markdown: selectedSection == 0
               ? _removeDocumentTitle(article.content)
               : sections[selectedSection - 1].markdown,
+          onOpenLink: onOpenLink,
         );
 
         return Scaffold(
@@ -162,8 +172,13 @@ class _ArticleSectionNav extends StatelessWidget {
 class _ArticleBody extends StatelessWidget {
   final Article article;
   final String markdown;
+  final Future<void> Function(String url) onOpenLink;
 
-  const _ArticleBody({required this.article, required this.markdown});
+  const _ArticleBody({
+    required this.article,
+    required this.markdown,
+    required this.onOpenLink,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -264,10 +279,19 @@ class _ArticleBody extends StatelessWidget {
               child: MarkdownBody(
                 data: markdown,
                 selectable: true,
+                onTapLink: (text, href, title) {
+                  if (href != null) onOpenLink(href);
+                },
                 styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
                   p: theme.textTheme.bodyLarge?.copyWith(
                     height: 1.7,
                     color: theme.colorScheme.onSurface,
+                  ),
+                  a: TextStyle(
+                    color: theme.colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                    decorationColor: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
                   ),
                   h2: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,

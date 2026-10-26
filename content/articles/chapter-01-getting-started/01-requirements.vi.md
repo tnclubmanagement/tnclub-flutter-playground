@@ -27,9 +27,11 @@ lỗi. Nếu chưa biết, bạn có thể học song song trong phần Dart cơ
 
 - Máy tính Windows, macOS hoặc Linux.
 - Kết nối Internet.
-- Flutter SDK.
-- VS Code hoặc Android Studio.
-- Extension Flutter và Dart.
+- [↗ Flutter SDK](https://docs.flutter.dev/get-started/install).
+- [↗ VS Code](https://code.visualstudio.com/) hoặc
+  [↗ Android Studio](https://developer.android.com/studio).
+- [↗ Extension Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
+  và [↗ Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code).
 
 Sau khi cài đặt, kiểm tra môi trường bằng lệnh:
 
