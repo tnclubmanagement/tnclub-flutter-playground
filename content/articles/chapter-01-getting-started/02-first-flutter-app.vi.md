@@ -43,10 +43,72 @@ void main() {
 
 ## Cài Flutter SDK
 
-1. Tải Flutter SDK từ [flutter.dev](https://flutter.dev).
-2. Giải nén SDK vào một thư mục không cần quyền administrator.
-3. Thêm thư mục `flutter/bin` vào `PATH`.
+Chọn đúng hướng dẫn theo hệ điều hành. Nên cài bản **stable** từ trang chính
+thức, không tải SDK từ các file re-upload trên mạng.
+
+### Windows
+
+1. Cài [↗ Git for Windows](https://git-scm.com/download/win) nếu máy chưa có.
+2. Tải Flutter từ
+   [↗ hướng dẫn cài Flutter trên Windows](https://docs.flutter.dev/get-started/install/windows).
+3. Giải nén vào thư mục người dùng, ví dụ `C:\src\flutter`; tránh
+   `C:\Program Files` vì có thể gặp lỗi quyền ghi.
+4. Thêm `C:\src\flutter\bin` vào **User Path** trong Environment Variables.
+5. Mở PowerShell mới rồi chạy:
+
+   ```powershell
+   flutter --version
+   flutter doctor
+   ```
+
+Nếu PowerShell không nhận lệnh, kiểm tra lại `PATH` và mở lại terminal/VS Code.
+
+### macOS
+
+1. Mở
+   [↗ hướng dẫn cài Flutter trên macOS](https://docs.flutter.dev/get-started/install/macos).
+2. Tải archive stable, giải nén vào thư mục người dùng, ví dụ
+   `~/development/flutter`.
+3. Thêm Flutter vào `PATH` trong `~/.zprofile`:
+
+   ```bash
+   export PATH="$HOME/development/flutter/bin:$PATH"
+   ```
+
 4. Mở terminal mới rồi kiểm tra:
+
+   ```bash
+   flutter --version
+   flutter doctor
+   ```
+
+Muốn build iOS cần cài thêm
+[↗ Xcode](https://developer.apple.com/xcode/) và CocoaPods. Chỉ cài Flutter
+không đủ để build iOS.
+
+### Linux
+
+1. Cài các package cần thiết theo
+   [↗ hướng dẫn cài Flutter trên Linux](https://docs.flutter.dev/get-started/install/linux):
+
+   ```bash
+   sudo apt-get update -y
+   sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+   ```
+
+2. Tải archive stable, giải nén vào `~/development/flutter`.
+3. Thêm Flutter vào `PATH` trong `~/.bashrc` hoặc `~/.zshrc`:
+
+   ```bash
+   export PATH="$HOME/development/flutter/bin:$PATH"
+   ```
+
+4. Mở terminal mới rồi chạy `flutter doctor`.
+
+Muốn build Android cần cài thêm Android Studio và Android SDK. Muốn chạy
+Flutter Web, cài Chrome hoặc một trình duyệt được Flutter hỗ trợ.
+
+### Kiểm tra sau khi cài
 
 ```bash
 flutter --version
