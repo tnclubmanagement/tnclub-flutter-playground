@@ -74,8 +74,7 @@ class _ExampleScaffoldState extends State<ExampleScaffold> {
               task: widget.task,
               hints: widget.hints,
               showAnswer: _showAnswer,
-              onToggleAnswer: () =>
-                  setState(() => _showAnswer = !_showAnswer),
+              onToggleAnswer: () => setState(() => _showAnswer = !_showAnswer),
             );
             final resultPanel = _ResultPanel(child: demoPanel);
             final codePanel = _showAnswer
@@ -94,7 +93,11 @@ class _ExampleScaffoldState extends State<ExampleScaffold> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [taskPanel, const SizedBox(height: 16), resultPanel],
+                        children: [
+                          taskPanel,
+                          const SizedBox(height: 16),
+                          resultPanel,
+                        ],
                       ),
                     ),
                   ),
@@ -112,7 +115,6 @@ class _ExampleScaffoldState extends State<ExampleScaffold> {
                       Tab(text: 'Đề bài & kết quả', icon: Icon(Icons.widgets)),
                       Tab(text: 'Đáp án', icon: Icon(Icons.code)),
                     ],
-                    labelColor: Colors.deepPurple,
                   ),
                   Expanded(
                     child: TabBarView(
@@ -171,7 +173,10 @@ class _TaskPanel extends StatelessWidget {
             Text(task),
             if (hints.isNotEmpty) ...[
               const SizedBox(height: 12),
-              const Text('Gợi ý:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'Gợi ý:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 4),
               ...hints.map(
                 (h) => Padding(

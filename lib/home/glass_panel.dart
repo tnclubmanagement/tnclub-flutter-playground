@@ -20,8 +20,8 @@ class GlassPanel extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     // Alpha thấp hơn ở dark mode vì nền tối dễ "ăn" màu trắng phủ lên hơn -
     // giữ y nguyên ở light mode thì dark mode sẽ bị trắng bệch, mất chất tối.
-    final overlayTop = isDark ? 0.10 : 0.55;
-    final overlayBottom = isDark ? 0.03 : 0.22;
+    final overlayTop = isDark ? 0.08 : 0.78;
+    final overlayBottom = isDark ? 0.03 : 0.62;
     return ClipRRect(
       borderRadius: _borderRadius,
       child: BackdropFilter(
@@ -35,14 +35,17 @@ class GlassPanel extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.white.withValues(alpha: overlayTop),
-                Colors.white.withValues(alpha: overlayBottom),
+                Theme.of(context).colorScheme.surface
+                    .withValues(alpha: overlayTop),
+                Theme.of(context).colorScheme.surface
+                    .withValues(alpha: overlayBottom),
               ],
             ),
             border: Border.all(
               color:
                   borderColor ??
-                  Colors.white.withValues(alpha: isDark ? 0.08 : 0.6),
+                  Theme.of(context).colorScheme.outlineVariant
+                      .withValues(alpha: isDark ? 0.55 : 0.9),
             ),
           ),
           child: child,
