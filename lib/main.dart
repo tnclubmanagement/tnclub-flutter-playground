@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'app_constants.dart';
+import 'articles/article_page.dart';
 import 'home/home_page.dart';
 
 void main() {
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
   // đúng trang đang xem -> F5/refresh hoặc chia sẻ link vẫn mở đúng demo đó,
   // tiện khi cần trỏ vào 1 trang cụ thể để yêu cầu chỉnh sửa.
   Route<dynamic> _onGenerateRoute(RouteSettings settings) {
+    final requestedPath = settings.name ?? '/';
+    final uri = Uri.parse(requestedPath);
     for (final demo in [
       ...HomePage.demos,
       ...HomePage.examples,
@@ -25,7 +28,21 @@ class MyApp extends StatelessWidget {
       ...HomePage.cheatSheets,
       ...HomePage.environmentTools,
     ]) {
-      if (demo.path == settings.name) {
+      if (demo.path == uri.path) {
+        if (demo.articleAssetPath != null) {
+          final fragment = uri.fragment;
+          final initialSection = fragment.startsWith('section=')
+              ? int.tryParse(fragment.substring('section='.length)) ?? 0
+              : 0;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => ArticlePage(
+              assetPath: demo.articleAssetPath!,
+              routePath: demo.path,
+              initialSection: initialSection,
+            ),
+          );
+        }
         return MaterialPageRoute(settings: settings, builder: demo.builder);
       }
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/article.dart';
@@ -7,15 +8,22 @@ import 'article_loader.dart';
 
 class ArticlePage extends StatefulWidget {
   final String assetPath;
+  final String? routePath;
+  final int initialSection;
 
-  const ArticlePage({super.key, required this.assetPath});
+  const ArticlePage({
+    super.key,
+    required this.assetPath,
+    this.routePath,
+    this.initialSection = 0,
+  });
 
   @override
   State<ArticlePage> createState() => _ArticlePageState();
 }
 
 class _ArticlePageState extends State<ArticlePage> {
-  int _selectedSection = 0;
+  late int _selectedSection = widget.initialSection;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +55,12 @@ class _ArticlePageState extends State<ArticlePage> {
           },
           onSelectSection: (index) {
             setState(() => _selectedSection = index);
+            final routePath = widget.routePath;
+            if (routePath != null) {
+              SystemNavigator.routeInformationUpdated(
+                uri: Uri.parse('$routePath#section=$index'),
+              );
+            }
           },
         );
       },
