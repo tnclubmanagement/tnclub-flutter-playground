@@ -448,41 +448,10 @@ class NavSidebar extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    // Cuộn NGANG 1 hàng (thay vì Wrap nhiều hàng) - ~24 tag mà
-                    // xuống dòng hết sẽ chiếm rất nhiều chỗ của sidebar, đẩy cả
-                    // mục lục xuống thấp. 1 hàng cuộn ngang gọn và "tử tế" hơn.
-                    SizedBox(
-                      height: 30,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: allTags.length,
-                        separatorBuilder: (_, _) => const SizedBox(width: 6),
-                        itemBuilder: (context, i) {
-                          final tag = allTags[i];
-                          final selected = selectedTags.contains(tag);
-                          return FilterChip(
-                            label: Text(
-                              tag,
-                              style: const TextStyle(fontSize: 11),
-                            ),
-                            selected: selected,
-                            onSelected: (_) => onTagToggle(tag),
-                            visualDensity: VisualDensity.compact,
-                            showCheckmark: false,
-                            backgroundColor: cs.surfaceContainerHighest,
-                            selectedColor: cs.primary,
-                            side: BorderSide.none,
-                            labelStyle: TextStyle(
-                              color: selected
-                                  ? cs.onPrimary
-                                  : cs.onSurfaceVariant,
-                              fontWeight: selected
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
-                            ),
-                          );
-                        },
-                      ),
+                    _TagScroller(
+                      tags: allTags,
+                      selectedTags: selectedTags,
+                      onTagToggle: onTagToggle,
                     ),
                   ],
                   const SizedBox(height: 16),
@@ -493,6 +462,164 @@ class NavSidebar extends StatelessWidget {
             children: destinations,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _TagScroller extends StatefulWidget {
+  final List<String> tags;
+  final Set<String> selectedTags;
+  final ValueChanged<String> onTagToggle;
+
+  const _TagScroller({
+    required this.tags,
+    required this.selectedTags,
+    required this.onTagToggle,
+  });
+
+  @override
+  State<_TagScroller> createState() => _TagScrollerState();
+}
+
+class _TagScrollerState extends State<_TagScroller> {
+  final _scrollController = ScrollController();
+  bool _canScrollBack = false;
+  bool _canScrollForward = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_updateScrollButtons);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _updateScrollButtons();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant _TagScroller oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _updateScrollButtons();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_updateScrollButtons)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _updateScrollButtons() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    final canBack = position.pixels > 0;
+    final canForward = position.pixels < position.maxScrollExtent;
+    if (canBack != _canScrollBack || canForward != _canScrollForward) {
+      setState(() {
+        _canScrollBack = canBack;
+        _canScrollForward = canForward;
+      });
+    }
+  }
+
+  void _scrollBy(double amount) {
+    final target = (_scrollController.offset + amount).clamp(
+      0.0,
+      _scrollController.position.maxScrollExtent,
+    );
+    _scrollController.animateTo(
+      target,
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: [
+          _TagArrow(
+            icon: Icons.chevron_left_rounded,
+            enabled: _canScrollBack,
+            onPressed: () => _scrollBy(-180),
+          ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              itemCount: widget.tags.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 6),
+              itemBuilder: (context, i) {
+                final tag = widget.tags[i];
+                final selected = widget.selectedTags.contains(tag);
+                return FilterChip(
+                  label: Text(tag, style: const TextStyle(fontSize: 11)),
+                  selected: selected,
+                  onSelected: (_) => widget.onTagToggle(tag),
+                  visualDensity: VisualDensity.compact,
+                  showCheckmark: false,
+                  backgroundColor: cs.surfaceContainerHighest,
+                  selectedColor: cs.primary,
+                  side: BorderSide.none,
+                  labelStyle: TextStyle(
+                    color: selected ? cs.onPrimary : cs.onSurfaceVariant,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 4),
+          _TagArrow(
+            icon: Icons.chevron_right_rounded,
+            enabled: _canScrollForward,
+            onPressed: () => _scrollBy(180),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TagArrow extends StatelessWidget {
+  final IconData icon;
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  const _TagArrow({
+    required this.icon,
+    required this.enabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return SizedBox(
+      width: 28,
+      height: 32,
+      child: IconButton(
+        onPressed: enabled ? onPressed : null,
+        padding: EdgeInsets.zero,
+        iconSize: 19,
+        tooltip: icon == Icons.chevron_left_rounded
+            ? 'Cuộn sang trái'
+            : 'Cuộn sang phải',
+        style: IconButton.styleFrom(
+          foregroundColor: cs.primary,
+          disabledForegroundColor: cs.outlineVariant,
+          backgroundColor: cs.surfaceContainerHighest,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+        ),
+        icon: Icon(icon),
       ),
     );
   }
