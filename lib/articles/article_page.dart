@@ -303,8 +303,7 @@ class _ArticleBody extends StatelessWidget {
                   ),
                   a: TextStyle(
                     color: theme.colorScheme.primary,
-                    decoration: TextDecoration.underline,
-                    decorationColor: theme.colorScheme.primary,
+                    decoration: TextDecoration.none,
                     fontWeight: FontWeight.w700,
                   ),
                   h2: theme.textTheme.headlineSmall?.copyWith(
