@@ -312,15 +312,17 @@ class _ArticleBody extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                   code: TextStyle(
-                    fontFamily: 'monospace',
+                    fontFamily: 'Courier New',
+                    fontSize: 14,
                     color: theme.colorScheme.onSurface,
                     backgroundColor: theme.colorScheme.surfaceContainerHighest,
                   ),
                   codeblockDecoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest,
+                    color: const Color(0xFF172A3A),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: theme.colorScheme.outlineVariant),
                   ),
+                  codeblockPadding: const EdgeInsets.all(16),
                   blockquoteDecoration: BoxDecoration(
                     color: accent.withValues(alpha: 0.08),
                     border: Border(left: BorderSide(color: accent, width: 4)),
@@ -334,6 +336,9 @@ class _ArticleBody extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) =>
                         Text('Không thể tải hình ảnh: $uri'),
                   ),
+                ),
+                syntaxHighlighter: _AcademicCodeHighlighter(
+                  textColor: theme.colorScheme.onPrimary,
                 ),
               ),
             ),
@@ -429,4 +434,23 @@ String _resolveAssetPath(String directory, String imagePath) {
 String? _firstImagePath(String markdown) {
   final match = RegExp(r'!\[[^\]]*\]\(([^)]+)\)').firstMatch(markdown);
   return match?.group(1);
+}
+
+class _AcademicCodeHighlighter implements SyntaxHighlighter {
+  final Color textColor;
+
+  const _AcademicCodeHighlighter({required this.textColor});
+
+  @override
+  TextSpan format(String source) {
+    return TextSpan(
+      text: source,
+      style: TextStyle(
+        color: textColor,
+        fontFamily: 'Courier New',
+        fontSize: 14,
+        height: 1.55,
+      ),
+    );
+  }
 }
