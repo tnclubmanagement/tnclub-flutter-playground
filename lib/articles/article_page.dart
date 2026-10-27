@@ -106,18 +106,16 @@ class _ArticleScaffold extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(title: Text(article.title)),
           drawer: isWide ? null : Drawer(child: nav),
-          body: SelectionArea(
-            child: isWide
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(width: 220, child: nav),
-                      const VerticalDivider(width: 1),
-                      Expanded(child: body),
-                    ],
-                  )
-                : body,
-          ),
+          body: isWide
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(width: 220, child: nav),
+                    const VerticalDivider(width: 1),
+                    Expanded(child: body),
+                  ],
+                )
+              : body,
         );
       },
     );
