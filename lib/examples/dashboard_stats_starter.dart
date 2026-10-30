@@ -14,10 +14,30 @@ class DashboardStatsStarter extends StatelessWidget {
   const DashboardStatsStarter({super.key});
 
   static const _stats = [
-    (icon: Icons.people_outline, label: 'Người dùng', value: '1,204', color: Colors.deepPurple),
-    (icon: Icons.shopping_cart_outlined, label: 'Đơn hàng', value: '328', color: Colors.teal),
-    (icon: Icons.attach_money, label: 'Doanh thu', value: '45.2M', color: Colors.orange),
-    (icon: Icons.trending_up, label: 'Tăng trưởng', value: '+12%', color: Colors.blue),
+    (
+      icon: Icons.people_outline,
+      label: 'Người dùng',
+      value: '1,204',
+      color: Colors.deepPurple,
+    ),
+    (
+      icon: Icons.shopping_cart_outlined,
+      label: 'Đơn hàng',
+      value: '328',
+      color: Colors.teal,
+    ),
+    (
+      icon: Icons.attach_money,
+      label: 'Doanh thu',
+      value: '45.2M',
+      color: Colors.orange,
+    ),
+    (
+      icon: Icons.trending_up,
+      label: 'Tăng trưởng',
+      value: '+12%',
+      color: Colors.blue,
+    ),
   ];
 
   static const _activities = [
@@ -47,37 +67,52 @@ class DashboardStatsStarter extends StatelessWidget {
           Wrap(
             spacing: 12,
             runSpacing: 12,
-            children: _stats.map((stat) => 
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Container(
-                  width: 120,
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: stat.color.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(stat.icon, color: stat.color, size: 24),
+            children: _stats
+                .map(
+                  (stat) => Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Container(
+                      width: 120,
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: stat.color.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(stat.icon, color: stat.color, size: 24),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            stat.value,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            stat.label,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      Text(stat.value, style: const TextStyle(fontSize: 16, color: Colors.black87, fontWeight: FontWeight.bold)),
-                      Text(stat.label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
-                      const SizedBox(height: 8),
-                    ],
-                  )
+                    ),
+                  ),
                 )
-              )
-            ).toList(),
+                .toList(),
           ),
           const SizedBox(height: 24),
           const Text(
@@ -103,13 +138,20 @@ class DashboardStatsStarter extends StatelessWidget {
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.yellow,
-                        child: Icon(Icons.notifications, color: Colors.black, size: 24),
+                        child: Icon(
+                          Icons.notifications,
+                          color: Colors.black,
+                          size: 24,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           activity,
-                          style: const TextStyle(fontSize: 14, color: Colors.black87),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ],

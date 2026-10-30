@@ -30,8 +30,9 @@ class ChatBubbleExample extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Row(
-              mainAxisAlignment:
-                  m.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              mainAxisAlignment: m.isMe
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(

@@ -8,9 +8,24 @@ class ProductGridExample extends StatelessWidget {
   const ProductGridExample({super.key});
 
   static const _products = [
-    (name: 'Tai nghe Bluetooth', price: '590.000₫', rating: 4.5, color: Colors.deepPurple),
-    (name: 'Bàn phím cơ', price: '1.250.000₫', rating: 4.8, color: Colors.indigo),
-    (name: 'Chuột không dây', price: '320.000₫', rating: 4.2, color: Colors.teal),
+    (
+      name: 'Tai nghe Bluetooth',
+      price: '590.000₫',
+      rating: 4.5,
+      color: Colors.deepPurple,
+    ),
+    (
+      name: 'Bàn phím cơ',
+      price: '1.250.000₫',
+      rating: 4.8,
+      color: Colors.indigo,
+    ),
+    (
+      name: 'Chuột không dây',
+      price: '320.000₫',
+      rating: 4.2,
+      color: Colors.teal,
+    ),
     (name: 'Loa mini', price: '450.000₫', rating: 4.0, color: Colors.orange),
     (name: 'Webcam HD', price: '690.000₫', rating: 4.6, color: Colors.pink),
     (name: 'Sạc dự phòng', price: '399.000₫', rating: 4.3, color: Colors.blue),
@@ -56,7 +71,11 @@ class ProductGridExample extends StatelessWidget {
                     width: double.infinity,
                     color: p.color.withValues(alpha: 0.15),
                     alignment: Alignment.center,
-                    child: Icon(Icons.shopping_bag_outlined, color: p.color, size: 40),
+                    child: Icon(
+                      Icons.shopping_bag_outlined,
+                      color: p.color,
+                      size: 40,
+                    ),
                   ),
                 ),
                 Padding(
@@ -77,7 +96,10 @@ class ProductGridExample extends StatelessWidget {
                           const SizedBox(width: 2),
                           Text(
                             p.rating.toString(),
-                            style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),

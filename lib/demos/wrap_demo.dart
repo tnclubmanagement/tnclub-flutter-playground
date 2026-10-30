@@ -25,11 +25,7 @@ class _WrapDemoState extends State<WrapDemo> {
     );
   }
 
-  Widget _slider(
-    String label,
-    double value,
-    ValueChanged<double> onChanged,
-  ) {
+  Widget _slider(String label, double value, ValueChanged<double> onChanged) {
     return Row(
       children: [
         SizedBox(width: 90, child: Text(label)),

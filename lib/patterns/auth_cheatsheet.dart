@@ -219,16 +219,35 @@ class _AuthCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 4,
               children: [
-                Text(info.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Text(
+                  info.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               '▶ Minh họa trực quan:',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
@@ -237,7 +256,9 @@ class _AuthCard extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Builder(builder: info.preview),
@@ -247,7 +268,9 @@ class _AuthCard extends StatelessWidget {
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -274,25 +297,29 @@ class _SecureStorageDemoState extends State<_SecureStorageDemo> {
   String _status = 'Chưa có gì được lưu';
 
   void _write() => setState(() {
-        _token = 'eyJhbGciOi... (giả lập)';
-        _status = '🔒 Đã lưu (mã hoá qua Keychain/Keystore)';
-      });
+    _token = 'eyJhbGciOi... (giả lập)';
+    _status = '🔒 Đã lưu (mã hoá qua Keychain/Keystore)';
+  });
 
   void _read() => setState(() {
-        _status = _token == null ? 'Không tìm thấy token' : '🔑 Đọc được: $_token';
-      });
+    _status = _token == null ? 'Không tìm thấy token' : '🔑 Đọc được: $_token';
+  });
 
   void _delete() => setState(() {
-        _token = null;
-        _status = '🗑️ Đã xoá token';
-      });
+    _token = null;
+    _status = '🗑️ Đã xoá token';
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(_status, style: const TextStyle(fontSize: 11), textAlign: TextAlign.center),
+        Text(
+          _status,
+          style: const TextStyle(fontSize: 11),
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 6,
@@ -300,17 +327,32 @@ class _SecureStorageDemoState extends State<_SecureStorageDemo> {
           children: [
             OutlinedButton(
               onPressed: _write,
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Lưu token', style: TextStyle(fontSize: 11)),
             ),
             OutlinedButton(
               onPressed: _read,
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Đọc token', style: TextStyle(fontSize: 11)),
             ),
             OutlinedButton(
               onPressed: _delete,
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Xoá token', style: TextStyle(fontSize: 11)),
             ),
           ],
@@ -340,7 +382,10 @@ class _AuthGateDemoState extends State<_AuthGateDemo> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Đã đăng nhập:', style: TextStyle(fontSize: 12)),
-            Switch(value: _loggedIn, onChanged: (v) => setState(() => _loggedIn = v)),
+            Switch(
+              value: _loggedIn,
+              onChanged: (v) => setState(() => _loggedIn = v),
+            ),
           ],
         ),
         AnimatedSwitcher(
@@ -350,13 +395,19 @@ class _AuthGateDemoState extends State<_AuthGateDemo> {
                   key: const ValueKey('home'),
                   padding: const EdgeInsets.all(8),
                   color: Colors.green.shade100,
-                  child: const Text('✅ AuthGate cho vào Dashboard', style: TextStyle(fontSize: 11)),
+                  child: const Text(
+                    '✅ AuthGate cho vào Dashboard',
+                    style: TextStyle(fontSize: 11),
+                  ),
                 )
               : Container(
                   key: const ValueKey('login'),
                   padding: const EdgeInsets.all(8),
                   color: Colors.orange.shade100,
-                  child: const Text('↩️ Chưa đăng nhập -> tự chuyển về LoginScreen', style: TextStyle(fontSize: 11)),
+                  child: const Text(
+                    '↩️ Chưa đăng nhập -> tự chuyển về LoginScreen',
+                    style: TextStyle(fontSize: 11),
+                  ),
                 ),
         ),
       ],
@@ -411,8 +462,13 @@ class _TokenRefreshDemoState extends State<_TokenRefreshDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: _run,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-          child: Text(_running ? 'Đang chạy...' : 'Mô phỏng', style: const TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
+          child: Text(
+            _running ? 'Đang chạy...' : 'Mô phỏng',
+            style: const TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );
@@ -476,7 +532,9 @@ class _LogoutChecklistDemoState extends State<_LogoutChecklistDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: _logout,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
           child: const Text('Đăng xuất', style: TextStyle(fontSize: 11)),
         ),
       ],
@@ -505,7 +563,13 @@ class _PasswordStrengthDemoState extends State<_PasswordStrengthDemo> {
   }
 
   static const _labels = ['Rất yếu', 'Yếu', 'Trung bình', 'Khá', 'Mạnh'];
-  static const _colors = [Colors.red, Colors.orange, Colors.amber, Colors.lightGreen, Colors.green];
+  static const _colors = [
+    Colors.red,
+    Colors.orange,
+    Colors.amber,
+    Colors.lightGreen,
+    Colors.green,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -535,12 +599,17 @@ class _PasswordStrengthDemoState extends State<_PasswordStrengthDemo> {
                 width: 30,
                 height: 6,
                 margin: const EdgeInsets.symmetric(horizontal: 1),
-                color: i < _strength ? _colors[_strength] : Colors.grey.shade300,
+                color: i < _strength
+                    ? _colors[_strength]
+                    : Colors.grey.shade300,
               ),
           ],
         ),
         const SizedBox(height: 4),
-        Text(_labels[_strength], style: TextStyle(fontSize: 11, color: _colors[_strength])),
+        Text(
+          _labels[_strength],
+          style: TextStyle(fontSize: 11, color: _colors[_strength]),
+        ),
       ],
     );
   }

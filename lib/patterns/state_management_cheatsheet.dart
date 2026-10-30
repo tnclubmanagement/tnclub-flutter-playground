@@ -40,7 +40,8 @@ class _CounterState extends State<Counter> {
       preview: (_) => const _SetStateDemo(),
     ),
     CheatsheetEntry(
-      name: 'ChangeNotifier + AnimatedBuilder (chia sẻ state, KHÔNG cần package)',
+      name:
+          'ChangeNotifier + AnimatedBuilder (chia sẻ state, KHÔNG cần package)',
       category: 'Built-in (không cần package)',
       description:
           'Khi NHIỀU widget (ở các vị trí khác nhau trong tree) cùng cần '
@@ -147,11 +148,19 @@ class _SetStateDemoState extends State<_SetStateDemo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('$_count', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        Text(
+          '$_count',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         OutlinedButton(
           onPressed: () => setState(() => _count++),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-          child: const Text('+1 (chỉ widget này rebuild)', style: TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
+          child: const Text(
+            '+1 (chỉ widget này rebuild)',
+            style: TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );
@@ -207,8 +216,13 @@ class _ChangeNotifierDemoState extends State<_ChangeNotifierDemo> {
         const SizedBox(height: 8),
         OutlinedButton(
           onPressed: _cart.add,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-          child: const Text('Thêm vào giỏ (ở ngoài)', style: TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
+          child: const Text(
+            'Thêm vào giỏ (ở ngoài)',
+            style: TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );
@@ -231,7 +245,10 @@ class _CartBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(label, style: const TextStyle(fontSize: 10)),
-          Text('${cart.itemCount}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            '${cart.itemCount}',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
@@ -272,8 +289,13 @@ class _ProviderConceptDemoState extends State<_ProviderConceptDemo> {
         const SizedBox(height: 4),
         OutlinedButton(
           onPressed: _cart.add,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-          child: const Text('context.read<CartModel>().add()', style: TextStyle(fontSize: 10)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
+          child: const Text(
+            'context.read<CartModel>().add()',
+            style: TextStyle(fontSize: 10),
+          ),
         ),
       ],
     );
@@ -291,11 +313,12 @@ class _ComparisonDemo extends StatelessWidget {
         children: [
           SizedBox(
             width: 70,
-            child: Text(name, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            child: Text(
+              name,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            ),
           ),
-          Expanded(
-            child: Text(note, style: const TextStyle(fontSize: 11)),
-          ),
+          Expanded(child: Text(note, style: const TextStyle(fontSize: 11))),
         ],
       ),
     );

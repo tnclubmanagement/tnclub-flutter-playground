@@ -105,10 +105,7 @@ class _TranslationMapDemo extends StatefulWidget {
 }
 
 class _TranslationMapDemoState extends State<_TranslationMapDemo> {
-  static const _translations = {
-    'vi': 'Xin chào, Trí!',
-    'en': 'Hello, Trí!',
-  };
+  static const _translations = {'vi': 'Xin chào, Trí!', 'en': 'Hello, Trí!'};
 
   String _locale = 'vi';
 
@@ -117,13 +114,19 @@ class _TranslationMapDemoState extends State<_TranslationMapDemo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(_translations[_locale]!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        Text(
+          _translations[_locale]!,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 6),
         ToggleButtons(
           isSelected: [_locale == 'vi', _locale == 'en'],
           onPressed: (i) => setState(() => _locale = i == 0 ? 'vi' : 'en'),
           constraints: const BoxConstraints(minWidth: 40, minHeight: 28),
-          children: const [Text('vi', style: TextStyle(fontSize: 11)), Text('en', style: TextStyle(fontSize: 11))],
+          children: const [
+            Text('vi', style: TextStyle(fontSize: 11)),
+            Text('en', style: TextStyle(fontSize: 11)),
+          ],
         ),
       ],
     );
@@ -154,7 +157,10 @@ class _FormatDemoState extends State<_FormatDemo> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('vi_VN', style: TextStyle(fontSize: 11)),
-            Switch(value: !_vietnam, onChanged: (v) => setState(() => _vietnam = !v)),
+            Switch(
+              value: !_vietnam,
+              onChanged: (v) => setState(() => _vietnam = !v),
+            ),
             const Text('en_US', style: TextStyle(fontSize: 11)),
           ],
         ),

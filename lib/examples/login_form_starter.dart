@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/widget_previews.dart';
 
 // @Preview(name: 'Login Form Starter')
@@ -120,7 +121,7 @@ class _LoginFormStarterState extends State<LoginFormStarter> {
 
       // TODO 7: Nút "Đăng nhập với Google" (OutlinedButton.icon).
       SizedBox(
-        width: double.infinity, 
+        width: double.infinity,
         height: 48,
         child: OutlinedButton.icon(
           onPressed: () {
@@ -129,7 +130,7 @@ class _LoginFormStarterState extends State<LoginFormStarter> {
           icon: const Icon(Icons.g_mobiledata),
           label: const Text('Đăng nhập với Google'),
         ),
-      )
+      ),
     ];
     return Container(
       color: Colors.grey.shade100,

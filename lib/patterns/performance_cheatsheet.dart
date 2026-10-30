@@ -124,7 +124,10 @@ class _ConstChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     builds++;
-    return Text('const Text: build() đã gọi $builds lần', style: const TextStyle(fontSize: 11));
+    return Text(
+      'const Text: build() đã gọi $builds lần',
+      style: const TextStyle(fontSize: 11),
+    );
   }
 }
 
@@ -136,7 +139,10 @@ class _NonConstChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     builds++;
-    return Text('Text (không const): build() đã gọi $builds lần', style: const TextStyle(fontSize: 11));
+    return Text(
+      'Text (không const): build() đã gọi $builds lần',
+      style: const TextStyle(fontSize: 11),
+    );
   }
 }
 
@@ -167,8 +173,13 @@ class _ConstRebuildDemoState extends State<_ConstRebuildDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: () => setState(() => _tick++),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-          child: Text('Rebuild widget cha ($_tick lần)', style: const TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
+          child: Text(
+            'Rebuild widget cha ($_tick lần)',
+            style: const TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );
@@ -223,7 +234,10 @@ class _LazyBuildDemoState extends State<_LazyBuildDemo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Đã build: ${_builtIndexes.length} / $_total item', style: const TextStyle(fontSize: 11)),
+        Text(
+          'Đã build: ${_builtIndexes.length} / $_total item',
+          style: const TextStyle(fontSize: 11),
+        ),
         const SizedBox(height: 4),
         SizedBox(
           width: 160,
@@ -251,7 +265,8 @@ class _RepaintBoundaryDemo extends StatefulWidget {
   State<_RepaintBoundaryDemo> createState() => _RepaintBoundaryDemoState();
 }
 
-class _RepaintBoundaryDemoState extends State<_RepaintBoundaryDemo> with SingleTickerProviderStateMixin {
+class _RepaintBoundaryDemoState extends State<_RepaintBoundaryDemo>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(seconds: 2),
@@ -294,15 +309,28 @@ class _RepaintBoundaryDemoState extends State<_RepaintBoundaryDemo> with SingleT
           spacing: 6,
           children: [
             const Text('RepaintBoundary:', style: TextStyle(fontSize: 11)),
-            Switch(value: _isolated, onChanged: (v) => setState(() => _isolated = v)),
+            Switch(
+              value: _isolated,
+              onChanged: (v) => setState(() => _isolated = v),
+            ),
             OutlinedButton(
               onPressed: _togglePlay,
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-              child: Text(_playing ? 'Dừng' : 'Chạy', style: const TextStyle(fontSize: 11)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
+              child: Text(
+                _playing ? 'Dừng' : 'Chạy',
+                style: const TextStyle(fontSize: 11),
+              ),
             ),
           ],
         ),
-        const CheatsheetHint('Có/không RepaintBoundary nhìn giống nhau - khác biệt là ở layer GPU (xem DevTools)'),
+        const CheatsheetHint(
+          'Có/không RepaintBoundary nhìn giống nhau - khác biệt là ở layer GPU (xem DevTools)',
+        ),
       ],
     );
   }
@@ -316,9 +344,16 @@ class _DevToolsDemo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.speed, size: 36, color: Theme.of(context).colorScheme.primary),
+        Icon(
+          Icons.speed,
+          size: 36,
+          color: Theme.of(context).colorScheme.primary,
+        ),
         const SizedBox(height: 4),
-        const Text('flutter run -> mở link DevTools ở terminal', style: TextStyle(fontSize: 11)),
+        const Text(
+          'flutter run -> mở link DevTools ở terminal',
+          style: TextStyle(fontSize: 11),
+        ),
       ],
     );
   }

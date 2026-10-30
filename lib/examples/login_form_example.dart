@@ -108,7 +108,10 @@ class _LoginFormExampleState extends State<LoginFormExample> {
                   const Expanded(child: Divider()),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text('hoặc', style: TextStyle(color: Colors.grey.shade600)),
+                    child: Text(
+                      'hoặc',
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
                   ),
                   const Expanded(child: Divider()),
                 ],

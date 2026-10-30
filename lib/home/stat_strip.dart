@@ -169,7 +169,10 @@ class _DonutChart extends StatelessWidget {
               Text(
                 'trang đang hiện',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: size * 0.075, color: cs.onSurfaceVariant),
+                style: TextStyle(
+                  fontSize: size * 0.075,
+                  color: cs.onSurfaceVariant,
+                ),
               ),
             ],
           ),

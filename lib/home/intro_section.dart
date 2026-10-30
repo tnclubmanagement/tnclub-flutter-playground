@@ -40,18 +40,9 @@ class _IntroSectionState extends State<IntroSection>
       'Cài Flutter, chạy app đầu tiên (nếu bạn chưa từng đụng Flutter, '
           'bắt đầu từ đây)',
     ),
-    (
-      'Demos',
-      'Nắm widget layout cơ bản (Row/Column/Stack/ListView...)',
-    ),
-    (
-      'Examples',
-      'Tự làm bài tập layout UI thực tế, đối chiếu đáp án',
-    ),
-    (
-      'Patterns & Cheat Sheet',
-      'Tra cứu khi cần, không cần học hết 1 lần',
-    ),
+    ('Demos', 'Nắm widget layout cơ bản (Row/Column/Stack/ListView...)'),
+    ('Examples', 'Tự làm bài tập layout UI thực tế, đối chiếu đáp án'),
+    ('Patterns & Cheat Sheet', 'Tra cứu khi cần, không cần học hết 1 lần'),
   ];
 
   @override
@@ -70,12 +61,7 @@ class _IntroSectionState extends State<IntroSection>
   }
 
   Color _colorFor(int index) {
-    const keys = [
-      'Môi trường & Công cụ',
-      'Demos',
-      'Examples',
-      'Cheat Sheet',
-    ];
+    const keys = ['Môi trường & Công cụ', 'Demos', 'Examples', 'Cheat Sheet'];
     return kSectionAccent[keys[index]]!;
   }
 
@@ -87,7 +73,11 @@ class _IntroSectionState extends State<IntroSection>
     final start = index * 0.15;
     return CurvedAnimation(
       parent: _controller,
-      curve: Interval(start, (start + 0.6).clamp(0.0, 1.0), curve: Curves.easeOutBack),
+      curve: Interval(
+        start,
+        (start + 0.6).clamp(0.0, 1.0),
+        curve: Curves.easeOutBack,
+      ),
     );
   }
 
@@ -117,22 +107,10 @@ class _IntroSectionState extends State<IntroSection>
             style: TextStyle(color: cs.onSurfaceVariant),
           ),
           const SizedBox(height: 10),
-          _FeatureBullet(
-            icon: '🎬',
-            text: 'Demo chạy thật kèm source code',
-          ),
-          _FeatureBullet(
-            icon: '✅',
-            text: 'Bài tập Examples có đáp án',
-          ),
-          _FeatureBullet(
-            icon: '🧩',
-            text: 'Pattern tổ chức code thường gặp',
-          ),
-          _FeatureBullet(
-            icon: '📖',
-            text: 'Cheat Sheet tra cứu nhanh:',
-          ),
+          _FeatureBullet(icon: '🎬', text: 'Demo chạy thật kèm source code'),
+          _FeatureBullet(icon: '✅', text: 'Bài tập Examples có đáp án'),
+          _FeatureBullet(icon: '🧩', text: 'Pattern tổ chức code thường gặp'),
+          _FeatureBullet(icon: '📖', text: 'Cheat Sheet tra cứu nhanh:'),
           const SizedBox(height: 6),
           Padding(
             padding: const EdgeInsets.only(left: 26),

@@ -204,16 +204,35 @@ class _FileCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 4,
               children: [
-                Text(info.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Text(
+                  info.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               '▶ Xem trực tiếp (bấm/kéo vào demo bên dưới):',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
@@ -222,7 +241,9 @@ class _FileCard extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Builder(builder: info.preview),
@@ -232,7 +253,9 @@ class _FileCard extends StatelessWidget {
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -259,7 +282,9 @@ class _FakePhoto extends StatelessWidget {
       width: size,
       height: size * 0.75,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [Colors.deepPurple, Colors.pink]),
+        gradient: const LinearGradient(
+          colors: [Colors.deepPurple, Colors.pink],
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       alignment: Alignment.center,
@@ -291,7 +316,10 @@ class _InteractiveViewerDemo extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.only(top: 8),
-          child: Text('Kéo/pinch (hoặc lăn chuột) để zoom & pan', style: TextStyle(fontSize: 10)),
+          child: Text(
+            'Kéo/pinch (hoặc lăn chuột) để zoom & pan',
+            style: TextStyle(fontSize: 10),
+          ),
         ),
       ],
     );
@@ -340,7 +368,10 @@ class _HeroPreviewDemo extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.only(top: 8),
-          child: Text('Bấm thumbnail để mở full-screen + zoom', style: TextStyle(fontSize: 10)),
+          child: Text(
+            'Bấm thumbnail để mở full-screen + zoom',
+            style: TextStyle(fontSize: 10),
+          ),
         ),
       ],
     );
@@ -391,10 +422,18 @@ class _ImageErrorBuilderDemoState extends State<_ImageErrorBuilderDemo> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('URL hỏng:', style: TextStyle(fontSize: 11)),
-            Switch(value: _broken, onChanged: (v) => setState(() => _broken = v)),
+            Switch(
+              value: _broken,
+              onChanged: (v) => setState(() => _broken = v),
+            ),
             OutlinedButton(
               onPressed: _reload,
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Tải lại', style: TextStyle(fontSize: 11)),
             ),
           ],
@@ -451,10 +490,15 @@ class _PdfViewerDemoState extends State<_PdfViewerDemo> {
               onPressed: _page > 1 ? () => setState(() => _page--) : null,
               icon: const Icon(Icons.chevron_left),
             ),
-            Text('Trang $_page/$_totalPages', style: const TextStyle(fontSize: 11)),
+            Text(
+              'Trang $_page/$_totalPages',
+              style: const TextStyle(fontSize: 11),
+            ),
             IconButton(
               iconSize: 16,
-              onPressed: _page < _totalPages ? () => setState(() => _page++) : null,
+              onPressed: _page < _totalPages
+                  ? () => setState(() => _page++)
+                  : null,
               icon: const Icon(Icons.chevron_right),
             ),
           ],
@@ -488,13 +532,23 @@ class _FilePickerDemoState extends State<_FilePickerDemo> {
         ] else
           const Padding(
             padding: EdgeInsets.only(bottom: 8),
-            child: Text('Chưa chọn ảnh nào', style: TextStyle(fontSize: 11, color: Colors.grey)),
+            child: Text(
+              'Chưa chọn ảnh nào',
+              style: TextStyle(fontSize: 11, color: Colors.grey),
+            ),
           ),
         OutlinedButton.icon(
-          onPressed: () => setState(() => _pickedName = 'anh_${DateTime.now().millisecond}.jpg'),
+          onPressed: () => setState(
+            () => _pickedName = 'anh_${DateTime.now().millisecond}.jpg',
+          ),
           icon: const Icon(Icons.photo_library, size: 16),
-          label: const Text('Chọn ảnh (giả lập)', style: TextStyle(fontSize: 11)),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+          label: const Text(
+            'Chọn ảnh (giả lập)',
+            style: TextStyle(fontSize: 11),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
         ),
       ],
     );

@@ -415,17 +415,33 @@ class _AnimCard extends StatelessWidget {
               children: [
                 Text(
                   info.name,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               '▶ Minh họa trực quan:',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
@@ -434,7 +450,9 @@ class _AnimCard extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Builder(builder: info.preview),
@@ -444,7 +462,9 @@ class _AnimCard extends StatelessWidget {
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -471,7 +491,10 @@ class _Hint extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         text,
-        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        style: TextStyle(
+          fontSize: 11,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
       ),
     );
   }
@@ -539,7 +562,10 @@ class _AnimatedOpacityDemoState extends State<_AnimatedOpacityDemo> {
             child: Container(
               width: 64,
               height: 64,
-              decoration: BoxDecoration(color: Colors.teal, borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.circular(8),
+              ),
               alignment: Alignment.center,
               child: const Icon(Icons.star, color: Colors.white, size: 28),
             ),
@@ -555,7 +581,8 @@ class _AnimatedPositionedDemo extends StatefulWidget {
   const _AnimatedPositionedDemo();
 
   @override
-  State<_AnimatedPositionedDemo> createState() => _AnimatedPositionedDemoState();
+  State<_AnimatedPositionedDemo> createState() =>
+      _AnimatedPositionedDemoState();
 }
 
 class _AnimatedPositionedDemoState extends State<_AnimatedPositionedDemo> {
@@ -571,7 +598,9 @@ class _AnimatedPositionedDemoState extends State<_AnimatedPositionedDemo> {
           child: Container(
             width: 120,
             height: 70,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400)),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400),
+            ),
             child: Stack(
               children: [
                 AnimatedPositioned(
@@ -579,7 +608,10 @@ class _AnimatedPositionedDemoState extends State<_AnimatedPositionedDemo> {
                   curve: Curves.easeInOut,
                   top: _moved ? 36 : 2,
                   left: _moved ? 80 : 2,
-                  child: const CircleAvatar(radius: 14, backgroundColor: Colors.red),
+                  child: const CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Colors.red,
+                  ),
                 ),
               ],
             ),
@@ -595,10 +627,12 @@ class _AnimatedDefaultTextStyleDemo extends StatefulWidget {
   const _AnimatedDefaultTextStyleDemo();
 
   @override
-  State<_AnimatedDefaultTextStyleDemo> createState() => _AnimatedDefaultTextStyleDemoState();
+  State<_AnimatedDefaultTextStyleDemo> createState() =>
+      _AnimatedDefaultTextStyleDemoState();
 }
 
-class _AnimatedDefaultTextStyleDemoState extends State<_AnimatedDefaultTextStyleDemo> {
+class _AnimatedDefaultTextStyleDemoState
+    extends State<_AnimatedDefaultTextStyleDemo> {
   bool _big = false;
 
   @override
@@ -648,8 +682,13 @@ class _AnimatedCrossFadeDemoState extends State<_AnimatedCrossFadeDemo> {
               height: 24,
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
-            secondChild: const Text('Đã tải xong!', style: TextStyle(fontWeight: FontWeight.bold)),
-            crossFadeState: _loaded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            secondChild: const Text(
+              'Đã tải xong!',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            crossFadeState: _loaded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
           ),
         ),
         const _Hint('Bấm để chuyển "đang tải" <-> "xong"'),
@@ -694,10 +733,12 @@ class _TweenAnimationBuilderDemo extends StatefulWidget {
   const _TweenAnimationBuilderDemo();
 
   @override
-  State<_TweenAnimationBuilderDemo> createState() => _TweenAnimationBuilderDemoState();
+  State<_TweenAnimationBuilderDemo> createState() =>
+      _TweenAnimationBuilderDemoState();
 }
 
-class _TweenAnimationBuilderDemoState extends State<_TweenAnimationBuilderDemo> {
+class _TweenAnimationBuilderDemoState
+    extends State<_TweenAnimationBuilderDemo> {
   double _target = 0.2;
 
   @override
@@ -732,7 +773,8 @@ class _AnimationControllerDemo extends StatefulWidget {
   const _AnimationControllerDemo();
 
   @override
-  State<_AnimationControllerDemo> createState() => _AnimationControllerDemoState();
+  State<_AnimationControllerDemo> createState() =>
+      _AnimationControllerDemoState();
 }
 
 class _AnimationControllerDemoState extends State<_AnimationControllerDemo>
@@ -769,15 +811,23 @@ class _AnimationControllerDemoState extends State<_AnimationControllerDemo>
           child: Container(
             width: 48,
             height: 48,
-            decoration: const BoxDecoration(color: Colors.indigo, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+              color: Colors.indigo,
+              shape: BoxShape.circle,
+            ),
           ),
         ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: _toggle,
           icon: Icon(_playing ? Icons.stop : Icons.play_arrow, size: 16),
-          label: Text(_playing ? 'Dừng' : 'Chạy', style: const TextStyle(fontSize: 12)),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+          label: Text(
+            _playing ? 'Dừng' : 'Chạy',
+            style: const TextStyle(fontSize: 12),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
         ),
       ],
     );
@@ -794,7 +844,8 @@ class _AnimatedBuilderDemo extends StatefulWidget {
   State<_AnimatedBuilderDemo> createState() => _AnimatedBuilderDemoState();
 }
 
-class _AnimatedBuilderDemoState extends State<_AnimatedBuilderDemo> with SingleTickerProviderStateMixin {
+class _AnimatedBuilderDemoState extends State<_AnimatedBuilderDemo>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 700),
@@ -819,7 +870,11 @@ class _AnimatedBuilderDemoState extends State<_AnimatedBuilderDemo> with SingleT
               angle: _controller.value * 2 * 3.14159,
               child: child,
             ),
-            child: const Icon(Icons.refresh, size: 40, color: Colors.deepOrange),
+            child: const Icon(
+              Icons.refresh,
+              size: 40,
+              color: Colors.deepOrange,
+            ),
           ),
         ),
         const _Hint('Bấm icon để xoay 1 vòng'),
@@ -838,13 +893,20 @@ class _CurvedAnimationDemo extends StatefulWidget {
   State<_CurvedAnimationDemo> createState() => _CurvedAnimationDemoState();
 }
 
-class _CurvedAnimationDemoState extends State<_CurvedAnimationDemo> with SingleTickerProviderStateMixin {
+class _CurvedAnimationDemoState extends State<_CurvedAnimationDemo>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 900),
   );
-  late final Animation<double> _linear = CurvedAnimation(parent: _controller, curve: Curves.linear);
-  late final Animation<double> _curved = CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack);
+  late final Animation<double> _linear = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.linear,
+  );
+  late final Animation<double> _curved = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeInOutBack,
+  );
 
   @override
   void dispose() {
@@ -858,11 +920,17 @@ class _CurvedAnimationDemoState extends State<_CurvedAnimationDemo> with SingleT
       builder: (context, _) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(width: 48, child: Text(label, style: const TextStyle(fontSize: 11))),
+          SizedBox(
+            width: 48,
+            child: Text(label, style: const TextStyle(fontSize: 11)),
+          ),
           Container(
             width: 10 + animation.value * 90,
             height: 10,
-            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(4),
+            ),
           ),
         ],
       ),
@@ -900,7 +968,8 @@ class _TransitionWidgetsDemo extends StatefulWidget {
   State<_TransitionWidgetsDemo> createState() => _TransitionWidgetsDemoState();
 }
 
-class _TransitionWidgetsDemoState extends State<_TransitionWidgetsDemo> with SingleTickerProviderStateMixin {
+class _TransitionWidgetsDemoState extends State<_TransitionWidgetsDemo>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 500),
@@ -960,7 +1029,9 @@ class _HeroSimDemoState extends State<_HeroSimDemo> {
           child: Container(
             width: 140,
             height: 90,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400)),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400),
+            ),
             child: AnimatedAlign(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
@@ -970,7 +1041,10 @@ class _HeroSimDemoState extends State<_HeroSimDemo> {
                 curve: Curves.easeInOut,
                 width: _detail ? 60 : 28,
                 height: _detail ? 60 : 28,
-                decoration: const BoxDecoration(color: Colors.deepPurple, shape: BoxShape.circle),
+                decoration: const BoxDecoration(
+                  color: Colors.deepPurple,
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
           ),
@@ -990,7 +1064,8 @@ class _StaggeredDemo extends StatefulWidget {
   State<_StaggeredDemo> createState() => _StaggeredDemoState();
 }
 
-class _StaggeredDemoState extends State<_StaggeredDemo> with SingleTickerProviderStateMixin {
+class _StaggeredDemoState extends State<_StaggeredDemo>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 900),
@@ -999,10 +1074,13 @@ class _StaggeredDemoState extends State<_StaggeredDemo> with SingleTickerProvide
     parent: _controller,
     curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
   );
-  late final Animation<Offset> _textSlide = Tween<Offset>(
-    begin: const Offset(0.4, 0),
-    end: Offset.zero,
-  ).animate(CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0, curve: Curves.easeOut)));
+  late final Animation<Offset> _textSlide =
+      Tween<Offset>(begin: const Offset(0.4, 0), end: Offset.zero).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: const Interval(0.5, 1.0, curve: Curves.easeOut),
+        ),
+      );
 
   @override
   void dispose() {
@@ -1024,7 +1102,11 @@ class _StaggeredDemoState extends State<_StaggeredDemo> with SingleTickerProvide
               children: [
                 FadeTransition(
                   opacity: _iconFade,
-                  child: const Icon(Icons.check_circle, color: Colors.green, size: 28),
+                  child: const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 28,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 SlideTransition(
@@ -1034,7 +1116,10 @@ class _StaggeredDemoState extends State<_StaggeredDemo> with SingleTickerProvide
                       parent: _controller,
                       curve: const Interval(0.5, 1.0, curve: Curves.easeOut),
                     ),
-                    child: const Text('Hoàn tất!', style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Hoàn tất!',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ],
@@ -1094,7 +1179,10 @@ class _ListKeyDemoState extends State<_ListKeyDemo> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Dùng key:', style: TextStyle(fontSize: 12)),
-            Switch(value: _useKey, onChanged: (v) => setState(() => _useKey = v)),
+            Switch(
+              value: _useKey,
+              onChanged: (v) => setState(() => _useKey = v),
+            ),
           ],
         ),
         const SizedBox(
@@ -1109,12 +1197,17 @@ class _ListKeyDemoState extends State<_ListKeyDemo> {
         const SizedBox(height: 8),
         Container(
           width: 200,
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400)),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               for (final item in _items)
-                _FavoriteRow(key: _useKey ? ValueKey(item.id) : null, item: item),
+                _FavoriteRow(
+                  key: _useKey ? ValueKey(item.id) : null,
+                  item: item,
+                ),
             ],
           ),
         ),
@@ -1126,7 +1219,10 @@ class _ListKeyDemoState extends State<_ListKeyDemo> {
               onPressed: _items.isEmpty ? null : _removeFirst,
               child: const Text('Xoá dòng đầu', style: TextStyle(fontSize: 11)),
             ),
-            TextButton(onPressed: _reset, child: const Text('Reset', style: TextStyle(fontSize: 11))),
+            TextButton(
+              onPressed: _reset,
+              child: const Text('Reset', style: TextStyle(fontSize: 11)),
+            ),
           ],
         ),
       ],
@@ -1192,7 +1288,10 @@ class _AnimatedListDemoState extends State<_AnimatedListDemo> {
     final color = Colors.primaries[_nextColor % Colors.primaries.length];
     _nextColor++;
     _colors.insert(0, color);
-    _listKey.currentState!.insertItem(0, duration: const Duration(milliseconds: 300));
+    _listKey.currentState!.insertItem(
+      0,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   void _removeFirst() {
@@ -1213,7 +1312,10 @@ class _AnimatedListDemoState extends State<_AnimatedListDemo> {
         child: Container(
           height: 26,
           margin: const EdgeInsets.symmetric(vertical: 2),
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
         ),
       ),
     );
@@ -1230,15 +1332,22 @@ class _AnimatedListDemoState extends State<_AnimatedListDemo> {
           child: AnimatedList(
             key: _listKey,
             initialItemCount: _colors.length,
-            itemBuilder: (context, index, animation) => _buildItem(_colors[index], animation),
+            itemBuilder: (context, index, animation) =>
+                _buildItem(_colors[index], animation),
           ),
         ),
         const SizedBox(height: 8),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton(onPressed: _insert, child: const Text('+ Thêm', style: TextStyle(fontSize: 11))),
-            TextButton(onPressed: _removeFirst, child: const Text('- Xoá', style: TextStyle(fontSize: 11))),
+            TextButton(
+              onPressed: _insert,
+              child: const Text('+ Thêm', style: TextStyle(fontSize: 11)),
+            ),
+            TextButton(
+              onPressed: _removeFirst,
+              child: const Text('- Xoá', style: TextStyle(fontSize: 11)),
+            ),
           ],
         ),
       ],

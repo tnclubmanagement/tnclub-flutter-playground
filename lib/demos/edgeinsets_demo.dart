@@ -97,11 +97,9 @@ class _EdgeInsetsDemoState extends State<EdgeInsetsDemo> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        _section(
-          'EdgeInsets.all(${_all.round()}): cả 4 cạnh bằng nhau',
-          [_slider('value', _all, (v) => setState(() => _all = v))],
-          _preview(EdgeInsets.all(_all)),
-        ),
+        _section('EdgeInsets.all(${_all.round()}): cả 4 cạnh bằng nhau', [
+          _slider('value', _all, (v) => setState(() => _all = v)),
+        ], _preview(EdgeInsets.all(_all))),
         const SizedBox(height: 24),
         _section(
           'EdgeInsets.symmetric(horizontal: ${_symHorizontal.round()}, '
@@ -130,11 +128,7 @@ class _EdgeInsetsDemoState extends State<EdgeInsetsDemo> {
           'EdgeInsets.only(left: ${_onlyLeft.round()}, top: '
           '${_onlyTop.round()}): chỉ set cạnh cần, còn lại = 0',
           [
-            _slider(
-              'left',
-              _onlyLeft,
-              (v) => setState(() => _onlyLeft = v),
-            ),
+            _slider('left', _onlyLeft, (v) => setState(() => _onlyLeft = v)),
             _slider('top', _onlyTop, (v) => setState(() => _onlyTop = v)),
           ],
           _preview(EdgeInsets.only(left: _onlyLeft, top: _onlyTop)),

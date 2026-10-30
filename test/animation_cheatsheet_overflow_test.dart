@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_layout_playground/patterns/animation_cheatsheet.dart';
 import 'package:flutter_layout_playground/widgets/cheatsheet_scaffold.dart';
+
 import 'cheatsheet_test_utils.dart';
 
 void main() {
@@ -64,8 +65,10 @@ void main() {
       await tester.tap(
         find.descendant(
           of: find.byKey(cheatsheetCategoryNavKey),
-          matching:
-              find.widgetWithText(ListTile, 'Danh sách (List) mượt & đúng state'),
+          matching: find.widgetWithText(
+            ListTile,
+            'Danh sách (List) mượt & đúng state',
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -78,7 +81,9 @@ void main() {
       }
 
       // --- KHÔNG key: star "dính" sang dòng sai sau khi xoá dòng A ---
-      await tester.tap(find.byIcon(Icons.star_border).first); // đánh dấu "Dòng A"
+      await tester.tap(
+        find.byIcon(Icons.star_border).first,
+      ); // đánh dấu "Dòng A"
       await tester.pumpAndSettle();
       expect(iconForRow('Dòng A', Icons.star), findsOneWidget);
 
@@ -94,7 +99,9 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.star_border).first); // đánh dấu "Dòng A"
+      await tester.tap(
+        find.byIcon(Icons.star_border).first,
+      ); // đánh dấu "Dòng A"
       await tester.pumpAndSettle();
       expect(iconForRow('Dòng A', Icons.star), findsOneWidget);
 
@@ -116,8 +123,10 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byKey(cheatsheetCategoryNavKey),
-        matching:
-            find.widgetWithText(ListTile, 'Danh sách (List) mượt & đúng state'),
+        matching: find.widgetWithText(
+          ListTile,
+          'Danh sách (List) mượt & đúng state',
+        ),
       ),
     );
     await tester.pumpAndSettle();

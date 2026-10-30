@@ -38,8 +38,7 @@ class InheritedWidgetPattern extends StatefulWidget {
   const InheritedWidgetPattern({super.key});
 
   @override
-  State<InheritedWidgetPattern> createState() =>
-      _InheritedWidgetPatternState();
+  State<InheritedWidgetPattern> createState() => _InheritedWidgetPatternState();
 }
 
 class _InheritedWidgetPatternState extends State<InheritedWidgetPattern> {
@@ -115,10 +114,7 @@ class _Level3 extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(width: 12),
-          ElevatedButton(
-            onPressed: scope.increment,
-            child: const Text('+1'),
-          ),
+          ElevatedButton(onPressed: scope.increment, child: const Text('+1')),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/widget_previews.dart';
 
 // @Preview(name: 'Profile Card Starter')
@@ -117,7 +118,10 @@ class ProfileCardStarter extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 10,
+                      ),
                       child: Column(
                         children: [
                           Text(
@@ -137,7 +141,10 @@ class ProfileCardStarter extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 10,
+                      ),
                       child: Column(
                         children: [
                           Text(
@@ -157,7 +164,10 @@ class ProfileCardStarter extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 10,
+                      ),
                       child: Column(
                         children: [
                           Text(
@@ -180,7 +190,10 @@ class ProfileCardStarter extends StatelessWidget {
                 ),
                 // TODO 4: Nút "Theo dõi" full-width (SizedBox(width: double.infinity)).
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,

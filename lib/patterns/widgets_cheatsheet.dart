@@ -20,10 +20,12 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Container',
       category: 'Layout',
       constructor: 'Container(padding, margin, decoration, child)',
-      usage: 'Khung đa năng: vừa trang trí (màu/bo góc/border/đổ bóng) vừa '
+      usage:
+          'Khung đa năng: vừa trang trí (màu/bo góc/border/đổ bóng) vừa '
           'canh khoảng cách, thường dùng khi cần NHIỀU thứ cùng lúc trên '
           '1 widget.',
-      special: 'CÓ padding + margin sẵn. CÓ background (qua color HOẶC '
+      special:
+          'CÓ padding + margin sẵn. CÓ background (qua color HOẶC '
           'decoration, KHÔNG dùng chung được 2 cái).',
       preview: (_) => Container(
         width: 64,
@@ -41,7 +43,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Padding',
       category: 'Layout',
       constructor: 'Padding(padding: EdgeInsets.all(8), child: ...)',
-      usage: 'Thêm khoảng đệm quanh 1 widget KHÔNG có padding riêng (Text, '
+      usage:
+          'Thêm khoảng đệm quanh 1 widget KHÔNG có padding riêng (Text, '
           'Icon, ElevatedButton...).',
       special: 'CHỈ có padding. Không màu/border/margin.',
       preview: (_) => Container(
@@ -54,9 +57,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'SizedBox',
       category: 'Layout',
       constructor: 'SizedBox(width: 100, height: 40, child: ...)',
-      usage: 'Ép kích thước cố định cho child, HOẶC tạo khoảng trống rỗng '
+      usage:
+          'Ép kích thước cố định cho child, HOẶC tạo khoảng trống rỗng '
           'thay cho Container rỗng.',
-      special: 'Không padding/margin/màu. width/height: double.infinity để '
+      special:
+          'Không padding/margin/màu. width/height: double.infinity để '
           'lấp đầy theo trục đó.',
       preview: (_) => Container(
         width: 60,
@@ -70,7 +75,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Center / Align',
       category: 'Layout',
       constructor: 'Align(alignment: Alignment.topRight, child: ...)',
-      usage: 'Canh vị trí child trong không gian cha. Center = canh giữa '
+      usage:
+          'Canh vị trí child trong không gian cha. Center = canh giữa '
           'cả 2 trục. Align = canh theo Alignment tuỳ chỉnh.',
       special: 'Không padding/màu. Cha phải có kích thước xác định.',
       preview: (_) => Container(
@@ -86,10 +92,13 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'Row / Column',
       category: 'Layout',
-      constructor: 'Row(mainAxisAlignment, crossAxisAlignment, children: [...])',
-      usage: 'Sắp nhiều widget theo 1 trục: Row = ngang, Column = dọc. '
+      constructor:
+          'Row(mainAxisAlignment, crossAxisAlignment, children: [...])',
+      usage:
+          'Sắp nhiều widget theo 1 trục: Row = ngang, Column = dọc. '
           'Widget layout CƠ BẢN nhất.',
-      special: 'Không padding/margin/màu. Tràn nếu children vượt quá '
+      special:
+          'Không padding/margin/màu. Tràn nếu children vượt quá '
           'không gian -> cần Expanded/Flexible hoặc bọc scroll.',
       preview: (_) => Row(
         mainAxisSize: MainAxisSize.min,
@@ -107,10 +116,13 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'Stack + Positioned',
       category: 'Layout',
-      constructor: 'Stack(children: [..., Positioned(top: 0, right: 0, child: ...)])',
-      usage: 'Chồng nhiều widget LÊN NHAU (layer), Positioned định vị '
+      constructor:
+          'Stack(children: [..., Positioned(top: 0, right: 0, child: ...)])',
+      usage:
+          'Chồng nhiều widget LÊN NHAU (layer), Positioned định vị '
           'tuyệt đối theo top/bottom/left/right.',
-      special: 'Mặc định CẮT phần tràn ra ngoài - cần Clip.none nếu muốn '
+      special:
+          'Mặc định CẮT phần tràn ra ngoài - cần Clip.none nếu muốn '
           'Positioned tràn ra ngoài Stack.',
       preview: (_) => SizedBox(
         width: 60,
@@ -118,7 +130,11 @@ class WidgetsCheatsheet extends StatelessWidget {
         child: Stack(
           children: [
             Container(color: Colors.blueGrey.shade100),
-            const Positioned(top: 2, right: 2, child: _Dot(color: Colors.red, size: 10)),
+            const Positioned(
+              top: 2,
+              right: 2,
+              child: _Dot(color: Colors.red, size: 10),
+            ),
           ],
         ),
       ),
@@ -127,7 +143,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Expanded / Flexible',
       category: 'Layout',
       constructor: 'Expanded(flex: 1, child: ...)',
-      usage: 'CHỈ dùng được làm con trực tiếp của Row/Column. Chiếm hết '
+      usage:
+          'CHỈ dùng được làm con trực tiếp của Row/Column. Chiếm hết '
           'khoảng còn lại theo tỉ lệ flex.',
       special: 'Expanded = Flexible(fit: FlexFit.tight).',
       preview: (_) => SizedBox(
@@ -145,9 +162,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Wrap',
       category: 'Layout',
       constructor: 'Wrap(spacing: 8, runSpacing: 8, children: [...])',
-      usage: 'Giống Row nhưng TỰ XUỐNG DÒNG khi hết chỗ ngang, tránh lỗi '
+      usage:
+          'Giống Row nhưng TỰ XUỐNG DÒNG khi hết chỗ ngang, tránh lỗi '
           'overflow.',
-      special: 'spacing = khoảng NGANG cùng dòng, runSpacing = khoảng GIỮA '
+      special:
+          'spacing = khoảng NGANG cùng dòng, runSpacing = khoảng GIỮA '
           'các dòng.',
       preview: (_) => SizedBox(
         width: 60,
@@ -165,7 +184,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Spacer',
       category: 'Layout',
       constructor: 'Spacer(flex: 1)',
-      usage: 'Chiếm khoảng trống linh hoạt trong Row/Column để đẩy các '
+      usage:
+          'Chiếm khoảng trống linh hoạt trong Row/Column để đẩy các '
           'widget khác ra 2 đầu.',
       special: 'Tương đương Expanded(child: SizedBox()).',
       preview: (_) => const SizedBox(
@@ -184,8 +204,10 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'ListView.builder',
       category: 'Cuộn (Scroll)',
-      constructor: 'ListView.builder(itemCount: n, itemBuilder: (ctx, i) => ...)',
-      usage: 'Danh sách CUỘN được, builder chỉ tạo widget cho item ĐANG '
+      constructor:
+          'ListView.builder(itemCount: n, itemBuilder: (ctx, i) => ...)',
+      usage:
+          'Danh sách CUỘN được, builder chỉ tạo widget cho item ĐANG '
           'HIỂN THỊ (lazy) - hiệu quả với list dài.',
       special: 'Tự co hết không gian cha cấp (cần Expanded trong Column).',
       preview: (_) => Column(
@@ -205,9 +227,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'GridView.builder',
       category: 'Cuộn (Scroll)',
       constructor: 'GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), itemBuilder: ...)',
-      usage: 'Lưới item cuộn được, nhiều cột/hàng - thường dùng cho grid '
+      usage:
+          'Lưới item cuộn được, nhiều cột/hàng - thường dùng cho grid '
           'sản phẩm/ảnh.',
-      special: 'gridDelegate quyết định số cột (fixed) hoặc kích thước tối '
+      special:
+          'gridDelegate quyết định số cột (fixed) hoặc kích thước tối '
           'đa mỗi ô.',
       preview: (_) => SizedBox(
         width: 44,
@@ -218,7 +242,12 @@ class WidgetsCheatsheet extends StatelessWidget {
           mainAxisSpacing: 2,
           crossAxisSpacing: 2,
           children: [
-            for (final c in [Colors.purple, Colors.pink, Colors.amber, Colors.cyan])
+            for (final c in [
+              Colors.purple,
+              Colors.pink,
+              Colors.amber,
+              Colors.cyan,
+            ])
               Container(color: c.shade200),
           ],
         ),
@@ -228,22 +257,33 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'SingleChildScrollView',
       category: 'Cuộn (Scroll)',
       constructor: 'SingleChildScrollView(child: Column(children: [...]))',
-      usage: 'Cho phép CUỘN khi nội dung vượt quá chiều cao màn hình, tránh '
+      usage:
+          'Cho phép CUỘN khi nội dung vượt quá chiều cao màn hình, tránh '
           '"RenderFlex overflowed".',
-      special: 'KHÔNG lazy (build hết toàn bộ child 1 lần) - list rất dài '
+      special:
+          'KHÔNG lazy (build hết toàn bộ child 1 lần) - list rất dài '
           'nên dùng ListView.',
-      preview: (_) => const Icon(Icons.swap_vert_circle_outlined, size: 32, color: Colors.grey),
+      preview: (_) => const Icon(
+        Icons.swap_vert_circle_outlined,
+        size: 32,
+        color: Colors.grey,
+      ),
     ),
     // ---- Hiển thị nội dung ----
     _WidgetInfo(
       name: 'Text',
       category: 'Hiển thị nội dung',
       constructor: "Text('Nội dung', style: TextStyle(fontSize: 16), maxLines: 1, overflow: TextOverflow.ellipsis)",
-      usage: 'Hiển thị chữ. maxLines + overflow: ellipsis để cắt "..." khi '
+      usage:
+          'Hiển thị chữ. maxLines + overflow: ellipsis để cắt "..." khi '
           'chữ dài tràn dòng.',
-      special: 'KHÔNG có màu/padding riêng - màu chữ phải nằm trong '
+      special:
+          'KHÔNG có màu/padding riêng - màu chữ phải nằm trong '
           '`style: TextStyle(color: ...)`.',
-      preview: (_) => const Text('Aa', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+      preview: (_) => const Text(
+        'Aa',
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
     ),
     _WidgetInfo(
       name: 'Icon',
@@ -257,9 +297,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Image',
       category: 'Hiển thị nội dung',
       constructor: "Image.network(url, fit: BoxFit.cover)",
-      usage: 'Hiển thị ảnh từ network/asset/memory/file. `fit` quyết định '
+      usage:
+          'Hiển thị ảnh từ network/asset/memory/file. `fit` quyết định '
           'ảnh co/cắt thế nào khi khung khác tỉ lệ ảnh gốc.',
-      special: 'Cần set width/height nếu không muốn ảnh tự co theo kích '
+      special:
+          'Cần set width/height nếu không muốn ảnh tự co theo kích '
           'thước gốc.',
       preview: (_) => Container(
         width: 44,
@@ -271,8 +313,10 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'CircleAvatar',
       category: 'Hiển thị nội dung',
-      constructor: 'CircleAvatar(radius: 32, backgroundImage: NetworkImage(url))',
-      usage: 'Avatar tròn - ảnh đại diện user, hoặc fallback hiển thị chữ '
+      constructor:
+          'CircleAvatar(radius: 32, backgroundImage: NetworkImage(url))',
+      usage:
+          'Avatar tròn - ảnh đại diện user, hoặc fallback hiển thị chữ '
           '(initials) khi chưa có ảnh.',
       special: 'radius quyết định kích thước (đường kính = radius * 2).',
       preview: (_) => const CircleAvatar(
@@ -285,7 +329,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Card',
       category: 'Hiển thị nội dung',
       constructor: 'Card(elevation: 2, margin: EdgeInsets.all(8), child: ...)',
-      usage: 'Khung "thẻ" Material: nền trắng, bo góc, đổ bóng sẵn - hay '
+      usage:
+          'Khung "thẻ" Material: nền trắng, bo góc, đổ bóng sẵn - hay '
           'dùng làm item trong list/grid.',
       special: 'CÓ margin mặc định, nhưng KHÔNG CÓ padding sẵn.',
       preview: (_) => const Card(
@@ -298,9 +343,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Divider',
       category: 'Hiển thị nội dung',
       constructor: 'Divider(height: 1, thickness: 1, color: Colors.grey)',
-      usage: 'Đường kẻ ngang phân chia nội dung (VerticalDivider = kẻ '
+      usage:
+          'Đường kẻ ngang phân chia nội dung (VerticalDivider = kẻ '
           'dọc).',
-      special: '`height` là khoảng không gian TỔNG, độ dày thật là '
+      special:
+          '`height` là khoảng không gian TỔNG, độ dày thật là '
           '`thickness`.',
       preview: (_) => const SizedBox(
         width: 70,
@@ -311,8 +358,10 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'ClipRRect / ClipOval',
       category: 'Trang trí / Cắt hình',
-      constructor: 'ClipRRect(borderRadius: BorderRadius.circular(12), child: ...)',
-      usage: 'Cắt child theo hình bo góc hoặc tròn/oval - hay dùng bo góc '
+      constructor:
+          'ClipRRect(borderRadius: BorderRadius.circular(12), child: ...)',
+      usage:
+          'Cắt child theo hình bo góc hoặc tròn/oval - hay dùng bo góc '
           'cho Image (Image không có borderRadius riêng).',
       special: 'Chỉ cắt HIỂN THỊ, không đổi kích thước/layout thật.',
       preview: (_) => ClipRRect(
@@ -324,7 +373,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'DecoratedBox',
       category: 'Trang trí / Cắt hình',
       constructor: 'DecoratedBox(decoration: BoxDecoration(...), child: ...)',
-      usage: 'Giống phần "decoration" của Container nhưng KHÔNG có '
+      usage:
+          'Giống phần "decoration" của Container nhưng KHÔNG có '
           'padding/margin/constraints.',
       special: 'Không padding/margin - chỉ vẽ decoration quanh child.',
       preview: (_) => DecoratedBox(
@@ -339,7 +389,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'ElevatedButton / TextButton / OutlinedButton',
       category: 'Input & tương tác',
       constructor: 'ElevatedButton(onPressed: () {}, child: Text("Xác nhận"))',
-      usage: 'Nút bấm Material. Elevated = nổi (hành động chính). Text = '
+      usage:
+          'Nút bấm Material. Elevated = nổi (hành động chính). Text = '
           'phẳng. Outlined = có viền, không nền.',
       special: 'onPressed: null -> nút tự disabled (mờ, không bấm được).',
       preview: (_) => ElevatedButton(
@@ -355,7 +406,8 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'IconButton',
       category: 'Input & tương tác',
       constructor: 'IconButton(icon: Icon(Icons.close), onPressed: () {})',
-      usage: 'Nút chỉ chứa icon - có vùng bấm lớn hơn kích thước icon hiển '
+      usage:
+          'Nút chỉ chứa icon - có vùng bấm lớn hơn kích thước icon hiển '
           'thị để dễ bấm trên mobile.',
       special: 'Có padding mặc định quanh icon, không cần tự bọc Padding.',
       preview: (_) => IconButton(
@@ -369,9 +421,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'TextField',
       category: 'Input & tương tác',
       constructor: 'TextField(controller: ..., decoration: InputDecoration(labelText: "Email"))',
-      usage: 'Ô nhập liệu text. `controller` đọc/set giá trị từ code, '
+      usage:
+          'Ô nhập liệu text. `controller` đọc/set giá trị từ code, '
           '`decoration` set label/hint/icon/viền.',
-      special: 'obscureText: true để ẩn chữ. Cần dispose() controller để '
+      special:
+          'obscureText: true để ẩn chữ. Cần dispose() controller để '
           'tránh leak.',
       preview: (_) => const SizedBox(
         width: 90,
@@ -389,9 +443,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Checkbox / Switch / Radio',
       category: 'Input & tương tác',
       constructor: 'Checkbox(value: checked, onChanged: (v) => setState(() => checked = v!))',
-      usage: 'Chọn boolean/lựa chọn. Checkbox/Switch = on-off. Radio = '
+      usage:
+          'Chọn boolean/lựa chọn. Checkbox/Switch = on-off. Radio = '
           'chọn 1 trong nhiều (cùng `groupValue`).',
-      special: 'Widget "có điều khiển" - PHẢI tự lưu state và cập nhật '
+      special:
+          'Widget "có điều khiển" - PHẢI tự lưu state và cập nhật '
           'trong onChanged.',
       preview: (_) => Row(
         mainAxisSize: MainAxisSize.min,
@@ -408,9 +464,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'GestureDetector / InkWell',
       category: 'Input & tương tác',
       constructor: 'InkWell(onTap: () {}, child: ...)',
-      usage: 'Bắt cử chỉ chạm cho widget KHÔNG có sẵn onTap (Container, '
+      usage:
+          'Bắt cử chỉ chạm cho widget KHÔNG có sẵn onTap (Container, '
           'Text, Image...).',
-      special: 'InkWell có hiệu ứng "ripple" nhưng CẦN Material ancestor, '
+      special:
+          'InkWell có hiệu ứng "ripple" nhưng CẦN Material ancestor, '
           'nếu không dùng GestureDetector (không hiệu ứng).',
       preview: (_) => Material(
         color: Colors.transparent,
@@ -430,10 +488,12 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'DropdownButton / DropdownMenu',
       category: 'Input & tương tác',
       constructor: "DropdownButton<String>(value: selected, items: [DropdownMenuItem(value: 'a', child: Text('A'))], onChanged: (v) {})",
-      usage: 'Chọn 1 giá trị trong danh sách xổ xuống - hay dùng cho lựa '
+      usage:
+          'Chọn 1 giá trị trong danh sách xổ xuống - hay dùng cho lựa '
           'chọn cố định ít mục (tỉnh/thành, loại tài khoản...). '
           '`DropdownMenu` (Material 3, mới hơn) còn hỗ trợ gõ tìm kiếm.',
-      special: 'Widget "có điều khiển" như Checkbox - `value` PHẢI khớp '
+      special:
+          'Widget "có điều khiển" như Checkbox - `value` PHẢI khớp '
           '1 trong các `items`, nếu không sẽ lỗi assertion runtime.',
       preview: (_) => SizedBox(
         width: 70,
@@ -441,8 +501,14 @@ class WidgetsCheatsheet extends StatelessWidget {
           isDense: true,
           value: 'A',
           items: const [
-            DropdownMenuItem(value: 'A', child: Text('A', style: TextStyle(fontSize: 12))),
-            DropdownMenuItem(value: 'B', child: Text('B', style: TextStyle(fontSize: 12))),
+            DropdownMenuItem(
+              value: 'A',
+              child: Text('A', style: TextStyle(fontSize: 12)),
+            ),
+            DropdownMenuItem(
+              value: 'B',
+              child: Text('B', style: TextStyle(fontSize: 12)),
+            ),
           ],
           onChanged: (_) {},
         ),
@@ -452,9 +518,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Slider / RangeSlider',
       category: 'Input & tương tác',
       constructor: 'Slider(value: value, min: 0, max: 100, onChanged: (v) => setState(() => value = v))',
-      usage: 'Chọn 1 giá trị số (hoặc 1 khoảng với RangeSlider) bằng cách '
+      usage:
+          'Chọn 1 giá trị số (hoặc 1 khoảng với RangeSlider) bằng cách '
           'kéo thanh trượt - hay dùng cho volume, giá tiền, độ tuổi...',
-      special: 'Cần bọc trong widget có chiều rộng xác định (Slider tự '
+      special:
+          'Cần bọc trong widget có chiều rộng xác định (Slider tự '
           'giãn hết chiều ngang khả dụng, lỗi "infinite width" nếu đặt '
           'trong Row không có Expanded).',
       preview: (_) => SizedBox(
@@ -473,9 +541,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Form + TextFormField (validate)',
       category: 'Input & tương tác',
       constructor: "Form(key: formKey, child: TextFormField(validator: (v) => (v?.isEmpty ?? true) ? 'Bắt buộc' : null))",
-      usage: 'Gom nhiều TextFormField thành 1 "form" để validate CÙNG LÚC '
+      usage:
+          'Gom nhiều TextFormField thành 1 "form" để validate CÙNG LÚC '
           'khi bấm Submit, thay vì tự kiểm tra từng field riêng lẻ.',
-      special: 'Gọi `formKey.currentState!.validate()` để chạy hết '
+      special:
+          'Gọi `formKey.currentState!.validate()` để chạy hết '
           'validator - trả `false` và tự hiện `errorText` nếu field nào '
           'sai, không cần tự quản lý state lỗi.',
       preview: (_) => SizedBox(
@@ -495,10 +565,12 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'RadioListTile / CheckboxListTile / SwitchListTile',
       category: 'Input & tương tác',
       constructor: "CheckboxListTile(title: Text('Đồng ý'), value: checked, onChanged: (v) {})",
-      usage: 'Kết hợp ListTile (title/subtitle/leading) với Checkbox/Radio/'
+      usage:
+          'Kết hợp ListTile (title/subtitle/leading) với Checkbox/Radio/'
           'Switch trong 1 widget - cả dòng (không chỉ riêng ô vuông) đều '
           'bấm được để toggle, tiện cho danh sách lựa chọn dài.',
-      special: 'Mặc định `controlAffinity` để control ở bên TRÁI khác '
+      special:
+          'Mặc định `controlAffinity` để control ở bên TRÁI khác '
           'Checkbox/Switch thường (ở đâu bạn đặt nó) - đổi qua '
           '`ListTileControlAffinity.trailing` nếu cần control bên phải.',
       preview: (_) => const SizedBox(
@@ -516,15 +588,23 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'SegmentedButton',
       category: 'Input & tương tác',
       constructor: "SegmentedButton<int>(segments: [ButtonSegment(value: 0, label: Text('A'))], selected: {0}, onSelectionChanged: (s) {})",
-      usage: '(Material 3) Nhóm nút chọn 1 (hoặc nhiều, `multiSelectionEnabled: true`) '
+      usage:
+          '(Material 3) Nhóm nút chọn 1 (hoặc nhiều, `multiSelectionEnabled: true`) '
           'trong 1 cụm liền nhau - thay thế hiện đại cho nhóm RadioButton '
           'cũ khi chỉ có vài lựa chọn ngắn.',
-      special: '`selected` là 1 `Set` (dù chỉ chọn 1) - khác Radio dùng '
+      special:
+          '`selected` là 1 `Set` (dù chỉ chọn 1) - khác Radio dùng '
           '`groupValue` đơn giá trị.',
       preview: (_) => SegmentedButton<int>(
         segments: const [
-          ButtonSegment(value: 0, label: Text('A', style: TextStyle(fontSize: 10))),
-          ButtonSegment(value: 1, label: Text('B', style: TextStyle(fontSize: 10))),
+          ButtonSegment(
+            value: 0,
+            label: Text('A', style: TextStyle(fontSize: 10)),
+          ),
+          ButtonSegment(
+            value: 1,
+            label: Text('B', style: TextStyle(fontSize: 10)),
+          ),
         ],
         selected: const {0},
         onSelectionChanged: (_) {},
@@ -537,11 +617,14 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'showDatePicker / showTimePicker',
       category: 'Input & tương tác',
-      constructor: 'showDatePicker(context: context, firstDate: ..., lastDate: ...)',
-      usage: 'Mở dialog chọn ngày/giờ chuẩn Material (có sẵn lịch/mặt '
+      constructor:
+          'showDatePicker(context: context, firstDate: ..., lastDate: ...)',
+      usage:
+          'Mở dialog chọn ngày/giờ chuẩn Material (có sẵn lịch/mặt '
           'đồng hồ) - KHÔNG phải widget mà là HÀM `Future`, gọi trong '
           'callback (vd onPressed) và `await` kết quả người dùng chọn.',
-      special: 'Trả về `null` nếu người dùng bấm Hủy/đóng dialog - PHẢI '
+      special:
+          'Trả về `null` nếu người dùng bấm Hủy/đóng dialog - PHẢI '
           'kiểm tra null trước khi dùng kết quả.',
       preview: (_) => OutlinedButton.icon(
         onPressed: () {},
@@ -556,9 +639,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Autocomplete',
       category: 'Input & tương tác',
       constructor: 'Autocomplete<String>(optionsBuilder: (v) => allOptions.where((o) => o.contains(v.text)), onSelected: (v) {})',
-      usage: 'Ô nhập liệu tự gợi ý (dropdown) các lựa chọn khớp với chữ '
+      usage:
+          'Ô nhập liệu tự gợi ý (dropdown) các lựa chọn khớp với chữ '
           'đang gõ - hay dùng cho tìm kiếm địa chỉ, tên sản phẩm, username...',
-      special: '`optionsBuilder` chạy lại MỖI LẦN người dùng gõ - nên lọc '
+      special:
+          '`optionsBuilder` chạy lại MỖI LẦN người dùng gõ - nên lọc '
           'nhanh (hoặc debounce nếu gọi API) để tránh giật/lag.',
       preview: (_) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -581,9 +666,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Số điện thoại',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: "TextField(keyboardType: TextInputType.phone, inputFormatters: [FilteringTextInputFormatter.digitsOnly])",
-      usage: 'Ô nhập số điện thoại. `keyboardType: TextInputType.phone` chỉ '
+      usage:
+          'Ô nhập số điện thoại. `keyboardType: TextInputType.phone` chỉ '
           'đổi bàn phím ảo hiện ra (mobile), KHÔNG tự chặn/định dạng số.',
-      special: 'Flutter KHÔNG có mask "(012) 345-6789" sẵn - phải tự viết '
+      special:
+          'Flutter KHÔNG có mask "(012) 345-6789" sẵn - phải tự viết '
           '`TextInputFormatter` (override `formatEditUpdate`) hoặc dùng '
           'package như `mask_text_input_formatter`.',
       preview: (_) => SizedBox(
@@ -604,9 +691,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Thẻ tín dụng (Credit card)',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: 'TextField(inputFormatters: [_CardNumberFormatter()], keyboardType: TextInputType.number)',
-      usage: 'Ô nhập số thẻ, cần tự nhóm 4 số 1 lần ("1234 5678 9012 3456") '
+      usage:
+          'Ô nhập số thẻ, cần tự nhóm 4 số 1 lần ("1234 5678 9012 3456") '
           'và thường kèm icon nhận diện loại thẻ (Visa/Master) theo số đầu.',
-      special: 'KHÔNG có sẵn trong Flutter - phải viết `TextInputFormatter` '
+      special:
+          'KHÔNG có sẵn trong Flutter - phải viết `TextInputFormatter` '
           'tuỳ chỉnh, hoặc dùng package chuyên dụng (`flutter_credit_card`).',
       preview: (_) => SizedBox(
         width: 110,
@@ -626,9 +715,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'OTP (mã xác thực)',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: 'Row(children: List.generate(6, (i) => SizedBox(width: 36, child: TextField(maxLength: 1, textAlign: TextAlign.center))))',
-      usage: 'Nhập mã OTP, mỗi ô 1 số, tự focus sang ô kế tiếp khi gõ xong '
+      usage:
+          'Nhập mã OTP, mỗi ô 1 số, tự focus sang ô kế tiếp khi gõ xong '
           '(và lùi lại khi xoá/bấm Backspace ở ô rỗng).',
-      special: 'KHÔNG có widget OTP sẵn - tự ghép nhiều `TextField` + '
+      special:
+          'KHÔNG có widget OTP sẵn - tự ghép nhiều `TextField` + '
           '`FocusNode` để tự chuyển focus, hoặc dùng package (`pinput`, '
           '`otp_text_field`) cho đỡ tự viết logic focus.',
       preview: (_) => Row(
@@ -644,7 +735,13 @@ class WidgetsCheatsheet extends StatelessWidget {
                 border: Border.all(color: Colors.grey.shade400),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Text(d, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+              child: Text(
+                d,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
         ],
       ),
@@ -653,9 +750,11 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'showDateRangePicker',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: 'showDateRangePicker(context: context, firstDate: ..., lastDate: ...)',
-      usage: 'Chọn 1 KHOẢNG ngày [từ - đến] (vd đặt phòng, lọc báo cáo '
+      usage:
+          'Chọn 1 KHOẢNG ngày [từ - đến] (vd đặt phòng, lọc báo cáo '
           'theo khoảng thời gian) - khác `showDatePicker` (chỉ 1 ngày).',
-      special: 'ĐÃ có sẵn trong Flutter (`material.dart`), không cần '
+      special:
+          'ĐÃ có sẵn trong Flutter (`material.dart`), không cần '
           'package ngoài - trả về `DateTimeRange?` (null nếu người dùng '
           'bấm Hủy).',
       preview: (_) => OutlinedButton.icon(
@@ -671,10 +770,12 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'ChoiceChip / FilterChip (chọn nhiều)',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: "FilterChip(label: Text('Đỏ'), selected: selected.contains('Đỏ'), onSelected: (v) {})",
-      usage: 'Chọn 1 (ChoiceChip) hoặc NHIỀU (FilterChip) lựa chọn dạng '
+      usage:
+          'Chọn 1 (ChoiceChip) hoặc NHIỀU (FilterChip) lựa chọn dạng '
           '"viên thuốc" bấm toggle - hay dùng cho filter/tag sản phẩm, sở '
           'thích, size áo...',
-      special: 'ĐÃ có sẵn (Material), không cần package. Khác Checkbox về '
+      special:
+          'ĐÃ có sẵn (Material), không cần package. Khác Checkbox về '
           'hình dạng - tự đổi màu nền + hiện icon check khi `selected`.',
       preview: (_) => Wrap(
         spacing: 4,
@@ -700,10 +801,12 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Tag input (nhập nhiều tag rời)',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: 'Wrap(children: [...tags.map((t) => InputChip(label: Text(t), onDeleted: () {})), SizedBox(width: 80, child: TextField(onSubmitted: ...))])',
-      usage: 'Nhập nhiều giá trị rời dạng chip (email người nhận, từ khoá '
+      usage:
+          'Nhập nhiều giá trị rời dạng chip (email người nhận, từ khoá '
           'tìm kiếm...) - gõ xong Enter/dấu phẩy để "chốt" thành 1 chip, '
           'bấm x để xoá.',
-      special: 'KHÔNG có widget dựng sẵn - tự ghép `Wrap` + `InputChip` + '
+      special:
+          'KHÔNG có widget dựng sẵn - tự ghép `Wrap` + `InputChip` + '
           '`TextField` (lắng nghe `onSubmitted` để convert text -> chip), '
           'hoặc dùng package (`flutter_tags_x`).',
       preview: (_) => Wrap(
@@ -728,11 +831,14 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'Rich text editor (kiểu TinyMCE)',
       category: 'Input chuyên dụng (DIY / package)',
-      constructor: "// Không có sẵn -> QuillEditor.basic(controller: quillController)",
-      usage: 'Soạn văn bản có định dạng từng đoạn (đậm/nghiêng/list/màu...) '
+      constructor:
+          "// Không có sẵn -> QuillEditor.basic(controller: quillController)",
+      usage:
+          'Soạn văn bản có định dạng từng đoạn (đậm/nghiêng/list/màu...) '
           'như TinyMCE/Google Docs - khác `TextField` (chỉ nhập text THUẦN, '
           'không style riêng từng đoạn).',
-      special: 'Flutter KHÔNG có WYSIWYG editor built-in - cần package '
+      special:
+          'Flutter KHÔNG có WYSIWYG editor built-in - cần package '
           'ngoài, phổ biến nhất là `flutter_quill` (hoặc `super_editor`).',
       preview: (_) => Container(
         width: 110,
@@ -765,22 +871,30 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'Markdown (render, không phải nhập)',
       category: 'Input chuyên dụng (DIY / package)',
       constructor: "// Không có sẵn -> Markdown(data: '# Tiêu đề\\n**đậm**')",
-      usage: 'Hiển thị (render) văn bản viết theo cú pháp Markdown '
+      usage:
+          'Hiển thị (render) văn bản viết theo cú pháp Markdown '
           '(`# `, `**đậm**`, `- list`...) thành UI có định dạng - khác '
           'rich text editor ở trên (cái đó để SOẠN, cái này chỉ để ĐỌC).',
-      special: 'Flutter core không tự parse Markdown - cần package chính '
+      special:
+          'Flutter core không tự parse Markdown - cần package chính '
           'thức `flutter_markdown` (do team flutter.dev duy trì, không '
           'phải 3rd-party lạ).',
       preview: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
-          Text('Tiêu đề', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Text(
+            'Tiêu đề',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
           Text.rich(
             TextSpan(
               children: [
                 TextSpan(text: 'chữ '),
-                TextSpan(text: 'đậm', style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(
+                  text: 'đậm',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ],
               style: TextStyle(fontSize: 10),
             ),
@@ -792,10 +906,13 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'Scaffold',
       category: 'Cấu trúc trang',
-      constructor: 'Scaffold(appBar: AppBar(...), body: ..., floatingActionButton: ...)',
-      usage: 'Khung trang chuẩn Material: tự xử lý vị trí AppBar/body/FAB/'
+      constructor:
+          'Scaffold(appBar: AppBar(...), body: ..., floatingActionButton: ...)',
+      usage:
+          'Khung trang chuẩn Material: tự xử lý vị trí AppBar/body/FAB/'
           'BottomNavigationBar/Drawer.',
-      special: 'body tự tránh vùng bị AppBar che, nhưng KHÔNG tự tránh '
+      special:
+          'body tự tránh vùng bị AppBar che, nhưng KHÔNG tự tránh '
           'notch/status bar - cần SafeArea.',
       preview: (_) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -808,9 +925,11 @@ class WidgetsCheatsheet extends StatelessWidget {
     _WidgetInfo(
       name: 'AppBar',
       category: 'Cấu trúc trang',
-      constructor: 'AppBar(title: Text("Trang chủ"), actions: [IconButton(...)])',
+      constructor:
+          'AppBar(title: Text("Trang chủ"), actions: [IconButton(...)])',
       usage: 'Thanh tiêu đề trên cùng, dùng làm `appBar:` của Scaffold.',
-      special: 'Chiều cao cố định (kToolbarHeight), tự thêm padding tránh '
+      special:
+          'Chiều cao cố định (kToolbarHeight), tự thêm padding tránh '
           'status bar.',
       preview: (_) => Container(
         width: 70,
@@ -828,11 +947,14 @@ class WidgetsCheatsheet extends StatelessWidget {
       name: 'SafeArea',
       category: 'Cấu trúc trang',
       constructor: 'SafeArea(child: ...)',
-      usage: 'Tự thêm padding tránh các vùng "không an toàn" của thiết bị '
+      usage:
+          'Tự thêm padding tránh các vùng "không an toàn" của thiết bị '
           '(notch, status bar, home indicator...).',
-      special: 'Chỉ cần bọc NGOÀI CÙNG 1 lần gần root, không cần lồng '
+      special:
+          'Chỉ cần bọc NGOÀI CÙNG 1 lần gần root, không cần lồng '
           'nhiều lớp.',
-      preview: (_) => const Icon(Icons.phone_iphone, size: 32, color: Colors.grey),
+      preview: (_) =>
+          const Icon(Icons.phone_iphone, size: 32, color: Colors.grey),
     ),
   ];
 
@@ -889,7 +1011,13 @@ class _WidgetTable extends StatelessWidget {
     4: FixedColumnWidth(260), // Đặc điểm riêng
   };
 
-  static const _headers = ['Minh hoạ', 'Widget', 'Constructor mẫu (bấm để xem)', 'Dùng để làm gì', 'Đặc điểm riêng'];
+  static const _headers = [
+    'Minh hoạ',
+    'Widget',
+    'Constructor mẫu (bấm để xem)',
+    'Dùng để làm gì',
+    'Đặc điểm riêng',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -924,8 +1052,12 @@ class _WidgetTable extends StatelessWidget {
               for (var i = 0; i < rows.length; i++)
                 TableRow(
                   decoration: BoxDecoration(
-                    color: i.isEven ? colorScheme.surface : colorScheme.surfaceContainerLow,
-                    border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+                    color: i.isEven
+                        ? colorScheme.surface
+                        : colorScheme.surfaceContainerLow,
+                    border: Border(
+                      top: BorderSide(color: colorScheme.outlineVariant),
+                    ),
                   ),
                   children: [
                     _previewCell(context, rows[i].preview),
@@ -934,7 +1066,11 @@ class _WidgetTable extends StatelessWidget {
                       context,
                       rows[i].constructor,
                       monospace: true,
-                      onTap: () => _showCodeDialog(context, rows[i].name, rows[i].constructor),
+                      onTap: () => _showCodeDialog(
+                        context,
+                        rows[i].name,
+                        rows[i].constructor,
+                      ),
                     ),
                     _cell(context, rows[i].usage, muted: true),
                     _cell(context, rows[i].special, muted: true),
@@ -963,7 +1099,9 @@ class _WidgetTable extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(6),
-          border: onTap != null ? Border.all(color: colorScheme.outlineVariant) : null,
+          border: onTap != null
+              ? Border.all(color: colorScheme.outlineVariant)
+              : null,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1004,11 +1142,16 @@ class _WidgetTable extends StatelessWidget {
       child: Text(
         text,
         style: isHeader
-            ? TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onPrimaryContainer)
+            ? TextStyle(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onPrimaryContainer,
+              )
             : TextStyle(
                 fontSize: 14,
                 fontWeight: bold ? FontWeight.w600 : null,
-                color: muted ? colorScheme.onSurfaceVariant : colorScheme.onSurface,
+                color: muted
+                    ? colorScheme.onSurfaceVariant
+                    : colorScheme.onSurface,
               ),
       ),
     );
@@ -1052,7 +1195,10 @@ class _WidgetTable extends StatelessWidget {
                       Expanded(
                         child: Text(
                           name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                       IconButton(

@@ -265,7 +265,10 @@ class _LibraryCard extends StatelessWidget {
                   ),
                 ),
                 Chip(
-                  label: Text(info.category, style: const TextStyle(fontSize: 12)),
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                   backgroundColor: Colors.deepPurple.withValues(alpha: 0.1),
                 ),
               ],

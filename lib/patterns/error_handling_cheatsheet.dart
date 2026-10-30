@@ -136,7 +136,11 @@ class _TryCatchDemoState extends State<_TryCatchDemo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(_status, style: const TextStyle(fontSize: 11), textAlign: TextAlign.center),
+        Text(
+          _status,
+          style: const TextStyle(fontSize: 11),
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 6),
         Wrap(
           spacing: 6,
@@ -144,12 +148,22 @@ class _TryCatchDemoState extends State<_TryCatchDemo> {
           children: [
             OutlinedButton(
               onPressed: () => _load(crash: false),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Gọi API OK', style: TextStyle(fontSize: 11)),
             ),
             OutlinedButton(
               onPressed: () => _load(crash: true),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('Gọi API lỗi', style: TextStyle(fontSize: 11)),
             ),
           ],
@@ -176,11 +190,25 @@ class _FlowDiagram extends StatelessWidget {
         for (var i = 0; i < steps.length; i++) ...[
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            decoration: BoxDecoration(color: colors[i], borderRadius: BorderRadius.circular(6)),
-            child: Text(steps[i], style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
+            decoration: BoxDecoration(
+              color: colors[i],
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              steps[i],
+              style: const TextStyle(
+                fontSize: 10,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           if (i != steps.length - 1)
-            Icon(Icons.arrow_forward, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            Icon(
+              Icons.arrow_forward,
+              size: 14,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
         ],
       ],
     );
@@ -193,7 +221,11 @@ class _FlutterErrorDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const _FlowDiagram(
-      steps: ['Lỗi build/layout', 'FlutterError.onError', 'Crash reporting (release)'],
+      steps: [
+        'Lỗi build/layout',
+        'FlutterError.onError',
+        'Crash reporting (release)',
+      ],
       colors: [Colors.red, Colors.orange, Colors.teal],
     );
   }
@@ -219,9 +251,17 @@ class _CrashReportingDemo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.cloud_upload_outlined, size: 32, color: Theme.of(context).colorScheme.primary),
+        Icon(
+          Icons.cloud_upload_outlined,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
         const SizedBox(height: 4),
-        const Text('Lỗi người dùng thật gặp -> gửi lên server -> bạn xem dashboard', style: TextStyle(fontSize: 10), textAlign: TextAlign.center),
+        const Text(
+          'Lỗi người dùng thật gặp -> gửi lên server -> bạn xem dashboard',
+          style: TextStyle(fontSize: 10),
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
