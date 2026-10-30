@@ -14,6 +14,9 @@ class LayoutDemo {
   // Đánh dấu trang "nâng cao" - hiện badge riêng trên card (xem DemoTile)
   // để người mới biết nên tạm bỏ qua, học sau khi đã vững nền tảng.
   final bool advanced;
+  // Đường dẫn bài Markdown đã được chuyển đổi. Null nghĩa là mục này vẫn
+  // chỉ có nội dung cheat sheet Dart.
+  final String? articleAssetPath;
 
   const LayoutDemo({
     required this.title,
@@ -23,5 +26,6 @@ class LayoutDemo {
     this.group,
     this.tags = const [],
     this.advanced = false,
+    this.articleAssetPath,
   });
 }

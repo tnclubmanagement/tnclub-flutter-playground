@@ -8,17 +8,13 @@ final ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(
   ThemeMode.light,
 );
 
-/// Mỗi nhóm lớn trên trang chủ (Demos/Examples/Patterns/Cheat Sheet/Môi
-/// trường & Công cụ) có 1 màu "thương hiệu" RIÊNG (không suy ra từ seed
-/// color chung) - dùng cho icon section, nền card kiểu "bento block", và
-/// viền/bóng khi hover - để mỗi khu vực có cá tính thị giác rõ ràng. Bảng
-/// màu PASTEL nhẹ nhàng, tươi nhưng không gắt (xanh dương/san hô/ngọc
-/// bích/vàng bơ/tím oải hương) - thay cho bộ màu đậm (tím/cam đất/xám/
-/// vàng gold) cũ bị chê quá xỉn.
+/// Mỗi nhóm lớn có một accent riêng trong cùng một bảng màu học thuật: xanh
+/// navy, đỏ burgundy, xanh slate, vàng ochre và xanh xám. Các màu đủ khác
+/// nhau để định hướng nhưng không biến giao diện học tập thành bảng màu pastel.
 const Map<String, Color> kSectionAccent = {
-  'Demos': Color(0xFF7C93F0), // xanh dương pastel (periwinkle)
-  'Examples': Color(0xFFF0836E), // hồng san hô (coral) pastel
-  'Patterns': Color(0xFF5FB3A6), // xanh ngọc (teal) pastel
-  'Cheat Sheet': Color(0xFFF2C14E), // vàng bơ (butter yellow) pastel
-  'Môi trường & Công cụ': Color(0xFFB08BD6), // tím oải hương (lilac) pastel
+  'Demos': Color(0xFF294C68),
+  'Examples': Color(0xFF8A4555),
+  'Patterns': Color(0xFF3D6B6A),
+  'Cheat Sheet': Color(0xFF9A752F),
+  'Môi trường & Công cụ': Color(0xFF5B6480),
 };

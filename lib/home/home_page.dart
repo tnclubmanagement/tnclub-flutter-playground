@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../articles/article_page.dart';
 import '../demos/column_row_demo.dart';
 import '../demos/container_constraints_demo.dart';
 import '../demos/edgeinsets_demo.dart';
@@ -26,21 +27,15 @@ import '../patterns/atomic_widgets_cheatsheet.dart';
 import '../patterns/auth_cheatsheet.dart';
 import '../patterns/constructors_pattern.dart';
 import '../patterns/dart_syntax_cheatsheet.dart';
-import '../patterns/dart_tooling_cheatsheet.dart';
-import '../patterns/deploy_cheatsheet.dart';
-import '../patterns/dev_environment_cheatsheet.dart';
 import '../patterns/error_handling_cheatsheet.dart';
 import '../patterns/extension_pattern.dart';
 import '../patterns/file_preview_cheatsheet.dart';
-import '../patterns/getting_started_cheatsheet.dart';
-import '../patterns/glossary_cheatsheet.dart';
 import '../patterns/i18n_cheatsheet.dart';
 import '../patterns/inherited_widget_pattern.dart';
 import '../patterns/libraries_page.dart';
 import '../patterns/local_storage_cheatsheet.dart';
 import '../patterns/navigation_cheatsheet.dart';
 import '../patterns/performance_cheatsheet.dart';
-import '../patterns/requirements_cheatsheet.dart';
 import '../patterns/state_management_cheatsheet.dart';
 import '../patterns/testing_cheatsheet.dart';
 import '../patterns/theme_cheatsheet.dart';
@@ -345,6 +340,8 @@ class HomePage extends StatefulWidget {
           'Positioned, Clip, padding vs margin... (trang tổng hợp tĩnh)',
       path: '/cheatsheet/atomic-widgets',
       tags: const ['widget', 'layout'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/01-atomic-widgets.vi.md',
       builder: (_) => const AtomicWidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -355,6 +352,8 @@ class HomePage extends StatefulWidget {
           'background/scroll hay gì đặc biệt (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/widgets',
       tags: const ['widget', 'layout'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/02-widgets.vi.md',
       builder: (_) => const WidgetsCheatsheet(),
     ),
     LayoutDemo(
@@ -365,6 +364,8 @@ class HomePage extends StatefulWidget {
           'matching, constructor... (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/dart-syntax',
       tags: const ['dart'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/03-dart-syntax.vi.md',
       builder: (_) => const DartSyntaxCheatsheet(),
     ),
     LayoutDemo(
@@ -376,6 +377,8 @@ class HomePage extends StatefulWidget {
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/animation',
       tags: const ['animation', 'widget'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/04-animation.vi.md',
       builder: (_) => const AnimationCheatsheet(),
     ),
     // ---- Kiến trúc & State ----
@@ -388,6 +391,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/state-management',
       tags: const ['state'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/05-state-management.vi.md',
       builder: (_) => const StateManagementCheatsheet(),
     ),
     LayoutDemo(
@@ -398,6 +403,8 @@ class HomePage extends StatefulWidget {
           'app này đang dùng), go_router (trang tổng hợp tĩnh, lọc nhóm)',
       path: '/cheatsheet/navigation',
       tags: const ['navigation'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/06-navigation.vi.md',
       builder: (_) => const NavigationCheatsheet(),
     ),
     LayoutDemo(
@@ -408,6 +415,8 @@ class HomePage extends StatefulWidget {
           'hive) (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/local-storage',
       tags: const ['storage'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/07-local-storage.vi.md',
       builder: (_) => const LocalStorageCheatsheet(),
     ),
     // ---- Networking & Auth ----
@@ -421,6 +430,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/api-service',
       tags: const ['network', 'async'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/08-api-service.vi.md',
       builder: (_) => const ApiServiceCheatsheet(),
     ),
     LayoutDemo(
@@ -433,6 +444,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/auth',
       tags: const ['auth', 'security', 'storage'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/09-auth.vi.md',
       builder: (_) => const AuthCheatsheet(),
     ),
     LayoutDemo(
@@ -443,6 +456,8 @@ class HomePage extends StatefulWidget {
           'PDF, chọn ảnh/file từ máy (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/file-preview',
       tags: const ['image', 'widget'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/10-file-preview.vi.md',
       builder: (_) => const FilePreviewCheatsheet(),
     ),
     // ---- Chất lượng & Vận hành ----
@@ -455,6 +470,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/testing',
       tags: const ['testing'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/11-testing.vi.md',
       builder: (_) => const TestingCheatsheet(),
     ),
     LayoutDemo(
@@ -466,6 +483,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/performance',
       tags: const ['performance'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/12-performance.vi.md',
       builder: (_) => const PerformanceCheatsheet(),
     ),
     LayoutDemo(
@@ -476,6 +495,8 @@ class HomePage extends StatefulWidget {
           '(trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/theme',
       tags: const ['theme'],
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/13-theme.vi.md',
       builder: (_) => const ThemeCheatsheet(),
     ),
     LayoutDemo(
@@ -487,6 +508,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/i18n',
       tags: const ['i18n'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/14-i18n.vi.md',
       builder: (_) => const I18nCheatsheet(),
     ),
     LayoutDemo(
@@ -498,6 +521,8 @@ class HomePage extends StatefulWidget {
       path: '/cheatsheet/error-handling',
       tags: const ['error-handling', 'async'],
       advanced: true,
+      articleAssetPath:
+          'content/articles/chapter-02-cheat-sheets/15-error-handling.vi.md',
       builder: (_) => const ErrorHandlingCheatsheet(),
     ),
   ];
@@ -514,7 +539,12 @@ class HomePage extends StatefulWidget {
           'Flutter SDK, IDE và cách chọn thiết bị chạy thử',
       path: '/cheatsheet/requirements',
       tags: const ['setup', 'beginner'],
-      builder: (_) => const RequirementsCheatsheet(),
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/01-requirements.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/01-requirements.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '🚀 Bắt đầu với Flutter',
@@ -524,7 +554,10 @@ class HomePage extends StatefulWidget {
           'Restart (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/getting-started',
       tags: const ['setup', 'beginner'],
-      builder: (_) => const GettingStartedCheatsheet(),
+      articleAssetPath: 'content/articles/chapter-01-getting-started/02-first-flutter-app.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath: 'content/articles/chapter-01-getting-started/02-first-flutter-app.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '🛠️ Dev Environment & FVM cheat sheet',
@@ -534,7 +567,10 @@ class HomePage extends StatefulWidget {
           'lọc theo nhóm)',
       path: '/cheatsheet/dev-environment',
       tags: const ['setup', 'tooling'],
-      builder: (_) => const DevEnvironmentCheatsheet(),
+      articleAssetPath: 'content/articles/chapter-01-getting-started/03-dev-environment.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath: 'content/articles/chapter-01-getting-started/03-dev-environment.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '📦 Deploy lên Android & iOS',
@@ -545,7 +581,12 @@ class HomePage extends StatefulWidget {
           'submit (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/deploy',
       tags: const ['setup', 'tooling', 'android', 'ios'],
-      builder: (_) => const DeployCheatsheet(),
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/04-deploy.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/04-deploy.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '⌨️ Dart Tooling cheat sheet',
@@ -554,7 +595,12 @@ class HomePage extends StatefulWidget {
           'compile (trang tổng hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/dart-tooling',
       tags: const ['dart', 'tooling'],
-      builder: (_) => const DartToolingCheatsheet(),
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/05-dart-tooling.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/05-dart-tooling.vi.md',
+      ),
     ),
     LayoutDemo(
       title: '📚 Giải thích thuật ngữ (Glossary)',
@@ -564,7 +610,12 @@ class HomePage extends StatefulWidget {
           'hợp tĩnh, lọc theo nhóm)',
       path: '/cheatsheet/glossary',
       tags: const ['beginner', 'dart'],
-      builder: (_) => const GlossaryCheatsheet(),
+      articleAssetPath:
+          'content/articles/chapter-01-getting-started/06-glossary.vi.md',
+      builder: (_) => const ArticlePage(
+        assetPath:
+            'content/articles/chapter-01-getting-started/06-glossary.vi.md',
+      ),
     ),
   ];
 

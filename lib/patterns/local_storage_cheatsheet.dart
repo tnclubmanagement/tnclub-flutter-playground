@@ -112,12 +112,25 @@ class _SharedPreferencesDemoState extends State<_SharedPreferencesDemo> {
           children: [
             OutlinedButton(
               onPressed: () => setState(() => _darkMode = true),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-              child: const Text('setBool(true)', style: TextStyle(fontSize: 11)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
+              child: const Text(
+                'setBool(true)',
+                style: TextStyle(fontSize: 11),
+              ),
             ),
             OutlinedButton(
               onPressed: () => setState(() => _darkMode = null),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
               child: const Text('remove()', style: TextStyle(fontSize: 11)),
             ),
           ],
@@ -141,11 +154,21 @@ class _NotForSecretsDemo extends StatelessWidget {
           spacing: 6,
           runSpacing: 6,
           children: [
-            Icon(Icons.description_outlined, size: 20, color: Colors.grey.shade600),
-            const Text('SharedPreferences\n(file thường)', style: TextStyle(fontSize: 10)),
+            Icon(
+              Icons.description_outlined,
+              size: 20,
+              color: Colors.grey.shade600,
+            ),
+            const Text(
+              'SharedPreferences\n(file thường)',
+              style: TextStyle(fontSize: 10),
+            ),
             const SizedBox(width: 10),
             const Icon(Icons.lock, size: 20, color: Colors.green),
-            const Text('secure_storage\n(mã hoá OS)', style: TextStyle(fontSize: 10)),
+            const Text(
+              'secure_storage\n(mã hoá OS)',
+              style: TextStyle(fontSize: 10),
+            ),
           ],
         ),
         const CheatsheetHint('Token/mật khẩu -> luôn đi bên phải'),
@@ -163,7 +186,13 @@ class _DatabaseComparisonDemo extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: 60, child: Text(name, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          SizedBox(
+            width: 60,
+            child: Text(
+              name,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            ),
+          ),
           Expanded(child: Text(note, style: const TextStyle(fontSize: 11))),
         ],
       ),

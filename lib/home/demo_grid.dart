@@ -129,7 +129,9 @@ class _DemoTileState extends State<DemoTile> {
           borderRadius: BorderRadius.circular(20),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () => Navigator.of(context).pushNamed(demo.path),
+            onTap: () {
+              Navigator.of(context).pushNamed(demo.path);
+            },
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -215,6 +217,10 @@ class _DemoTileState extends State<DemoTile> {
                               color: accent,
                             ),
                           ),
+                        if (demo.articleAssetPath != null) ...[
+                          const SizedBox(height: 8),
+                          _ConvertedArticleBadge(accent: accent),
+                        ],
                         Text(
                           demo.description,
                           style: TextStyle(
@@ -279,6 +285,42 @@ class _DemoTileState extends State<DemoTile> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ConvertedArticleBadge extends StatelessWidget {
+  final Color accent;
+
+  const _ConvertedArticleBadge({required this.accent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: accent.withValues(alpha: 0.28)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check_circle_rounded, size: 14, color: accent),
+          const SizedBox(width: 5),
+          Expanded(
+            child: Text(
+              'Đã chuyển đổi sang bài viết',
+              style: TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w800,
+                color: accent,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

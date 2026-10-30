@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_layout_playground/patterns/widgets_cheatsheet.dart';
+
 import 'cheatsheet_test_utils.dart';
 
 void main() {
@@ -12,9 +13,7 @@ void main() {
       const Size(390, 844), // mobile
     ]) {
       await tester.binding.setSurfaceSize(size);
-      await tester.pumpWidget(
-        const MaterialApp(home: WidgetsCheatsheet()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: WidgetsCheatsheet()));
       await tester.pumpAndSettle();
       final e0 = tester.takeException();
       if (e0 != null) debugPrint('EXC @ $size tab0: $e0');
@@ -32,9 +31,7 @@ void main() {
     }
   });
 
-  testWidgets('Tapping a constructor cell opens a code dialog', (
-    tester,
-  ) async {
+  testWidgets('Tapping a constructor cell opens a code dialog', (tester) async {
     await tester.binding.setSurfaceSize(const Size(1400, 900));
     await tester.pumpWidget(const MaterialApp(home: WidgetsCheatsheet()));
     await tester.pumpAndSettle();

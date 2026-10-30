@@ -92,7 +92,12 @@ class _SeedColorDemo extends StatefulWidget {
 class _SeedColorDemoState extends State<_SeedColorDemo> {
   Color _seed = Colors.indigo;
 
-  static const _seeds = [Colors.indigo, Colors.teal, Colors.deepOrange, Colors.pink];
+  static const _seeds = [
+    Colors.indigo,
+    Colors.teal,
+    Colors.deepOrange,
+    Colors.pink,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +126,9 @@ class _SeedColorDemoState extends State<_SeedColorDemo> {
                   decoration: BoxDecoration(
                     color: s,
                     shape: BoxShape.circle,
-                    border: _seed == s ? Border.all(color: Colors.black, width: 2) : null,
+                    border: _seed == s
+                        ? Border.all(color: Colors.black, width: 2)
+                        : null,
                   ),
                 ),
               ),
@@ -138,7 +145,10 @@ class _SeedColorDemoState extends State<_SeedColorDemo> {
         Container(
           width: 36,
           height: 24,
-          decoration: BoxDecoration(color: color, border: Border.all(color: Colors.black12)),
+          decoration: BoxDecoration(
+            color: color,
+            border: Border.all(color: Colors.black12),
+          ),
         ),
         Text(label, style: const TextStyle(fontSize: 8)),
       ],
@@ -154,7 +164,10 @@ class _ThemeOfDemo extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(color: scheme.primaryContainer, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Text(
         'Theme.of(context).colorScheme.primaryContainer',
         style: TextStyle(fontSize: 11, color: scheme.onPrimaryContainer),
@@ -184,13 +197,20 @@ class _ThemeModeDemoState extends State<_ThemeModeDemo> {
       child: Builder(
         builder: (context) => Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: scheme.surface, borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(
+            color: scheme.surface,
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 _dark ? 'ThemeMode.dark' : 'ThemeMode.light',
-                style: TextStyle(color: scheme.onSurface, fontWeight: FontWeight.bold, fontSize: 12),
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
               const SizedBox(height: 6),
               ElevatedButton(

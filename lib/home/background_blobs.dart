@@ -18,7 +18,7 @@ class BackgroundBlobs extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.45),
+          color: color.withValues(alpha: 0.10),
           shape: BoxShape.circle,
         ),
       ),

@@ -117,7 +117,10 @@ class _MiniCounterState extends State<_MiniCounter> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('$_count', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(
+          '$_count',
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         IconButton(
           onPressed: () => setState(() => _count++),
           icon: const Icon(Icons.add, size: 16),
@@ -198,8 +201,13 @@ class _OverflowCatchDemoState extends State<_OverflowCatchDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: () => setState(() => _tooNarrow = !_tooNarrow),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-          child: Text(_tooNarrow ? 'Thu hẹp màn hình lại' : 'Giả lập màn hình quá hẹp', style: const TextStyle(fontSize: 10)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
+          child: Text(
+            _tooNarrow ? 'Thu hẹp màn hình lại' : 'Giả lập màn hình quá hẹp',
+            style: const TextStyle(fontSize: 10),
+          ),
         ),
       ],
     );
@@ -238,7 +246,10 @@ class _PumpVsSettleDemoState extends State<_PumpVsSettleDemo> {
         SizedBox(
           height: 20,
           child: _loading
-              ? const Text('pump() thấy: đang loading...', style: TextStyle(fontSize: 11))
+              ? const Text(
+                  'pump() thấy: đang loading...',
+                  style: TextStyle(fontSize: 11),
+                )
               : Text(
                   _done ? 'pumpAndSettle() thấy: Đã xong!' : 'Bấm nút để chạy',
                   style: const TextStyle(fontSize: 11),
@@ -247,8 +258,13 @@ class _PumpVsSettleDemoState extends State<_PumpVsSettleDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: _run,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4)),
-          child: const Text('Gọi API (delay 800ms)', style: TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          ),
+          child: const Text(
+            'Gọi API (delay 800ms)',
+            style: TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );

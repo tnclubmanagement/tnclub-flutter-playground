@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/widget_previews.dart';
 
 // @Preview(name: 'Chat Bubble Starter', size: Size(400, 600))
@@ -48,8 +49,12 @@ class ChatBubbleStarter extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(borderRadius),
                   topRight: const Radius.circular(borderRadius),
-                  bottomLeft: m.isMe ? const Radius.circular(borderRadius) : Radius.circular(innerBorderRadius),
-                  bottomRight: m.isMe ? Radius.circular(innerBorderRadius) : const Radius.circular(borderRadius),
+                  bottomLeft: m.isMe
+                      ? const Radius.circular(borderRadius)
+                      : Radius.circular(innerBorderRadius),
+                  bottomRight: m.isMe
+                      ? Radius.circular(innerBorderRadius)
+                      : const Radius.circular(borderRadius),
                 ),
               ),
               child: Text('${m.isMe ? "(mình)" : "(họ)"} ${m.text}'),

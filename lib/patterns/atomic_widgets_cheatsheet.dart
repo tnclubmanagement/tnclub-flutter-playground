@@ -230,17 +230,29 @@ class _AtomicCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             SizedBox(
               height: 180,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,

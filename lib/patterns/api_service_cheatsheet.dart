@@ -291,16 +291,35 @@ class _ApiCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 4,
               children: [
-                Text(info.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Chip(label: Text(info.category, style: const TextStyle(fontSize: 12))),
+                Text(
+                  info.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Chip(
+                  label: Text(
+                    info.category,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(info.description, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            Text(
+              info.description,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               '▶ Minh họa trực quan:',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
@@ -309,7 +328,9 @@ class _ApiCard extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Builder(builder: info.preview),
@@ -319,7 +340,9 @@ class _ApiCard extends StatelessWidget {
               height: 220,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -345,7 +368,10 @@ class _Hint extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        style: TextStyle(
+          fontSize: 11,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
       ),
     );
   }
@@ -397,7 +423,9 @@ class _GetRequestDemoState extends State<_GetRequestDemo> {
           onPressed: () => setState(() {
             _future = _fakeFetchUser();
           }),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
           child: const Text('Gọi API', style: TextStyle(fontSize: 12)),
         ),
         const _Hint('Mô phỏng GET, trễ ~700ms rồi trả JSON giả'),
@@ -416,15 +444,32 @@ class _ModelClassDemo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('JSON thô:', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-        Text('$jsonMap', style: const TextStyle(fontSize: 11, fontFamily: 'monospace')),
+        const Text(
+          'JSON thô:',
+          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          '$jsonMap',
+          style: const TextStyle(fontSize: 11, fontFamily: 'monospace'),
+        ),
         const SizedBox(height: 8),
-        Icon(Icons.arrow_downward, size: 16, color: Theme.of(context).colorScheme.primary),
+        Icon(
+          Icons.arrow_downward,
+          size: 16,
+          color: Theme.of(context).colorScheme.primary,
+        ),
         const SizedBox(height: 8),
-        const Text('Sau User.fromJson(...):', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+        const Text(
+          'Sau User.fromJson(...):',
+          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+        ),
         const Text(
           "User(id: 1, name: 'Trí Ngô')",
-          style: TextStyle(fontSize: 11, fontFamily: 'monospace', color: Colors.deepPurple),
+          style: TextStyle(
+            fontSize: 11,
+            fontFamily: 'monospace',
+            color: Colors.deepPurple,
+          ),
         ),
       ],
     );
@@ -439,12 +484,19 @@ class _DioInterceptorDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(color: Colors.black87, borderRadius: BorderRadius.circular(6)),
+      decoration: BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.circular(6),
+      ),
       child: const Text(
         '>> GET /users/1\n'
         '>> Authorization: Bearer eyJhbG... (interceptor tự thêm)\n'
         '<< 200 OK (124ms)',
-        style: TextStyle(fontSize: 10, fontFamily: 'monospace', color: Colors.greenAccent),
+        style: TextStyle(
+          fontSize: 10,
+          fontFamily: 'monospace',
+          color: Colors.greenAccent,
+        ),
       ),
     );
   }
@@ -463,7 +515,8 @@ class _FutureBuilderDemoState extends State<_FutureBuilderDemo> {
   late Future<Map<String, dynamic>> _future = _call();
   final _random = Random();
 
-  Future<Map<String, dynamic>> _call() => _fakeFetchUser(forceError: _random.nextBool());
+  Future<Map<String, dynamic>> _call() =>
+      _fakeFetchUser(forceError: _random.nextBool());
 
   @override
   Widget build(BuildContext context) {
@@ -478,9 +531,15 @@ class _FutureBuilderDemoState extends State<_FutureBuilderDemo> {
             child: CircularProgressIndicator(strokeWidth: 2),
           );
         } else if (snapshot.hasError) {
-          content = Text('Lỗi: ${snapshot.error}', style: const TextStyle(fontSize: 11, color: Colors.red));
+          content = Text(
+            'Lỗi: ${snapshot.error}',
+            style: const TextStyle(fontSize: 11, color: Colors.red),
+          );
         } else {
-          content = Text('Xin chào, ${snapshot.data!['name']}', style: const TextStyle(fontSize: 12));
+          content = Text(
+            'Xin chào, ${snapshot.data!['name']}',
+            style: const TextStyle(fontSize: 12),
+          );
         }
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -491,8 +550,16 @@ class _FutureBuilderDemoState extends State<_FutureBuilderDemo> {
               onPressed: () => setState(() {
                 _future = _call();
               }),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-              child: const Text('Gọi lại (random lỗi)', style: TextStyle(fontSize: 11)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
+              ),
+              child: const Text(
+                'Gọi lại (random lỗi)',
+                style: TextStyle(fontSize: 11),
+              ),
             ),
           ],
         );
@@ -555,7 +622,10 @@ class _DebounceDemoState extends State<_DebounceDemo> {
           style: const TextStyle(fontSize: 10),
         ),
         if (_lastQuery.isNotEmpty)
-          Text('Đã gọi API với: "$_lastQuery"', style: const TextStyle(fontSize: 10, color: Colors.deepPurple)),
+          Text(
+            'Đã gọi API với: "$_lastQuery"',
+            style: const TextStyle(fontSize: 10, color: Colors.deepPurple),
+          ),
       ],
     );
   }
@@ -594,7 +664,10 @@ class _MountedCheckDemoState extends State<_MountedCheckDemo> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Giả lập rời trang trước khi xong:', style: TextStyle(fontSize: 10)),
+            const Text(
+              'Giả lập rời trang trước khi xong:',
+              style: TextStyle(fontSize: 10),
+            ),
             Switch(
               value: _simulateLeftPage,
               onChanged: (v) => setState(() => _simulateLeftPage = v),
@@ -605,7 +678,9 @@ class _MountedCheckDemoState extends State<_MountedCheckDemo> {
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: _load,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
           child: const Text('Gọi API', style: TextStyle(fontSize: 11)),
         ),
       ],
@@ -620,8 +695,18 @@ class _RepositoryDemo extends StatelessWidget {
   Widget _box(BuildContext context, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(6)),
-      child: Text(label, style: const TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 11,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
@@ -633,9 +718,17 @@ class _RepositoryDemo extends StatelessWidget {
       runSpacing: 6,
       children: [
         _box(context, 'UserScreen (UI)', Colors.indigo),
-        Icon(Icons.arrow_forward, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        Icon(
+          Icons.arrow_forward,
+          size: 14,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         _box(context, 'UserRepository\n(interface)', Colors.teal),
-        Icon(Icons.arrow_forward, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        Icon(
+          Icons.arrow_forward,
+          size: 14,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         _box(context, 'ApiUserRepository\n(http/dio thật)', Colors.deepOrange),
       ],
     );

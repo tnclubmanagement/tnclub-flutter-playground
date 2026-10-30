@@ -133,8 +133,13 @@ class _PushPopDemo extends StatelessWidget {
           ),
         ),
       ),
-      style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6)),
-      child: const Text('Navigator.push() - mở trang con', style: TextStyle(fontSize: 12)),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      ),
+      child: const Text(
+        'Navigator.push() - mở trang con',
+        style: TextStyle(fontSize: 12),
+      ),
     );
   }
 }
@@ -178,12 +183,20 @@ class _PopWithResultDemoState extends State<_PopWithResultDemo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(_selected == null ? 'Chưa chọn màu nào' : 'Đã chọn: $_selected', style: const TextStyle(fontSize: 12)),
+        Text(
+          _selected == null ? 'Chưa chọn màu nào' : 'Đã chọn: $_selected',
+          style: const TextStyle(fontSize: 12),
+        ),
         const SizedBox(height: 6),
         OutlinedButton(
           onPressed: _pick,
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-          child: const Text('Chọn màu (mở trang con)', style: TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
+          child: const Text(
+            'Chọn màu (mở trang con)',
+            style: TextStyle(fontSize: 11),
+          ),
         ),
       ],
     );
@@ -203,7 +216,9 @@ class _NamedRouteDemo extends StatelessWidget {
             MaterialPageRoute(
               settings: const RouteSettings(name: '/widgets-cheatsheet'),
               builder: (context) => Scaffold(
-                appBar: AppBar(title: const Text('/widgets-cheatsheet (mô phỏng)')),
+                appBar: AppBar(
+                  title: const Text('/widgets-cheatsheet (mô phỏng)'),
+                ),
                 body: Center(
                   child: OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -213,10 +228,17 @@ class _NamedRouteDemo extends StatelessWidget {
               ),
             ),
           ),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
-          child: const Text("pushNamed('/widgets-cheatsheet')", style: TextStyle(fontSize: 11)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          ),
+          child: const Text(
+            "pushNamed('/widgets-cheatsheet')",
+            style: TextStyle(fontSize: 11),
+          ),
         ),
-        const CheatsheetHint('Giống hệt cách bạn bấm các thẻ ở trang chủ app này'),
+        const CheatsheetHint(
+          'Giống hệt cách bạn bấm các thẻ ở trang chủ app này',
+        ),
       ],
     );
   }
@@ -226,10 +248,20 @@ class _GoRouterDiagramDemo extends StatelessWidget {
   const _GoRouterDiagramDemo();
 
   Widget _box(String label, Color color) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(6)),
-        child: Text(label, style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(6),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        fontSize: 10,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -240,9 +272,17 @@ class _GoRouterDiagramDemo extends StatelessWidget {
       runSpacing: 6,
       children: [
         _box('GoRouter(routes)', Colors.indigo),
-        Icon(Icons.arrow_forward, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        Icon(
+          Icons.arrow_forward,
+          size: 14,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         _box('redirect (auth guard)', Colors.deepOrange),
-        Icon(Icons.arrow_forward, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        Icon(
+          Icons.arrow_forward,
+          size: 14,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         _box('đúng trang + đúng URL', Colors.teal),
       ],
     );

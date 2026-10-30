@@ -9,10 +9,30 @@ class DashboardStatsExample extends StatelessWidget {
   const DashboardStatsExample({super.key});
 
   static const _stats = [
-    (icon: Icons.people_outline, label: 'Người dùng', value: '1,204', color: Colors.deepPurple),
-    (icon: Icons.shopping_cart_outlined, label: 'Đơn hàng', value: '328', color: Colors.teal),
-    (icon: Icons.attach_money, label: 'Doanh thu', value: '45.2M', color: Colors.orange),
-    (icon: Icons.trending_up, label: 'Tăng trưởng', value: '+12%', color: Colors.blue),
+    (
+      icon: Icons.people_outline,
+      label: 'Người dùng',
+      value: '1,204',
+      color: Colors.deepPurple,
+    ),
+    (
+      icon: Icons.shopping_cart_outlined,
+      label: 'Đơn hàng',
+      value: '328',
+      color: Colors.teal,
+    ),
+    (
+      icon: Icons.attach_money,
+      label: 'Doanh thu',
+      value: '45.2M',
+      color: Colors.orange,
+    ),
+    (
+      icon: Icons.trending_up,
+      label: 'Tăng trưởng',
+      value: '+12%',
+      color: Colors.blue,
+    ),
   ];
 
   static const _activities = [
@@ -23,7 +43,9 @@ class DashboardStatsExample extends StatelessWidget {
     'Đơn hàng #1021 đã giao',
   ];
 
-  Widget _statCard(({IconData icon, String label, String value, Color color}) s) {
+  Widget _statCard(
+    ({IconData icon, String label, String value, Color color}) s,
+  ) {
     return Container(
       width: 150,
       padding: const EdgeInsets.all(16),
@@ -54,7 +76,10 @@ class DashboardStatsExample extends StatelessWidget {
             s.value,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          Text(s.label, style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+          Text(
+            s.label,
+            style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+          ),
         ],
       ),
     );
@@ -104,7 +129,11 @@ class DashboardStatsExample extends StatelessWidget {
                       const CircleAvatar(
                         radius: 16,
                         backgroundColor: Colors.deepPurple,
-                        child: Icon(Icons.notifications, size: 16, color: Colors.white),
+                        child: Icon(
+                          Icons.notifications,
+                          size: 16,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(

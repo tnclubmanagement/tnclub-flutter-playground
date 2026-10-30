@@ -27,11 +27,7 @@ class _ExpandedFlexibleDemoState extends State<ExpandedFlexibleDemo> {
     );
   }
 
-  Widget _slider(
-    String label,
-    double value,
-    ValueChanged<double> onChanged,
-  ) {
+  Widget _slider(String label, double value, ValueChanged<double> onChanged) {
     return Row(
       children: [
         SizedBox(width: 56, child: Text(label)),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'app_constants.dart';
+import 'articles/article_page.dart';
 import 'home/home_page.dart';
 
 void main() {
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
   // đúng trang đang xem -> F5/refresh hoặc chia sẻ link vẫn mở đúng demo đó,
   // tiện khi cần trỏ vào 1 trang cụ thể để yêu cầu chỉnh sửa.
   Route<dynamic> _onGenerateRoute(RouteSettings settings) {
+    final requestedPath = settings.name ?? '/';
+    final uri = Uri.parse(requestedPath);
     for (final demo in [
       ...HomePage.demos,
       ...HomePage.examples,
@@ -25,7 +28,21 @@ class MyApp extends StatelessWidget {
       ...HomePage.cheatSheets,
       ...HomePage.environmentTools,
     ]) {
-      if (demo.path == settings.name) {
+      if (demo.path == uri.path) {
+        if (demo.articleAssetPath != null) {
+          final fragment = uri.fragment;
+          final initialSection = fragment.startsWith('section=')
+              ? int.tryParse(fragment.substring('section='.length)) ?? 0
+              : 0;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => ArticlePage(
+              assetPath: demo.articleAssetPath!,
+              routePath: demo.path,
+              initialSection: initialSection,
+            ),
+          );
+        }
         return MaterialPageRoute(settings: settings, builder: demo.builder);
       }
     }
@@ -37,27 +54,59 @@ class MyApp extends StatelessWidget {
 
   static ThemeData _buildTheme(Brightness brightness) {
     final isLight = brightness == Brightness.light;
-    // Tím nhạt (lavender) làm màu CHỦ ĐẠO - thay cam đất (terracotta) vì
-    // bị chê quá gắt. Primary/secondary/tertiary vẫn suy từ seed này.
+    // Bảng màu editorial: navy làm màu chính, burgundy làm nhấn phụ và
+    // ochre dành cho trạng thái học tập. Không dùng seed tím/pastel.
     final seeded = ColorScheme.fromSeed(
-      seedColor: const Color(0xFF9575CD),
+      seedColor: const Color(0xFF1E3A56),
       brightness: brightness,
     );
     // NHƯNG nền/card dùng XÁM TRUNG TÍNH THẬT (không pha màu tím của M3 "surface
     // tint") làm chủ đạo - ép lại các tông surface thay vì để seed chi phối,
     // để nền luôn xám sạch, chỉ có card/button mới có màu.
     final neutralBg = isLight
-        ? const Color(0xFFF2F3F5)
-        : const Color(0xFF17181B);
+        ? const Color(0xFFF1F3F5)
+        : const Color(0xFF111922);
     final neutralBgLow = isLight
-        ? const Color(0xFFF7F8FA)
-        : const Color(0xFF1C1D21);
-    final neutralCard = isLight ? Colors.white : const Color(0xFF232428);
+        ? const Color(0xFFF8F9FA)
+        : const Color(0xFF17222D);
+    final neutralCard = isLight
+        ? const Color(0xFFFFFFFF)
+        : const Color(0xFF1D2A36);
     final neutralOutline = isLight
-        ? const Color(0xFFE3E5E9)
-        : const Color(0xFF34363B);
+        ? const Color(0xFFD5DCE2)
+        : const Color(0xFF354554);
     final colorScheme = seeded.copyWith(
+      primary: isLight ? const Color(0xFF1E3A56) : const Color(0xFFAFC7DA),
+      onPrimary: isLight ? Colors.white : const Color(0xFF102A40),
+      primaryContainer: isLight
+          ? const Color(0xFFDCE7F0)
+          : const Color(0xFF29475F),
+      onPrimaryContainer: isLight
+          ? const Color(0xFF102A40)
+          : const Color(0xFFE4EEF5),
+      secondary: isLight ? const Color(0xFF7A3043) : const Color(0xFFE0A7B5),
+      onSecondary: isLight ? Colors.white : const Color(0xFF421522),
+      secondaryContainer: isLight
+          ? const Color(0xFFF0DDE1)
+          : const Color(0xFF5D2A39),
+      onSecondaryContainer: isLight
+          ? const Color(0xFF4B1726)
+          : const Color(0xFFFFE9ED),
+      tertiary: isLight ? const Color(0xFF8A6A2F) : const Color(0xFFD8B96E),
+      onTertiary: isLight ? Colors.white : const Color(0xFF342500),
+      tertiaryContainer: isLight
+          ? const Color(0xFFF3E8C8)
+          : const Color(0xFF57471D),
+      onTertiaryContainer: isLight
+          ? const Color(0xFF3A2A0B)
+          : const Color(0xFFFFEFC5),
       surface: neutralCard,
+      onSurface: isLight ? const Color(0xFF1D2933) : const Color(0xFFE5EBF0),
+      onSurfaceVariant: isLight
+          ? const Color(0xFF52616D)
+          : const Color(0xFFBBC7D0),
+      outline: isLight ? const Color(0xFF71808C) : const Color(0xFF8C9BA7),
+      surfaceTint: isLight ? const Color(0xFF1E3A56) : const Color(0xFFAFC7DA),
       surfaceContainerLowest: neutralBg,
       surfaceContainerLow: neutralBgLow,
       surfaceContainer: neutralBgLow,

@@ -75,7 +75,6 @@ class _DemoScaffoldState extends State<DemoScaffold> {
                       Tab(text: 'Demo', icon: Icon(Icons.widgets)),
                       Tab(text: 'Code', icon: Icon(Icons.code)),
                     ],
-                    labelColor: Colors.deepPurple,
                   ),
                   Expanded(child: TabBarView(children: [demoPanel, codePanel])),
                 ],
