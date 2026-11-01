@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting…</title>
+  <script>
+    // GitHub Pages phục vụ file này cho mọi path không tồn tại (deep link kiểu
+    // /tnclub-flutter-playground/cheatsheet/requirements khi F5/share link).
+    // Lưu URL gốc rồi đẩy về entry point của app; index.html sẽ restore lại
+    // path để Flutter path URL strategy route đúng trang.
+    sessionStorage.setItem(
+      'gh-pages-redirect',
+      location.pathname + location.search + location.hash
+    );
+    // Project page luôn nằm dưới /<repo>/ nên segment đầu tiên là base path.
+    location.replace('/' + location.pathname.split('/')[1] + '/');
+  </script>
+</head>
+<body></body>
+</html>
