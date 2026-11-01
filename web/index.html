@@ -31,6 +31,17 @@
 
   <title>flutter_layout_playground</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    // Restore deep link mà 404.html (GitHub Pages fallback) đã lưu vào
+    // sessionStorage, trước khi Flutter bootstrap đọc URL để route.
+    (function () {
+      var redirect = sessionStorage.getItem('gh-pages-redirect');
+      if (redirect) {
+        sessionStorage.removeItem('gh-pages-redirect');
+        history.replaceState(null, '', redirect);
+      }
+    })();
+  </script>
 </head>
 <body>
   <!--
