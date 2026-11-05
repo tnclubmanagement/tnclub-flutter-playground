@@ -4,7 +4,13 @@ set -eu
 # Build a clean release before pruning generated renderer variants.
 flutter clean
 flutter pub get
-flutter build web --release --no-source-maps --no-wasm-dry-run
+# GitHub Pages hosts this project below the repository name rather than at the
+# domain root. Keep the generated asset URLs under that project path.
+flutter build web \
+  --release \
+  --base-href /tnclub-flutter-playground/ \
+  --no-source-maps \
+  --no-wasm-dry-run
 
 canvas_kit_dir="build/web/canvaskit"
 
