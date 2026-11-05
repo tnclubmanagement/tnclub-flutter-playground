@@ -49,6 +49,6 @@ _flutter.loader.load({
     canvasKitVariant: "chromium",
   },
   serviceWorkerSettings: {
-    serviceWorkerVersion: "17145547" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */,
+    serviceWorkerVersion: "322297281" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */,
   },
 });
